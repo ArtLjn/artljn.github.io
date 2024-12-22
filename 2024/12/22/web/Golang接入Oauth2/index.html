@@ -9,7 +9,7 @@
     
     <title>
         
-            计算机理论 |
+            Golang接入Oauth2 |
         
         Mickey Goovey
     </title>
@@ -194,7 +194,7 @@
             <div class="post-content-bottom border-box">
                 
                     <div class="post-title">
-                        计算机理论
+                        Golang接入Oauth2
                     </div>
                 
 
@@ -222,13 +222,13 @@
         
             <span class="meta-info-item post-create-date">
                 <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
-                <span class="datetime">2024-12-22 14:39:13</span>
+                <span class="datetime">2024-12-22 20:29:26</span>
             </span>
 
             
                 <span class="meta-info-item post-update-date">
                     <i class="icon fa-solid fa-file-pen"></i>&nbsp;
-                    <span class="datetime" data-updated="Sun Dec 22 2024 15:15:44 GMT+0800">2024-12-22 15:15:44</span>
+                    <span class="datetime" data-updated="Sun Dec 22 2024 21:28:31 GMT+0800">2024-12-22 21:28:31</span>
                 </span>
             
         
@@ -237,7 +237,7 @@
             <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
                 <ul class="post-category-ul">
                     
-                            <li class="category-item"><a href="/categories/%E5%AF%BC%E8%AE%BA/">导论</a></li>
+                            <li class="category-item"><a href="/categories/web/">web</a></li>
                         
                     
                 </ul>
@@ -248,7 +248,7 @@
             <span class="post-tag meta-info-item border-box">
                 <ul class="post-tag-ul">
                     
-                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/">计算机理论</a></li>
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/golang/">golang</a></li>
                         
                     
                 </ul>
@@ -277,12 +277,32 @@
                     
 
                     
-                         <h2 id="1-计算公式"><a href="#1-计算公式" class="headerlink" title="1. 计算公式"></a>1. 计算公式</h2><p><strong>计算机硬件</strong></p>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">总线带宽 = 总线工作频率 * 总线位宽 * 传输次数/ 8</span><br><span class="line"></span><br><span class="line">存储容量 = 末尾地址 - 起始地址 + 1（单位为B）</span><br></pre></td></tr></table></figure>
-<p><strong>计算机网络</strong></p>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 时延 --&gt;</span><br><span class="line"></span><br><span class="line">发送时延 = 数据帧长度(bit) / 数据传输速率(bit/s)</span><br><span class="line"></span><br><span class="line">传播时延 = 信道长度(m) / 电磁波在信道上的传播速率(m/s)</span><br><span class="line"></span><br><span class="line">总时延 = 发送时延 + 传播时延</span><br></pre></td></tr></table></figure>
-<p><strong>多媒体技术</strong></p>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 字形码 --&gt;</span><br><span class="line">点阵字形码所占字节数 = (点阵字形码的行数 * 点阵字形码的列数) / 8</span><br><span class="line"></span><br><span class="line">&lt;!-- 汉字国标码 --&gt;</span><br><span class="line">国标码 = 汉字区位码 + 20 20H</span><br><span class="line"></span><br><span class="line">&lt;!-- 汉字机内码 --&gt;</span><br><span class="line">汉字机内码 = 汉字国标码 + 80 80H = 汉字区位码 + A0 A0H</span><br><span class="line"></span><br><span class="line">&lt;!-- 图像 --&gt;</span><br><span class="line">图像所占字节数 = 图像分辨率 * 颜色深度 / 8</span><br><span class="line"></span><br><span class="line">&lt;!-- 声音 计算每秒钟声音数据量的公式 --&gt;</span><br><span class="line">每秒数据量(B) = 采样频率(Hz) * 量化位数(bit)/8 * 声道数</span><br><span class="line"></span><br><span class="line">&lt;!-- 模拟波形声音数字化后音频文件存储数据量公式 --&gt;</span><br><span class="line">存储数据量 = 采样频率(Hz) * 量化精度/8 * 声道数 * 时间(s)</span><br><span class="line"></span><br><span class="line">&lt;!-- 比特率 基本计算公式 --&gt;</span><br><span class="line">比特率(kbps) = 文件大小(字节) * 8 / 时间(s) / 1000</span><br><span class="line"></span><br><span class="line">&lt;!-- 音频文件专用计算方法 --&gt;</span><br><span class="line">比特率(kbps) = 采样频率(Hz) * 量化位数(bit) * 声道数</span><br><span class="line"></span><br><span class="line">&lt;!-- 视频 数据量计算公式 --&gt;</span><br><span class="line">视频文件数据量 = 帧频 * 每幅图像数据量 * 时间 = 分辨率 * 颜色深度 * 帧数 * 时间/8</span><br></pre></td></tr></table></figure>
+                         <h1 id="1-GitHub-OAuth2"><a href="#1-GitHub-OAuth2" class="headerlink" title="1. GitHub OAuth2"></a>1. GitHub OAuth2</h1><h2 id="1-1-GitHub-OAuth2-接入流程"><a href="#1-1-GitHub-OAuth2-接入流程" class="headerlink" title="1.1 GitHub OAuth2 接入流程"></a>1.1 GitHub OAuth2 接入流程</h2><p>在”Authorization callback URL”这里填写你的回调地址，可以是你的域名，也可以是你本地的回调地址，比如 <code>http://127.0.0.1:8080/callback</code>。相关配置填写之后，点击”Register application”创建即可。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/2024-12-22-21-04-49.png"
+                       
+                 ><br>应用创建完毕，会生成客户端 ID 和客户端密钥。客户端密钥需要单独生成，点击”Generate  a new client secret”生成一个密钥即可。<br><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/2024-12-22-20-34-15.png"
+                       
+                 ></p>
+<h2 id="1-2-GitHub-OAuth2-接入代码"><a href="#1-2-GitHub-OAuth2-接入代码" class="headerlink" title="1.2 GitHub OAuth2 接入代码"></a>1.2 GitHub OAuth2 接入代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;context&quot;</span></span><br><span class="line">	<span class="string">&quot;encoding/json&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;io&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;golang.org/x/oauth2&quot;</span></span><br><span class="line">	<span class="string">&quot;golang.org/x/oauth2/github&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	githubOauthConfig = &amp;oauth2.Config&#123;</span><br><span class="line">		ClientID:     <span class="string">&quot;Ov23liHgJhetSUt45V9r&quot;</span>,</span><br><span class="line">		ClientSecret: <span class="string">&quot;ClientSecret&quot;</span>, <span class="comment">// 请替换为自己的ClientSecret</span></span><br><span class="line">		RedirectURL:  <span class="string">&quot;http://localhost:8080/callback&quot;</span>,</span><br><span class="line">		Endpoint:     github.Endpoint,</span><br><span class="line">		Scopes:       []<span class="type">string</span>&#123;<span class="string">&quot;user:email&quot;</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	oauthStateString = <span class="string">&quot;random&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	http.HandleFunc(<span class="string">&quot;/&quot;</span>, handleMain)</span><br><span class="line">	http.HandleFunc(<span class="string">&quot;/login&quot;</span>, handleGitHubLogin)</span><br><span class="line">	http.HandleFunc(<span class="string">&quot;/callback&quot;</span>, handleGitHubCallback)</span><br><span class="line">	http.HandleFunc(<span class="string">&quot;/logout&quot;</span>, handleLogout)</span><br><span class="line">	log.Println(<span class="string">&quot;Started running on http://localhost:8080&quot;</span>)</span><br><span class="line">	log.Fatal(http.ListenAndServe(<span class="string">&quot;:8080&quot;</span>, <span class="literal">nil</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleMain</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> htmlIndex = <span class="string">`&lt;html&gt;&lt;body&gt;&lt;a href=&quot;/login&quot;&gt;Log in with GitHub&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;`</span></span><br><span class="line">	io.WriteString(w, htmlIndex)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleGitHubLogin</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	url := githubOauthConfig.AuthCodeURL(oauthStateString)</span><br><span class="line">	http.Redirect(w, r, url, http.StatusTemporaryRedirect)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> GitHubUser <span class="keyword">struct</span> &#123;</span><br><span class="line">	Login     <span class="type">string</span> <span class="string">`json:&quot;login&quot;`</span></span><br><span class="line">	ID        <span class="type">int</span>    <span class="string">`json:&quot;id&quot;`</span></span><br><span class="line">	AvatarURL <span class="type">string</span> <span class="string">`json:&quot;avatar_url&quot;`</span></span><br><span class="line">	HTMLURL   <span class="type">string</span> <span class="string">`json:&quot;html_url&quot;`</span></span><br><span class="line">	Name      <span class="type">string</span> <span class="string">`json:&quot;name&quot;`</span></span><br><span class="line">	Company   <span class="type">string</span> <span class="string">`json:&quot;company&quot;`</span></span><br><span class="line">	Blog      <span class="type">string</span> <span class="string">`json:&quot;blog&quot;`</span></span><br><span class="line">	Location  <span class="type">string</span> <span class="string">`json:&quot;location&quot;`</span></span><br><span class="line">	Email     <span class="type">string</span> <span class="string">`json:&quot;email&quot;`</span></span><br><span class="line">	Bio       <span class="type">string</span> <span class="string">`json:&quot;bio&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleGitHubCallback</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> r.FormValue(<span class="string">&quot;state&quot;</span>) != oauthStateString &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;invalid oauth state&quot;</span>)</span><br><span class="line">		http.Redirect(w, r, <span class="string">&quot;/&quot;</span>, http.StatusTemporaryRedirect)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	token, err := githubOauthConfig.Exchange(context.Background(), r.FormValue(<span class="string">&quot;code&quot;</span>))</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;code exchange failed: &quot;</span>, err)</span><br><span class="line">		http.Redirect(w, r, <span class="string">&quot;/&quot;</span>, http.StatusTemporaryRedirect)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	client := githubOauthConfig.Client(context.Background(), token)</span><br><span class="line">	resp, err := client.Get(<span class="string">&quot;https://api.github.com/user&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;failed getting user info: &quot;</span>, err)</span><br><span class="line">		http.Redirect(w, r, <span class="string">&quot;/&quot;</span>, http.StatusTemporaryRedirect)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> resp.Body.Close()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> user GitHubUser</span><br><span class="line">	<span class="keyword">if</span> err := json.NewDecoder(resp.Body).Decode(&amp;user); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;failed decoding response body: &quot;</span>, err)</span><br><span class="line">		http.Redirect(w, r, <span class="string">&quot;/&quot;</span>, http.StatusTemporaryRedirect)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 格式化输出用户信息</span></span><br><span class="line">	fmt.Fprintf(w, <span class="string">`&lt;html&gt;&lt;body&gt;</span></span><br><span class="line"><span class="string">        &lt;h1&gt;User Info&lt;/h1&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt;&lt;strong&gt;Login:&lt;/strong&gt; %s&lt;/p&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt;&lt;strong&gt;ID:&lt;/strong&gt; %d&lt;/p&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt;&lt;strong&gt;Avatar URL:&lt;/strong&gt; &lt;img   src=&quot;%s&quot;  alt=&quot;avatar&quot; &gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt;&lt;strong&gt;Profile URL:&lt;/strong&gt; &lt;a href=&quot;%s&quot;&gt;%s&lt;/a&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt;&lt;strong&gt;Name:&lt;/strong&gt; %s&lt;/p&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt;&lt;strong&gt;Company:&lt;/strong&gt; %s&lt;/p&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt;&lt;strong&gt;Blog:&lt;/strong&gt; %s&lt;/p&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt;&lt;strong&gt;Location:&lt;/strong&gt; %s&lt;/p&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt;&lt;strong&gt;Email:&lt;/strong&gt; %s&lt;/p&gt;</span></span><br><span class="line"><span class="string">        &lt;p&gt;&lt;strong&gt;Bio:&lt;/strong&gt; %s&lt;/p&gt;</span></span><br><span class="line"><span class="string">    &lt;/body&gt;&lt;/html&gt;`</span>,</span><br><span class="line">		user.Login,</span><br><span class="line">		user.ID,</span><br><span class="line">		user.AvatarURL,</span><br><span class="line">		user.HTMLURL, user.HTMLURL,</span><br><span class="line">		user.Name,</span><br><span class="line">		user.Company,</span><br><span class="line">		user.Blog,</span><br><span class="line">		user.Location,</span><br><span class="line">		user.Email,</span><br><span class="line">		user.Bio)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleLogout</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 清除会话cookie</span></span><br><span class="line">	http.SetCookie(w, &amp;http.Cookie&#123;</span><br><span class="line">		Name:   <span class="string">&quot;github_oauth_token&quot;</span>,</span><br><span class="line">		Value:  <span class="string">&quot;&quot;</span>,</span><br><span class="line">		Path:   <span class="string">&quot;/&quot;</span>,</span><br><span class="line">		MaxAge: <span class="number">-1</span>,</span><br><span class="line">	&#125;)</span><br><span class="line">	http.Redirect(w, r, <span class="string">&quot;/&quot;</span>, http.StatusTemporaryRedirect)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-授权登录"><a href="#1-3-授权登录" class="headerlink" title="1.3 授权登录"></a>1.3 授权登录</h2><p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/2024-12-22-21-14-56.png"
+                       
+                 ><br>授权成功后，会跳转到回调地址，并返回授权码，然后通过授权码获取access_token，最后通过access_token获取用户信息。</p>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/2024-12-22-21-16-13.png"
+                       
+                 ></p>
+
                     
                 </div>
 
@@ -292,11 +312,11 @@
     <div class="copyright-info-content border-box">
         <div class="copyright-info-top border-box">
             <div class="copyright-post-title border-box text-ellipsis">
-                计算机理论
+                Golang接入Oauth2
             </div>
 
             <div class="copyright-post-link border-box text-ellipsis">
-                2024/12/22/导论/计算机理论/
+                2024/12/22/web/Golang接入Oauth2/
             </div>
         </div>
 
@@ -312,7 +332,7 @@
                 <div class="type">
                     Published
                 </div>
-                <div class="content">2024-12-22 14:39</div>
+                <div class="content">2024-12-22 20:29</div>
             </div>
 
 
@@ -348,7 +368,7 @@
                             <ul class="post-tags-box border-box">
                                 
                                     <li class="tag-item border-box">
-                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/">计算机理论</a>
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/golang/">golang</a>
                                     </li>
                                 
                             </ul>
@@ -387,31 +407,15 @@
                 
                     <div class="post-nav border-box">
                         
-                            <div class="prev-post">
-                                <a class="prev"
-                                   rel="prev"
-                                   href="/2024/12/22/web/Golang%E6%8E%A5%E5%85%A5Oauth2/"
-                                   title="Golang接入Oauth2"
-                                >
-                                    <span class="left arrow-icon flex-center">
-                                        <i class="fas fa-chevron-left"></i>
-                                    </span>
-                                    <span class="title flex-center">
-                                        <span class="post-nav-title-item text-ellipsis">Golang接入Oauth2</span>
-                                        <span class="post-nav-item">Prev posts</span>
-                                    </span>
-                                </a>
-                            </div>
-                        
                         
                             <div class="next-post">
                                 <a class="next"
                                    rel="next"
-                                   href="/2024/12/21/%E8%BF%90%E7%BB%B4/linux/centos%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81IP/"
-                                   title="centos配置静态IP"
+                                   href="/2024/12/22/%E5%AF%BC%E8%AE%BA/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%90%86%E8%AE%BA/"
+                                   title="计算机理论"
                                 >
                                     <span class="title flex-center">
-                                        <span class="post-nav-title-item text-ellipsis">centos配置静态IP</span>
+                                        <span class="post-nav-title-item text-ellipsis">计算机理论</span>
                                         <span class="post-nav-item">Next posts</span>
                                     </span>
                                     <span class="right arrow-icon flex-center">
@@ -517,7 +521,7 @@
             <div class="pc-post-toc right-toc">
                 <div class="post-toc-wrap border-box">
     <div class="post-toc border-box">
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">1. 计算公式</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-GitHub-OAuth2"><span class="nav-number">1.</span> <span class="nav-text">1. GitHub OAuth2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-GitHub-OAuth2-%E6%8E%A5%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 GitHub OAuth2 接入流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-GitHub-OAuth2-%E6%8E%A5%E5%85%A5%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 GitHub OAuth2 接入代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E6%8E%88%E6%9D%83%E7%99%BB%E5%BD%95"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 授权登录</span></a></li></ol></li></ol>
     </div>
 </div>
 
@@ -721,7 +725,7 @@
             <div class="tablet-post-toc">
                 <div class="post-toc-wrap border-box">
     <div class="post-toc border-box">
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">1. 计算公式</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-GitHub-OAuth2"><span class="nav-number">1.</span> <span class="nav-text">1. GitHub OAuth2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-GitHub-OAuth2-%E6%8E%A5%E5%85%A5%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 GitHub OAuth2 接入流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-GitHub-OAuth2-%E6%8E%A5%E5%85%A5%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 GitHub OAuth2 接入代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E6%8E%88%E6%9D%83%E7%99%BB%E5%BD%95"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 授权登录</span></a></li></ol></li></ol>
     </div>
 </div>
 
