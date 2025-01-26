@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Mickey Goovey">
+    
+    <title>
+        
+            fisco-bcos-console命令注释 |
+        
+        Mickey Goovey
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/avatar.jpeg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"lllcnm.cn","root":"/","language":"en","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":"Mickey Goovey","author":"Mickey Goovey","avatar":"/images/avatar.jpeg","logo":"/images/avatar.jpeg","favicon":"/images/avatar.jpeg"},"menu":{"home":"/","archives":"/archives","tags":"/tags","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":"https://github.com/ArtLjn","weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":null}},"scroll":{"progress_bar":true,"percent":true,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":true,"share":true,"reward":{"enable":true,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"waline","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":"https://comment.lllcnm.cn","reaction":true,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2022,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":"https://github.com/ArtLjn"},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original post title","author":"Original post author","link":"Original post link"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/avatar.jpeg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Mickey Goovey
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                HOME
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                ARCHIVES
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tags">
+                                
+                                TAGS
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                ABOUT
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                            HOME
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                            ARCHIVES
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tags">
+                            
+                            TAGS
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            ABOUT
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        fisco-bcos-console命令注释
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.jpeg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">Mickey Goovey</span>
+                                
+                                    <span class="author-badge">Lv3</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2023-05-22 15:20:54</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Sun Dec 22 2024 15:22:16 GMT+0800">2024-12-22 15:22:16</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/fisco-bcos/">fisco-bcos</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h3 id="fisco-bcos-console命令大全"><a href="#fisco-bcos-console命令大全" class="headerlink" title="fisco-bcos console命令大全"></a>fisco-bcos console命令大全</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line">- `addObserver`: 添加一个观察者节点</span><br><span class="line">- `addPeers`: 添加更多连接的节点P2P网络中的对等节点</span><br><span class="line">- `addSealer`: 添加一个共识节点</span><br><span class="line">- `call`: 调用合约的某个函数和参数</span><br><span class="line">- `callByCNS`: 通过CNS调用合约的某个函数和参数</span><br><span class="line">- `chargeGas`: 为指定账户充值指定的gas（燃料费用）</span><br><span class="line">- `create`: 通过SQL创建表格</span><br><span class="line">- `deductGas`: 从给定账户扣除指定的gas（燃料费用）</span><br><span class="line">- `delete`: 通过SQL删除记录</span><br><span class="line">- `deploy`: 在区块链上部署一个合约</span><br><span class="line">- `deployByCNS`: 通过CNS在区块链上部署一个合约</span><br><span class="line">- `desc`: 描述表格信息</span><br><span class="line">- `erasePeers`: 移除节点P2P网络中的已连接对等节点</span><br><span class="line">- `quit([quit, q, <span class="built_in">exit</span>])`: 退出控制台</span><br><span class="line">- `freezeAccount`: 冻结账户</span><br><span class="line">- `freezeContract`: 冻结合约</span><br><span class="line">- `generateGroup`: 为指定节点生成一个群组</span><br><span class="line">- `generateGroupFromFile`: 根据指定文件生成一个群组</span><br><span class="line">- `getAccountStatus`: 获取账户状态</span><br><span class="line">- `getAvailableConnections`: 获取SDK连接的节点信息</span><br><span class="line">- `getBatchReceiptsByBlockHashAndRange`: 根据块哈希和交易范围获取批量交易收据</span><br><span class="line">- `getBatchReceiptsByBlockNumberAndRange`: 根据块号和交易范围获取批量交易收据</span><br><span class="line">- `getBlockByHash`: 根据哈希查询块信息</span><br><span class="line">- `getBlockByNumber`: 根据块号查询块信息</span><br><span class="line">- `getBlockHashByNumber`: 根据块号查询块哈希</span><br><span class="line">- `getBlockHeaderByHash`: 根据哈希查询块头信息</span><br><span class="line">- `getBlockHeaderByNumber`: 根据块号查询块头信息</span><br><span class="line">- `getBlockNumber`: 查询最近块的编号</span><br><span class="line">- `getCode`: 查询给定地址的合约代码</span><br><span class="line">- `getConsensusStatus`: 查询共识状态</span><br><span class="line">- `getContractStatus`: 获取合约状态</span><br><span class="line">- `getCryptoType`: 获取当前的加密类型</span><br><span class="line">- `getCurrentAccount`: 获取当前账户信息</span><br><span class="line">- `getDeployLog`: 查询已部署合约的日志</span><br><span class="line">- `getGroupConnections`: 获取连接到SDK的群组节点信息</span><br><span class="line">- `getGroupList`: 查询群组列表</span><br><span class="line">- `getGroupPeers`: 查询共识节点和观察者节点的节点ID列表</span><br><span class="line">- `getNodeIDList`: 查询所有连接节点的节点ID列表</span><br><span class="line">- `getNodeInfo`: 查询指定节点的信息</span><br><span class="line">- `getNodeVersion`: 查询当前节点版本</span><br><span class="line">- `getObserverList`: 查询观察者节点的节点ID列表</span><br><span class="line">- `getPbftView`: 查询节点的PBFT视图</span><br><span class="line">- `getPeers`: 查询当前连接的节点对等列表</span><br><span class="line">- `getPendingTransactions`: 查询待处理的交易</span><br><span class="line">- `getPendingTxSize`: 查询待处理交易的数量</span><br><span class="line">- `getSealerList`: 查询共识节点的节点ID列表</span><br><span class="line">- `getSyncStatus`: 查询同步状态</span><br><span class="line">- `getSystemConfigByKey`: 根据键查询系统配置值</span><br><span class="line">- `getTotalTransactionCount`: 查询总交易数</span><br><span class="line">- `getTransactionByBlockHashAndIndex`: 根据块哈希和交易索引位置查询交易信息</span><br><span class="line">- `getTransactionByBlockNumberAndIndex`: 根据块号和交易索引位置查询交易信息</span><br><span class="line">- `getTransactionByHash`: 根据交易哈希查询交易信息</span><br><span class="line">- `getTransactionByHashWithProof`: 根据交易哈希查询交易和交易证明</span><br><span class="line">- `getTransactionReceipt`: 根据交易哈希查询交易收据</span><br><span class="line">- `getTransactionReceiptByHashWithProof`: 根据交易哈希查询交易收据和交易收据证明</span><br><span class="line">- `grantCNSManager`: 授予地址对CNS的管理权限</span><br><span class="line">- `grantCharger`: 授予账户充值gas的权限</span><br><span class="line">- `grantCommitteeMember`: 授予账户成为委员会成员的权限</span><br><span class="line">- `grantContractStatusManager`: 授予用户对合约的授权</span><br><span class="line">- `grantContractWritePermission`: 授予账户合约写入权限</span><br><span class="line">- `grantDeployAndCreateManager`: 授予地址对部署合约和创建用户表的管理权限</span><br><span class="line">- `grantNodeManager`: 授予地址对节点配置的管理权限</span><br><span class="line">- `grantOperator`: 授予账户运营者权限</span><br><span class="line">- `grantSysConfigManager`: 授予地址对系统配置的管理权限</span><br><span class="line">- `grantUserTableManager`: 授予表名和地址对用户表的管理权限</span><br><span class="line">- `insert`: 通过SQL插入记录</span><br><span class="line">- `listAbi`: 列出合约的函数和事件信息</span><br><span class="line">- `listAccount`: 列出当前保存的账户列表</span><br><span class="line">- `listCNSManager`: 查询CNS的权限信息</span><br><span class="line">- `listChargers`: 列出具有充值/扣除gas权限的账户列表</span><br><span class="line">- `listCommitteeMembers`: 列出所有委员会成员</span><br><span class="line">- `listContractStatusManager`: 列出合约的授权信息</span><br><span class="line">- `listContractWritePermission`: 查询具有合约写入权限的账户列表</span><br><span class="line">- `listDeployAndCreateManager`: 查询部署合约和创建用户表的权限信息</span><br><span class="line">- `listDeployContractAddress`: 列出指定合约的合约地址</span><br><span class="line">- `listNodeManager`: 查询节点配置的权限信息</span><br><span class="line">- `listOperators`: 列出所有运营者</span><br><span class="line">- `listSysConfigManager`: 查询系统配置的权限信息</span><br><span class="line">- `listUserTableManager`: 查询用户表的权限信息</span><br><span class="line">- `loadAccount`: 为交易签名加载账户</span><br><span class="line">- `newAccount`: 创建账户</span><br><span class="line">- `queryCNS`: 根据合约名称和版本查询CNS信息</span><br><span class="line">- `queryCommitteeMemberWeight`: 查询委员会成员的权重</span><br><span class="line">- `queryGroupStatus`: 查询指定节点的指定群组状态</span><br><span class="line">- `queryPeers`: 查询配置的P2P网络连接节点列表</span><br><span class="line">- `queryRemainGas`: 查询账户剩余gas（燃料费用）</span><br><span class="line">- `query</span><br><span class="line"></span><br><span class="line">Threshold`: 查询阈值</span><br><span class="line">- `queryVotesOfMember`: 查询委员会成员的投票</span><br><span class="line">- `queryVotesOfThreshold`: 查询更新阈值操作的投票</span><br><span class="line">- `recoverGroup`: 恢复指定节点的指定群组</span><br><span class="line">- `registerCNS`: 为给定合约注册CNS信息</span><br><span class="line">- `removeGroup`: 移除指定节点的指定群组</span><br><span class="line">- `removeNode`: 移除一个节点</span><br><span class="line">- `revokeCNSManager`: 撤销地址对CNS的管理权限</span><br><span class="line">- `revokeCharger`: 撤销账户的充值gas权限</span><br><span class="line">- `revokeCommitteeMember`: 撤销账户的委员会成员权限</span><br><span class="line">- `revokeContractStatusManager`: 撤销用户对合约的授权</span><br><span class="line">- `revokeContractWritePermission`: 撤销账户的合约写入权限</span><br><span class="line">- `revokeDeployAndCreateManager`: 撤销地址对部署合约和创建用户表的管理权限</span><br><span class="line">- `revokeNodeManager`: 撤销地址对节点配置的管理权限</span><br><span class="line">- `revokeOperator`: 撤销账户的运营者权限</span><br><span class="line">- `revokeSysConfigManager`: 撤销地址对系统配置的管理权限</span><br><span class="line">- `revokeUserTableManager`: 撤销表名和地址对用户表的管理权限</span><br><span class="line">- `switch([s])`: 切换到指定的群组通过群组ID</span><br><span class="line">- `<span class="keyword">select</span>`: 通过SQL查询记录</span><br><span class="line">- `setSystemConfigByKey`: 根据键设置系统配置值</span><br><span class="line">- `startGroup`: 启动指定节点的指定群组</span><br><span class="line">- `stopGroup`: 停止指定节点的指定群组</span><br><span class="line">- `unfreezeAccount`: 解冻账户</span><br><span class="line">- `unfreezeContract`: 解冻合约</span><br><span class="line">- `update`: 通过SQL更新记录</span><br><span class="line">- `updateCommitteeMemberWeight`: 更新委员会成员的权重</span><br><span class="line">- `updateThreshold`: 更新阈值</span><br></pre></td></tr></table></figure>
+
+<p><a class="link"   target="_blank" rel="noopener" href="https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/docs/manual/permission_control.html" >账户权限控制<i class="fas fa-external-link-alt"></i></a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grantCommitteeMember 0xf7085ff39210d2fcd8f30a3255016e1fa52aa896 ;增加委员</span><br><span class="line">listCommitteeMembers ;查看所有委员信息</span><br></pre></td></tr></table></figure>
+<h4 id="加入群组"><a href="#加入群组" class="headerlink" title="加入群组"></a>加入群组</h4><ul>
+<li>设置观察者<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[group:1]&gt; addObserver 63de0af9d1612b7765e0e1923de5ed35a6048238ffe6531519efb4286905bd5cf2d77e5e46cc80e572ba70144c431503ae79efa81b2bed25c02056960dd61688</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;code&quot;</span>:1,</span><br><span class="line">    <span class="string">&quot;msg&quot;</span>:<span class="string">&quot;Success&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>获取观察者列表<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[group:1]&gt; getObserverList </span><br><span class="line">[</span><br><span class="line">    63de0af9d1612b7765e0e1923de5ed35a6048238ffe6531519efb4286905bd5cf2d77e5e46cc80e572ba70144c431503ae79efa81b2bed25c02056960dd61688</span><br><span class="line">]</span><br></pre></td></tr></table></figure></li>
+<li>使用addSealer将node4作为共识节点加入群组1<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">addSealer 63de0af9d1612b7765e0e1923de5ed35a6048238ffe6531519efb4286905bd5cf2d77e5e46cc80e572ba70144c431503ae79efa81b2bed25c02056960dd61688</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                fisco-bcos-console命令注释
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2023/05/22/区块链/fisco-bcos-console命令注释/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    Author
+                </div>
+                <div class="content">Mickey Goovey</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    Published
+                </div>
+                <div class="content">2023-05-22 15:20</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    License
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="Copy copyright info" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a>
+                                    </li>
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/fisco-bcos/">fisco-bcos</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="Share to WeChat"
+            data-tooltip-img-tip="Scan by WeChat"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to WeiBo"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2023/08/12/web/%E5%88%9D%E8%AF%86Golang-Gin/"
+                                   title="初识Golang-Gin"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">初识Golang-Gin</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">Comment plugin failed to load</span>
+    <button class="reload keep-button">Click to reload</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">Loading comment plugin</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="waline-comment-container">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline-meta.css"/>
+        <div id="waline-comment"></div>
+        <script data-pjax>
+          window.KeepCommentPlugin.walineOptions = JSON.parse('{}'.replace(/&#34;/g, '"'))
+          window.KeepCommentPlugin.walineOptions.el = '#waline-comment'
+          window.KeepCommentPlugin.walineOptions.comment = '.post-comments-count'
+          window.KeepCommentPlugin.walineOptions.serverURL = 'https://comment.lllcnm.cn'
+          window.KeepCommentPlugin.walineOptions.lang = 'en' || 'zh-CN'
+          window.KeepCommentPlugin.walineOptions.reaction = 'true' === 'true'
+        </script>
+
+        
+
+        
+            <script data-pjax
+                    async
+                    type="module"
+            >
+              import { init } from '//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.js'
+              window.KeepCommentPlugin.initWaline = () => {
+                if (init) {
+                  init(window.KeepCommentPlugin.walineOptions)
+                  window.KeepCommentPlugin.hideLoading()
+                } else {
+                  setTimeout(() => {
+                    window.KeepCommentPlugin.initWaline()
+                  }, 1000)
+                }
+              }
+
+              if ('true' === 'true') {
+                setTimeout(() => {
+                  window.KeepCommentPlugin.initWaline()
+                }, 1200)
+              } else {
+                window.addEventListener('DOMContentLoaded', window.KeepCommentPlugin.initWaline)
+              }
+            </script>
+        
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#fisco-bcos-console%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8"><span class="nav-number">1.</span> <span class="nav-text">fisco-bcos console命令大全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E5%85%A5%E7%BE%A4%E7%BB%84"><span class="nav-number">1.1.</span> <span class="nav-text">加入群组</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2022</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Mickey Goovey</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+                <a target="_blank" rel="nofollow" href="https://github.com/ArtLjn">
+            
+            This site is deployed on <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span>
+            
+                </a>
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#fisco-bcos-console%E5%91%BD%E4%BB%A4%E5%A4%A7%E5%85%A8"><span class="nav-number">1.</span> <span class="nav-text">fisco-bcos console命令大全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E5%85%A5%E7%BE%A4%E7%BB%84"><span class="nav-number">1.1.</span> <span class="nav-text">加入群组</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+            
+<script src="/js/post/share.js"></script>
+
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>
