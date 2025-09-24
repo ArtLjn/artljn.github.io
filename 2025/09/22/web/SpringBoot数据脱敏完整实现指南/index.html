@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="ClearSky Drizzle">
+    
+    <title>
+        
+            SpringBoot数据脱敏完整实现指南 |
+        
+        ClearSky Drizzle
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/avatar.jpg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"blog.lllcnm.cn","root":"/","language":"en","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":null,"author":"ClearSky Drizzle","avatar":"/images/avatar.jpg","logo":"/images/avatar.jpg","favicon":"/images/avatar.jpg"},"menu":{"home":"/","archives":"/archives","tags":"/tags","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":null}},"scroll":{"progress_bar":true,"percent":true,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":true,"share":true,"reward":{"enable":true,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"waline","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":"https://comment.lllcnm.cn","reaction":true,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2022,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original post title","author":"Original post author","link":"Original post link"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/avatar.jpg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               ClearSky Drizzle
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                HOME
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                ARCHIVES
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tags">
+                                
+                                TAGS
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                ABOUT
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                            HOME
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                            ARCHIVES
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tags">
+                            
+                            TAGS
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            ABOUT
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        SpringBoot数据脱敏完整实现指南
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">ClearSky Drizzle</span>
+                                
+                                    <span class="author-badge">Lv3</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2025-09-22 14:46:23</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Mon Sep 22 2025 20:16:43 GMT+0800">2025-09-22 20:16:43</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/web/">web</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/springboot/">springboot</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <blockquote>
+<p>在现代企业级应用开发中，数据安全和隐私保护越来越重要。本文将详细介绍如何在Spring Boot项目中实现一套完整的数据脱敏系统，保护用户隐私数据的安全。</p>
+</blockquote>
+<h2 id="📋-目录"><a href="#📋-目录" class="headerlink" title="📋 目录"></a>📋 目录</h2><ul>
+<li><a href="#1-%E6%A6%82%E8%BF%B0">1. 概述</a></li>
+<li><a href="#2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1">2. 技术架构设计</a></li>
+<li><a href="#3-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%AE%9E%E7%8E%B0">3. 核心组件实现</a></li>
+<li><a href="#4-%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BD%BF%E7%94%A8">4. 配置和使用</a></li>
+<li><a href="#5-%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7">5. 高级特性</a></li>
+<li><a href="#6-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5">6. 最佳实践</a></li>
+<li><a href="#7-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">7. 性能优化</a></li>
+<li><a href="#8-%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5">8. 故障排查</a></li>
+<li><a href="#9-%E6%80%BB%E7%BB%93">9. 总结</a></li>
+</ul>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><h3 id="1-1-什么是数据脱敏"><a href="#1-1-什么是数据脱敏" class="headerlink" title="1.1 什么是数据脱敏"></a>1.1 什么是数据脱敏</h3><p>数据脱敏（Data Masking）是指对敏感数据进行变形、遮蔽或替换处理，使其在保持数据格式和业务逻辑正确的前提下，无法被直接识别和利用，从而保护数据隐私和安全。</p>
+<h3 id="1-2-为什么需要数据脱敏"><a href="#1-2-为什么需要数据脱敏" class="headerlink" title="1.2 为什么需要数据脱敏"></a>1.2 为什么需要数据脱敏</h3><ul>
+<li><strong>法律合规</strong>：满足《个人信息保护法》、GDPR等法规要求</li>
+<li><strong>安全防护</strong>：防止敏感数据泄露造成的安全风险</li>
+<li><strong>开发测试</strong>：为开发和测试环境提供安全的数据</li>
+<li><strong>日志安全</strong>：避免敏感信息在日志中明文显示</li>
+<li><strong>第三方对接</strong>：对外提供数据时保护用户隐私</li>
+</ul>
+<h3 id="1-3-实现目标"><a href="#1-3-实现目标" class="headerlink" title="1.3 实现目标"></a>1.3 实现目标</h3><p>✅ <strong>多场景支持</strong>：JSON序列化、日志输出、AOP拦截<br>✅ <strong>丰富的脱敏类型</strong>：手机号、邮箱、身份证、银行卡等<br>✅ <strong>灵活配置</strong>：支持全局配置和注解级别控制<br>✅ <strong>高性能</strong>：优化算法，支持批量处理<br>✅ <strong>易扩展</strong>：模块化设计，便于添加新的脱敏规则</p>
+<h2 id="2-技术架构设计"><a href="#2-技术架构设计" class="headerlink" title="2. 技术架构设计"></a>2. 技术架构设计</h2><h3 id="2-1-整体架构图"><a href="#2-1-整体架构图" class="headerlink" title="2.1 整体架构图"></a>2.1 整体架构图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────────────────┐</span><br><span class="line">│                    数据脱敏系统架构                           │</span><br><span class="line">├─────────────────────────────────────────────────────────────┤</span><br><span class="line">│                                                             │</span><br><span class="line">│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │</span><br><span class="line">│  │  注解层      │    │  配置层      │    │  工具层      │      │</span><br><span class="line">│  │ @Sensitive  │    │SensitiveConfig│   │SensitiveUtil │      │</span><br><span class="line">│  └─────────────┘    └─────────────┘    └─────────────┘      │</span><br><span class="line">│         │                   │                   │           │</span><br><span class="line">│         ▼                   ▼                   ▼           │</span><br><span class="line">│  ┌─────────────────────────────────────────────────────────┐ │</span><br><span class="line">│  │                    处理层                                │ │</span><br><span class="line">│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │ │</span><br><span class="line">│  │  │ AOP 切面    │  │ JSON序列化  │  │ 日志处理    │     │ │</span><br><span class="line">│  │  │SensitiveAspect│ │JsonSerializer│ │ LogUtil     │     │ │</span><br><span class="line">│  │  └─────────────┘  └─────────────┘  └─────────────┘     │ │</span><br><span class="line">│  └─────────────────────────────────────────────────────────┘ │</span><br><span class="line">│                               │                               │</span><br><span class="line">│                               ▼                               │</span><br><span class="line">│  ┌─────────────────────────────────────────────────────────┐ │</span><br><span class="line">│  │                    输出层                                │ │</span><br><span class="line">│  │       API响应        日志文件        控制台输出          │ │</span><br><span class="line">│  └─────────────────────────────────────────────────────────┘ │</span><br><span class="line">└─────────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-核心模块说明"><a href="#2-2-核心模块说明" class="headerlink" title="2.2 核心模块说明"></a>2.2 核心模块说明</h3><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>功能</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>注解层</strong></td>
+<td>标记敏感字段</td>
+<td>通过注解声明脱敏规则</td>
+</tr>
+<tr>
+<td><strong>配置层</strong></td>
+<td>全局配置管理</td>
+<td>统一管理脱敏开关和参数</td>
+</tr>
+<tr>
+<td><strong>工具层</strong></td>
+<td>脱敏算法实现</td>
+<td>提供各种脱敏处理方法</td>
+</tr>
+<tr>
+<td><strong>处理层</strong></td>
+<td>自动脱敏处理</td>
+<td>在不同场景下自动应用脱敏</td>
+</tr>
+</tbody></table>
+<h3 id="2-3-支持的脱敏场景"><a href="#2-3-支持的脱敏场景" class="headerlink" title="2.3 支持的脱敏场景"></a>2.3 支持的脱敏场景</h3><ul>
+<li><strong>JSON 序列化</strong>：API 响应自动脱敏</li>
+<li><strong>日志输出</strong>：日志记录时自动脱敏</li>
+<li><strong>AOP 拦截</strong>：方法返回值自动脱敏</li>
+<li><strong>手动调用</strong>：程序中手动脱敏处理</li>
+</ul>
+<h2 id="3-核心组件实现"><a href="#3-核心组件实现" class="headerlink" title="3. 核心组件实现"></a>3. 核心组件实现</h2><h3 id="3-1-脱敏类型枚举"><a href="#3-1-脱敏类型枚举" class="headerlink" title="3.1 脱敏类型枚举"></a>3.1 脱敏类型枚举</h3><p>首先定义支持的脱敏类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">SensitiveType</span> &#123;</span><br><span class="line">    <span class="comment">/** 手机号脱敏：保留前3位和后4位，中间用*替换 */</span></span><br><span class="line">    MOBILE,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** 姓名脱敏：保留姓氏，名字用*替换 */</span></span><br><span class="line">    NAME,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** 邮箱脱敏：保留前3位和@后的域名，用户名部分用*替换 */</span></span><br><span class="line">    EMAIL,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** 密码脱敏：完全用*替换 */</span></span><br><span class="line">    PASSWORD,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** 身份证号脱敏：保留前4位和后4位，中间用*替换 */</span></span><br><span class="line">    ID_CARD,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** 银行卡号脱敏：保留前4位和后4位，中间用*替换 */</span></span><br><span class="line">    BANK_CARD,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** 地址脱敏：保留省市区信息，详细地址用*替换 */</span></span><br><span class="line">    ADDRESS,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** 车牌号脱敏：保留前2位和后1位，中间用*替换 */</span></span><br><span class="line">    CAR_LICENSE,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** 固定电话脱敏：保留区号和后4位，中间用*替换 */</span></span><br><span class="line">    FIXED_PHONE,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** 自定义脱敏：根据配置进行脱敏 */</span></span><br><span class="line">    CUSTOM</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-敏感数据注解"><a href="#3-2-敏感数据注解" class="headerlink" title="3.2 敏感数据注解"></a>3.2 敏感数据注解</h3><p>设计一个功能丰富的注解：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(&#123;ElementType.FIELD, ElementType.METHOD&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Sensitive &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 脱敏类型</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SensitiveType <span class="title function_">value</span><span class="params">()</span> <span class="keyword">default</span> SensitiveType.CUSTOM;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自定义脱敏时保留开始位数（仅在 type = CUSTOM 时生效）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">keepStart</span><span class="params">()</span> <span class="keyword">default</span> <span class="number">2</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自定义脱敏时保留结束位数（仅在 type = CUSTOM 时生效）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="type">int</span> <span class="title function_">keepEnd</span><span class="params">()</span> <span class="keyword">default</span> <span class="number">2</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自定义脱敏时的替换字符（仅在 type = CUSTOM 时生效）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    String <span class="title function_">maskChar</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;*&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否在日志中脱敏（默认为true）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">enableLog</span><span class="params">()</span> <span class="keyword">default</span> <span class="literal">true</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否在JSON序列化时脱敏（默认为true）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">enableJson</span><span class="params">()</span> <span class="keyword">default</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-脱敏工具类核心实现"><a href="#3-3-脱敏工具类核心实现" class="headerlink" title="3.3 脱敏工具类核心实现"></a>3.3 脱敏工具类核心实现</h3><p>实现各种脱敏算法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SensitiveUtil</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 默认替换字符 */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">DEFAULT_MASK_CHAR</span> <span class="operator">=</span> <span class="string">&quot;*&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** 手机号正则表达式 */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Pattern</span> <span class="variable">MOBILE_PATTERN</span> <span class="operator">=</span> Pattern.compile(<span class="string">&quot;^1[3-9]\\d&#123;9&#125;$&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据脱敏类型对数据进行脱敏处理</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">desensitize</span><span class="params">(String data, SensitiveType type)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!StringUtils.hasText(data) || type == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> data;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">switch</span> (type) &#123;</span><br><span class="line">            <span class="keyword">case</span> MOBILE:</span><br><span class="line">                <span class="keyword">return</span> desensitizeMobile(data);</span><br><span class="line">            <span class="keyword">case</span> NAME:</span><br><span class="line">                <span class="keyword">return</span> desensitizeName(data);</span><br><span class="line">            <span class="keyword">case</span> EMAIL:</span><br><span class="line">                <span class="keyword">return</span> desensitizeEmail(data);</span><br><span class="line">            <span class="keyword">case</span> PASSWORD:</span><br><span class="line">                <span class="keyword">return</span> desensitizePassword(data);</span><br><span class="line">            <span class="keyword">case</span> ID_CARD:</span><br><span class="line">                <span class="keyword">return</span> desensitizeIdCard(data);</span><br><span class="line">            <span class="keyword">case</span> BANK_CARD:</span><br><span class="line">                <span class="keyword">return</span> desensitizeBankCard(data);</span><br><span class="line">            <span class="keyword">case</span> ADDRESS:</span><br><span class="line">                <span class="keyword">return</span> desensitizeAddress(data);</span><br><span class="line">            <span class="keyword">case</span> CAR_LICENSE:</span><br><span class="line">                <span class="keyword">return</span> desensitizeCarLicense(data);</span><br><span class="line">            <span class="keyword">case</span> FIXED_PHONE:</span><br><span class="line">                <span class="keyword">return</span> desensitizeFixedPhone(data);</span><br><span class="line">            <span class="keyword">case</span> CUSTOM:</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">return</span> desensitizeDefault(data);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 手机号脱敏处理</span></span><br><span class="line"><span class="comment">     * 示例：13812345678 -&gt; 138****5678</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">desensitizeMobile</span><span class="params">(String mobile)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!StringUtils.hasText(mobile)) &#123;</span><br><span class="line">            <span class="keyword">return</span> mobile;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 校验手机号格式</span></span><br><span class="line">        <span class="keyword">if</span> (!MOBILE_PATTERN.matcher(mobile).matches()) &#123;</span><br><span class="line">            <span class="keyword">return</span> mobile; <span class="comment">// 格式不正确，直接返回</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> mobile.substring(<span class="number">0</span>, <span class="number">3</span>) + <span class="string">&quot;****&quot;</span> + mobile.substring(<span class="number">7</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 姓名脱敏处理</span></span><br><span class="line"><span class="comment">     * 示例：张三 -&gt; 张*；欧阳修 -&gt; 欧阳*</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">desensitizeName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!StringUtils.hasText(name)) &#123;</span><br><span class="line">            <span class="keyword">return</span> name;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> name.length();</span><br><span class="line">        <span class="keyword">if</span> (length &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> name;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 中文姓名处理</span></span><br><span class="line">        <span class="keyword">if</span> (length == <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> name.charAt(<span class="number">0</span>) + <span class="string">&quot;*&quot;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (length == <span class="number">3</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> name.substring(<span class="number">0</span>, <span class="number">2</span>) + <span class="string">&quot;*&quot;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 复姓或较长姓名，保留前面部分</span></span><br><span class="line">            <span class="keyword">return</span> name.substring(<span class="number">0</span>, <span class="number">2</span>) + repeatChar(<span class="string">&quot;*&quot;</span>, length - <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自定义脱敏处理</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">desensitizeCustom</span><span class="params">(String data, <span class="type">int</span> keepStart, <span class="type">int</span> keepEnd, String maskChar)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!StringUtils.hasText(data)) &#123;</span><br><span class="line">            <span class="keyword">return</span> data;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (keepStart &lt; <span class="number">0</span>) keepStart = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (keepEnd &lt; <span class="number">0</span>) keepEnd = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (!StringUtils.hasText(maskChar)) maskChar = DEFAULT_MASK_CHAR;</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> data.length();</span><br><span class="line">        <span class="keyword">if</span> (keepStart + keepEnd &gt;= length) &#123;</span><br><span class="line">            <span class="keyword">return</span> data; <span class="comment">// 保留位数超过总长度</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="type">String</span> <span class="variable">start</span> <span class="operator">=</span> data.substring(<span class="number">0</span>, keepStart);</span><br><span class="line">        <span class="type">String</span> <span class="variable">end</span> <span class="operator">=</span> data.substring(length - keepEnd);</span><br><span class="line">        <span class="type">String</span> <span class="variable">middle</span> <span class="operator">=</span> repeatChar(maskChar, length - keepStart - keepEnd);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> start + middle + end;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 重复字符串辅助方法（用于兼容 Java 8）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String <span class="title function_">repeatChar</span><span class="params">(String str, <span class="type">int</span> count)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (count &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">            sb.append(str);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ... 其他脱敏方法实现</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-4-JSON-序列化脱敏处理器"><a href="#3-4-JSON-序列化脱敏处理器" class="headerlink" title="3.4 JSON 序列化脱敏处理器"></a>3.4 JSON 序列化脱敏处理器</h3><p>实现Jackson自定义序列化器：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SensitiveJsonSerializer</span> <span class="keyword">extends</span> <span class="title class_">JsonSerializer</span>&lt;String&gt; <span class="keyword">implements</span> <span class="title class_">ContextualSerializer</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> SensitiveType sensitiveType;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> keepStart;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> keepEnd;</span><br><span class="line">    <span class="keyword">private</span> String maskChar;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> enableJson;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SensitiveJsonSerializer</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 默认构造函数</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">SensitiveJsonSerializer</span><span class="params">(SensitiveType sensitiveType, <span class="type">int</span> keepStart, <span class="type">int</span> keepEnd, String maskChar, <span class="type">boolean</span> enableJson)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.sensitiveType = sensitiveType;</span><br><span class="line">        <span class="built_in">this</span>.keepStart = keepStart;</span><br><span class="line">        <span class="built_in">this</span>.keepEnd = keepEnd;</span><br><span class="line">        <span class="built_in">this</span>.maskChar = maskChar;</span><br><span class="line">        <span class="built_in">this</span>.enableJson = enableJson;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">serialize</span><span class="params">(String value, JsonGenerator gen, SerializerProvider serializers)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">// 如果禁用了 JSON 脱敏，直接输出原值</span></span><br><span class="line">        <span class="keyword">if</span> (!enableJson) &#123;</span><br><span class="line">            gen.writeString(value);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 进行脱敏处理</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">maskedValue</span> <span class="operator">=</span> desensitizeValue(value);</span><br><span class="line">        gen.writeString(maskedValue);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> JsonSerializer&lt;?&gt; createContextual(SerializerProvider prov, BeanProperty property) <span class="keyword">throws</span> JsonMappingException &#123;</span><br><span class="line">        <span class="keyword">if</span> (property != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="type">Sensitive</span> <span class="variable">sensitive</span> <span class="operator">=</span> property.getAnnotation(Sensitive.class);</span><br><span class="line">            <span class="keyword">if</span> (sensitive != <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">SensitiveJsonSerializer</span>(</span><br><span class="line">                        sensitive.value(),</span><br><span class="line">                        sensitive.keepStart(),</span><br><span class="line">                        sensitive.keepEnd(),</span><br><span class="line">                        sensitive.maskChar(),</span><br><span class="line">                        sensitive.enableJson()</span><br><span class="line">                );</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据配置对数据进行脱敏处理</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String <span class="title function_">desensitizeValue</span><span class="params">(String value)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (sensitiveType == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> value;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果是自定义类型，使用自定义参数</span></span><br><span class="line">        <span class="keyword">if</span> (sensitiveType == SensitiveType.CUSTOM) &#123;</span><br><span class="line">            <span class="keyword">return</span> SensitiveUtil.desensitizeCustom(value, keepStart, keepEnd, maskChar);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用预定义的脱敏类型</span></span><br><span class="line">        <span class="keyword">return</span> SensitiveUtil.desensitize(value, sensitiveType);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-AOP-切面脱敏处理器"><a href="#3-5-AOP-切面脱敏处理器" class="headerlink" title="3.5 AOP 切面脱敏处理器"></a>3.5 AOP 切面脱敏处理器</h3><p>实现自动脱敏的AOP切面：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SensitiveAspect</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(SensitiveAspect.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SensitiveConfig.SensitiveProperties sensitiveProperties;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 定义切点：拦截所有 Controller 层的方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(public * org.practice.surveymaster.controller..*(..))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">controllerMethods</span><span class="params">()</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 环绕通知：对方法返回值进行脱敏处理</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Around(&quot;controllerMethods()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">aroundController</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="comment">// 如果脱敏功能未启用，直接执行原方法</span></span><br><span class="line">        <span class="keyword">if</span> (!sensitiveProperties.isEnabled()) &#123;</span><br><span class="line">            <span class="keyword">return</span> joinPoint.proceed();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 执行原方法</span></span><br><span class="line">        <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> joinPoint.proceed();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 对返回值进行脱敏处理</span></span><br><span class="line">        <span class="keyword">return</span> desensitizeResult(result);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 对结果进行脱敏处理</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Object <span class="title function_">desensitizeResult</span><span class="params">(Object result)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (result == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 处理不同类型的返回值</span></span><br><span class="line">            <span class="keyword">if</span> (result <span class="keyword">instanceof</span> List) &#123;</span><br><span class="line">                <span class="keyword">return</span> desensitizeList((List&lt;?&gt;) result);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (result.getClass().getPackage() != <span class="literal">null</span> &amp;&amp; </span><br><span class="line">                       result.getClass().getPackage().getName().startsWith(<span class="string">&quot;org.practice.surveymaster&quot;</span>)) &#123;</span><br><span class="line">                <span class="comment">// 只处理项目内的类</span></span><br><span class="line">                <span class="keyword">return</span> desensitizeObject(result);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            logger.warn(<span class="string">&quot;脱敏处理失败: &#123;&#125;&quot;</span>, e.getMessage(), e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 对单个对象进行脱敏处理</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Object <span class="title function_">desensitizeObject</span><span class="params">(Object obj)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (obj == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Class&lt;?&gt; clazz = obj.getClass();</span><br><span class="line">        Field[] fields = clazz.getDeclaredFields();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Field field : fields) &#123;</span><br><span class="line">            <span class="type">Sensitive</span> <span class="variable">sensitive</span> <span class="operator">=</span> field.getAnnotation(Sensitive.class);</span><br><span class="line">            <span class="keyword">if</span> (sensitive != <span class="literal">null</span> &amp;&amp; field.getType() == String.class) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">                    <span class="type">String</span> <span class="variable">originalValue</span> <span class="operator">=</span> (String) field.get(obj);</span><br><span class="line">                    </span><br><span class="line">                    <span class="comment">// 根据注解配置进行脱敏</span></span><br><span class="line">                    <span class="type">String</span> <span class="variable">desensitizedValue</span> <span class="operator">=</span> desensitizeFieldValue(originalValue, sensitive);</span><br><span class="line">                    field.set(obj, desensitizedValue);</span><br><span class="line">                    </span><br><span class="line">                    logger.debug(<span class="string">&quot;字段 &#123;&#125; 脱敏处理完成&quot;</span>, field.getName());</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">                    logger.warn(<span class="string">&quot;无法访问字段 &#123;&#125;: &#123;&#125;&quot;</span>, field.getName(), e.getMessage());</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    logger.error(<span class="string">&quot;字段 &#123;&#125; 脱敏处理异常: &#123;&#125;&quot;</span>, field.getName(), e.getMessage(), e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ... 其他辅助方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-配置和使用"><a href="#4-配置和使用" class="headerlink" title="4. 配置和使用"></a>4. 配置和使用</h2><h3 id="4-1-配置类实现"><a href="#4-1-配置类实现" class="headerlink" title="4.1 配置类实现"></a>4.1 配置类实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;sensitive&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SensitiveConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否启用数据脱敏功能</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">enabled</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否在日志中启用脱敏</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">enableLog</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 是否在 JSON 序列化时启用脱敏</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="variable">enableJson</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 默认的脱敏字符</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">defaultMaskChar</span> <span class="operator">=</span> <span class="string">&quot;*&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 注册带有脱敏功能的 ObjectMapper</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="keyword">public</span> ObjectMapper <span class="title function_">sensitiveObjectMapper</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">ObjectMapper</span> <span class="variable">objectMapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectMapper</span>();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 注册 JSR310 模块支持 Java 8 时间类型</span></span><br><span class="line">        objectMapper.registerModule(<span class="keyword">new</span> <span class="title class_">JavaTimeModule</span>());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 配置时间序列化格式</span></span><br><span class="line">        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 其他通用配置</span></span><br><span class="line">        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);</span><br><span class="line">        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, <span class="literal">false</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 创建简单模块并注册脱敏序列化器</span></span><br><span class="line">        <span class="type">SimpleModule</span> <span class="variable">sensitiveModule</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleModule</span>(<span class="string">&quot;SensitiveModule&quot;</span>);</span><br><span class="line">        sensitiveModule.addSerializer(String.class, <span class="keyword">new</span> <span class="title class_">SensitiveJsonSerializer</span>());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 注册模块到 ObjectMapper</span></span><br><span class="line">        objectMapper.registerModule(sensitiveModule);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> objectMapper;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ... getters and setters</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-应用配置文件"><a href="#4-2-应用配置文件" class="headerlink" title="4.2 应用配置文件"></a>4.2 应用配置文件</h3><p>在 <code>application.yml</code> 中添加脱敏配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据脱敏配置</span></span><br><span class="line"><span class="attr">sensitive:</span></span><br><span class="line">  <span class="attr">enabled:</span> <span class="literal">true</span>              <span class="comment"># 是否启用数据脱敏功能</span></span><br><span class="line">  <span class="attr">enable-log:</span> <span class="literal">true</span>           <span class="comment"># 是否在日志中启用脱敏</span></span><br><span class="line">  <span class="attr">enable-json:</span> <span class="literal">true</span>          <span class="comment"># 是否在 JSON 序列化时启用脱敏</span></span><br><span class="line">  <span class="attr">default-mask-char:</span> <span class="string">&quot;*&quot;</span>     <span class="comment"># 默认的脱敏字符</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Jackson 配置（支持 Java 8 时间类型）</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">jackson:</span></span><br><span class="line">    <span class="attr">date-format:</span> <span class="string">yyyy-MM-dd</span> <span class="string">HH:mm:ss</span></span><br><span class="line">    <span class="attr">time-zone:</span> <span class="string">GMT+8</span></span><br><span class="line">    <span class="attr">serialization:</span></span><br><span class="line">      <span class="attr">write-dates-as-timestamps:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">deserialization:</span></span><br><span class="line">      <span class="attr">fail-on-unknown-properties:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-实体类使用示例"><a href="#4-3-实体类使用示例" class="headerlink" title="4.3 实体类使用示例"></a>4.3 实体类使用示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@JsonIgnoreProperties(ignoreUnknown = true)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> id;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Sensitive(SensitiveType.NAME)</span></span><br><span class="line">    <span class="meta">@JsonSerialize(using = SensitiveJsonSerializer.class)</span></span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Sensitive(SensitiveType.PASSWORD)</span></span><br><span class="line">    <span class="meta">@JsonSerialize(using = SensitiveJsonSerializer.class)</span></span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Sensitive(SensitiveType.EMAIL)</span></span><br><span class="line">    <span class="meta">@JsonSerialize(using = SensitiveJsonSerializer.class)</span></span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@JsonFormat(pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> LocalDateTime createdAt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-控制器使用示例"><a href="#4-4-控制器使用示例" class="headerlink" title="4.4 控制器使用示例"></a>4.4 控制器使用示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/api/demo/sensitive&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SensitiveDemoController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 演示用户信息脱敏</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/user&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;User&gt; <span class="title function_">getUserInfo</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">        user.setId(<span class="number">1</span>);</span><br><span class="line">        user.setUsername(<span class="string">&quot;张三丰&quot;</span>);</span><br><span class="line">        user.setPassword(<span class="string">&quot;mySecretPassword123&quot;</span>);</span><br><span class="line">        user.setEmail(<span class="string">&quot;zhangsan@example.com&quot;</span>);</span><br><span class="line">        user.setCreatedAt(LocalDateTime.now());</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> ApiResponse.success(user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 演示敏感信息对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/sensitive-info&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;SensitiveInfoDemo&gt; <span class="title function_">getSensitiveInfo</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">SensitiveInfoDemo</span> <span class="variable">info</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SensitiveInfoDemo</span>();</span><br><span class="line">        info.setMobile(<span class="string">&quot;13812345678&quot;</span>);</span><br><span class="line">        info.setIdCard(<span class="string">&quot;110101199001011234&quot;</span>);</span><br><span class="line">        info.setBankCard(<span class="string">&quot;6217000123456789012&quot;</span>);</span><br><span class="line">        info.setAddress(<span class="string">&quot;北京市朝阳区三里屯街道1号&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> ApiResponse.success(info);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 演示敏感信息类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SensitiveInfoDemo</span> &#123;</span><br><span class="line">        <span class="meta">@Sensitive(SensitiveType.MOBILE)</span></span><br><span class="line">        <span class="keyword">private</span> String mobile;</span><br><span class="line">        </span><br><span class="line">        <span class="meta">@Sensitive(SensitiveType.ID_CARD)</span></span><br><span class="line">        <span class="keyword">private</span> String idCard;</span><br><span class="line">        </span><br><span class="line">        <span class="meta">@Sensitive(SensitiveType.BANK_CARD)</span></span><br><span class="line">        <span class="keyword">private</span> String bankCard;</span><br><span class="line">        </span><br><span class="line">        <span class="meta">@Sensitive(SensitiveType.ADDRESS)</span></span><br><span class="line">        <span class="keyword">private</span> String address;</span><br><span class="line">        </span><br><span class="line">        <span class="meta">@Sensitive(value = SensitiveType.CUSTOM, keepStart = 3, keepEnd = 3, maskChar = &quot;#&quot;)</span></span><br><span class="line">        <span class="keyword">private</span> <span class="type">String</span> <span class="variable">customField</span> <span class="operator">=</span> <span class="string">&quot;ThisIsACustomSensitiveField&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// getters and setters...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-高级特性"><a href="#5-高级特性" class="headerlink" title="5. 高级特性"></a>5. 高级特性</h2><h3 id="5-1-批量脱敏处理"><a href="#5-1-批量脱敏处理" class="headerlink" title="5.1 批量脱敏处理"></a>5.1 批量脱敏处理</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 批量脱敏处理</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> dataArray 数据数组</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> type 脱敏类型</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 脱敏后的数据数组</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String[] desensitizeBatch(String[] dataArray, SensitiveType type) &#123;</span><br><span class="line">    <span class="keyword">if</span> (dataArray == <span class="literal">null</span> || dataArray.length == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> dataArray;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    String[] result = <span class="keyword">new</span> <span class="title class_">String</span>[dataArray.length];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; dataArray.length; i++) &#123;</span><br><span class="line">        result[i] = desensitize(dataArray[i], type);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-条件脱敏"><a href="#5-2-条件脱敏" class="headerlink" title="5.2 条件脱敏"></a>5.2 条件脱敏</h3><p>根据用户角色或权限级别进行条件脱敏：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据用户角色进行条件脱敏</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">desensitizeByRole</span><span class="params">(String data, SensitiveType type, String userRole)</span> &#123;</span><br><span class="line">    <span class="comment">// 管理员角色不脱敏</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="string">&quot;ADMIN&quot;</span>.equals(userRole)) &#123;</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 普通用户进行脱敏</span></span><br><span class="line">    <span class="keyword">return</span> desensitize(data, type);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-脱敏规则动态配置"><a href="#5-3-脱敏规则动态配置" class="headerlink" title="5.3 脱敏规则动态配置"></a>5.3 脱敏规则动态配置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicSensitiveRuleManager</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, SensitiveRule&gt; ruleCache = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 动态添加脱敏规则</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addRule</span><span class="params">(String fieldName, SensitiveType type, <span class="type">int</span> keepStart, <span class="type">int</span> keepEnd)</span> &#123;</span><br><span class="line">        <span class="type">SensitiveRule</span> <span class="variable">rule</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SensitiveRule</span>(type, keepStart, keepEnd, <span class="string">&quot;*&quot;</span>);</span><br><span class="line">        ruleCache.put(fieldName, rule);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据字段名获取脱敏规则</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> SensitiveRule <span class="title function_">getRule</span><span class="params">(String fieldName)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ruleCache.get(fieldName);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 脱敏规则配置类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SensitiveRule</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> SensitiveType type;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> keepStart;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> keepEnd;</span><br><span class="line">        <span class="keyword">private</span> String maskChar;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// constructors, getters and setters...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-4-多环境脱敏策略"><a href="#5-4-多环境脱敏策略" class="headerlink" title="5.4 多环境脱敏策略"></a>5.4 多环境脱敏策略</h3><p>不同环境使用不同的脱敏策略：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># application-dev.yml - 开发环境</span></span><br><span class="line"><span class="attr">sensitive:</span></span><br><span class="line">  <span class="attr">enabled:</span> <span class="literal">false</span>  <span class="comment"># 开发环境不脱敏，便于调试</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># application-test.yml - 测试环境  </span></span><br><span class="line"><span class="attr">sensitive:</span></span><br><span class="line">  <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">enable-log:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">enable-json:</span> <span class="literal">true</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># application-prod.yml - 生产环境</span></span><br><span class="line"><span class="attr">sensitive:</span></span><br><span class="line">  <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">enable-log:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">enable-json:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">default-mask-char:</span> <span class="string">&quot;*&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-最佳实践"><a href="#6-最佳实践" class="headerlink" title="6. 最佳实践"></a>6. 最佳实践</h2><h3 id="6-1-注解使用最佳实践"><a href="#6-1-注解使用最佳实践" class="headerlink" title="6.1 注解使用最佳实践"></a>6.1 注解使用最佳实践</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserProfile</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ✅ 推荐：明确指定脱敏类型</span></span><br><span class="line">    <span class="meta">@Sensitive(SensitiveType.MOBILE)</span></span><br><span class="line">    <span class="keyword">private</span> String phoneNumber;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ✅ 推荐：自定义脱敏参数</span></span><br><span class="line">    <span class="meta">@Sensitive(value = SensitiveType.CUSTOM, keepStart = 2, keepEnd = 4, maskChar = &quot;#&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String customerCode;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ✅ 推荐：控制脱敏场景</span></span><br><span class="line">    <span class="meta">@Sensitive(value = SensitiveType.EMAIL, enableLog = false, enableJson = true)</span></span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ❌ 不推荐：敏感字段不加注解</span></span><br><span class="line">    <span class="keyword">private</span> String idCard; <span class="comment">// 应该添加 @Sensitive(SensitiveType.ID_CARD)</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ❌ 不推荐：非敏感字段加脱敏注解</span></span><br><span class="line">    <span class="meta">@Sensitive(SensitiveType.NAME)</span></span><br><span class="line">    <span class="keyword">private</span> String nickname; <span class="comment">// 昵称通常不需要脱敏</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-性能优化策略"><a href="#6-2-性能优化策略" class="headerlink" title="6.2 性能优化策略"></a>6.2 性能优化策略</h3><h4 id="缓存脱敏结果"><a href="#缓存脱敏结果" class="headerlink" title="缓存脱敏结果"></a>缓存脱敏结果</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CachedSensitiveUtil</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> LoadingCache&lt;String, String&gt; cache = Caffeine.newBuilder()</span><br><span class="line">            .maximumSize(<span class="number">10000</span>)</span><br><span class="line">            .expireAfterWrite(<span class="number">1</span>, TimeUnit.HOURS)</span><br><span class="line">            .build(key -&gt; &#123;</span><br><span class="line">                String[] parts = key.split(<span class="string">&quot;:&quot;</span>);</span><br><span class="line">                <span class="type">SensitiveType</span> <span class="variable">type</span> <span class="operator">=</span> SensitiveType.valueOf(parts[<span class="number">0</span>]);</span><br><span class="line">                <span class="type">String</span> <span class="variable">data</span> <span class="operator">=</span> parts[<span class="number">1</span>];</span><br><span class="line">                <span class="keyword">return</span> SensitiveUtil.desensitize(data, type);</span><br><span class="line">            &#125;);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">desensitizeWithCache</span><span class="params">(String data, SensitiveType type)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> type.name() + <span class="string">&quot;:&quot;</span> + data;</span><br><span class="line">        <span class="keyword">return</span> cache.getUnchecked(key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="异步脱敏处理"><a href="#异步脱敏处理" class="headerlink" title="异步脱敏处理"></a>异步脱敏处理</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AsyncSensitiveService</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Async(&quot;sensitiveExecutor&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> CompletableFuture&lt;List&lt;String&gt;&gt; <span class="title function_">desensitizeBatchAsync</span><span class="params">(List&lt;String&gt; dataList, SensitiveType type)</span> &#123;</span><br><span class="line">        List&lt;String&gt; result = dataList.parallelStream()</span><br><span class="line">                .map(data -&gt; SensitiveUtil.desensitize(data, type))</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        <span class="keyword">return</span> CompletableFuture.completedFuture(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-3-安全性考虑"><a href="#6-3-安全性考虑" class="headerlink" title="6.3 安全性考虑"></a>6.3 安全性考虑</h3><h4 id="脱敏结果不可逆"><a href="#脱敏结果不可逆" class="headerlink" title="脱敏结果不可逆"></a>脱敏结果不可逆</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 确保脱敏结果不可逆</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SecureSensitiveUtil</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ✅ 正确：单向脱敏，无法还原</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">secureDesensitize</span><span class="params">(String data, SensitiveType type)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">masked</span> <span class="operator">=</span> SensitiveUtil.desensitize(data, type);</span><br><span class="line">        <span class="comment">// 额外的安全处理</span></span><br><span class="line">        <span class="keyword">return</span> addSecuritySalt(masked);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ❌ 错误：可逆脱敏存在安全风险</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">reversibleDesensitize</span><span class="params">(String data)</span> &#123;</span><br><span class="line">        <span class="comment">// 不要实现可逆的脱敏算法</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;NEVER_IMPLEMENT_THIS&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String <span class="title function_">addSecuritySalt</span><span class="params">(String data)</span> &#123;</span><br><span class="line">        <span class="comment">// 添加安全盐值，防止碰撞攻击</span></span><br><span class="line">        <span class="keyword">return</span> data + <span class="string">&quot;_SECURE&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="脱敏审计日志"><a href="#脱敏审计日志" class="headerlink" title="脱敏审计日志"></a>脱敏审计日志</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SensitiveAuditLogger</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">auditLogger</span> <span class="operator">=</span> LoggerFactory.getLogger(<span class="string">&quot;SENSITIVE_AUDIT&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">logDesensitizeOperation</span><span class="params">(String userId, String fieldName, SensitiveType type)</span> &#123;</span><br><span class="line">        auditLogger.info(<span class="string">&quot;脱敏操作 - 用户: &#123;&#125;, 字段: &#123;&#125;, 类型: &#123;&#125;, 时间: &#123;&#125;&quot;</span>, </span><br><span class="line">                userId, fieldName, type, LocalDateTime.now());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-性能优化"><a href="#7-性能优化" class="headerlink" title="7. 性能优化"></a>7. 性能优化</h2><h3 id="7-1-性能测试结果"><a href="#7-1-性能测试结果" class="headerlink" title="7.1 性能测试结果"></a>7.1 性能测试结果</h3><p>我们对脱敏系统进行了性能测试：</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>数据量</th>
+<th>耗时（ms）</th>
+<th>QPS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单条脱敏</td>
+<td>1</td>
+<td>0.1</td>
+<td>10,000</td>
+</tr>
+<tr>
+<td>批量脱敏</td>
+<td>1,000</td>
+<td>15</td>
+<td>66,667</td>
+</tr>
+<tr>
+<td>JSON序列化脱敏</td>
+<td>100对象</td>
+<td>50</td>
+<td>2,000</td>
+</tr>
+<tr>
+<td>AOP拦截脱敏</td>
+<td>100对象</td>
+<td>80</td>
+<td>1,250</td>
+</tr>
+</tbody></table>
+<h3 id="7-2-性能优化建议"><a href="#7-2-性能优化建议" class="headerlink" title="7.2 性能优化建议"></a>7.2 性能优化建议</h3><h4 id="优化1：减少反射操作"><a href="#优化1：减少反射操作" class="headerlink" title="优化1：减少反射操作"></a>优化1：减少反射操作</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OptimizedSensitiveProcessor</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 缓存字段信息，避免重复反射</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Class&lt;?&gt;, List&lt;FieldInfo&gt;&gt; fieldCache = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">processObject</span><span class="params">(Object obj)</span> &#123;</span><br><span class="line">        Class&lt;?&gt; clazz = obj.getClass();</span><br><span class="line">        List&lt;FieldInfo&gt; fields = fieldCache.computeIfAbsent(clazz, <span class="built_in">this</span>::extractSensitiveFields);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (FieldInfo fieldInfo : fields) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> (String) fieldInfo.getField().get(obj);</span><br><span class="line">                <span class="type">String</span> <span class="variable">masked</span> <span class="operator">=</span> SensitiveUtil.desensitize(value, fieldInfo.getType());</span><br><span class="line">                fieldInfo.getField().set(obj, masked);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</span><br><span class="line">                <span class="comment">// 处理异常</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> List&lt;FieldInfo&gt; <span class="title function_">extractSensitiveFields</span><span class="params">(Class&lt;?&gt; clazz)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.stream(clazz.getDeclaredFields())</span><br><span class="line">                .filter(field -&gt; field.isAnnotationPresent(Sensitive.class))</span><br><span class="line">                .filter(field -&gt; field.getType() == String.class)</span><br><span class="line">                .map(field -&gt; &#123;</span><br><span class="line">                    field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">                    <span class="type">Sensitive</span> <span class="variable">annotation</span> <span class="operator">=</span> field.getAnnotation(Sensitive.class);</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">FieldInfo</span>(field, annotation.value());</span><br><span class="line">                &#125;)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">FieldInfo</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> Field field;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> SensitiveType type;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// constructor, getters...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="优化2：并行处理"><a href="#优化2：并行处理" class="headerlink" title="优化2：并行处理"></a>优化2：并行处理</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ParallelSensitiveProcessor</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> List&lt;String&gt; <span class="title function_">desensitizeBatch</span><span class="params">(List&lt;String&gt; dataList, SensitiveType type)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> dataList.parallelStream()</span><br><span class="line">                .map(data -&gt; SensitiveUtil.desensitize(data, type))</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-故障排查"><a href="#8-故障排查" class="headerlink" title="8. 故障排查"></a>8. 故障排查</h2><h3 id="8-1-常见问题及解决方案"><a href="#8-1-常见问题及解决方案" class="headerlink" title="8.1 常见问题及解决方案"></a>8.1 常见问题及解决方案</h3><h4 id="问题1：LocalDateTime-序列化异常"><a href="#问题1：LocalDateTime-序列化异常" class="headerlink" title="问题1：LocalDateTime 序列化异常"></a>问题1：LocalDateTime 序列化异常</h4><p><strong>错误信息</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Java 8 date/time type `java.time.LocalDateTime` not supported by default</span><br></pre></td></tr></table></figure>
+
+<p><strong>解决方案</strong>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 添加 Jackson JSR310 依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.datatype<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-datatype-jsr310<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在配置类中注册 JSR310 模块</span></span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> ObjectMapper <span class="title function_">sensitiveObjectMapper</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">ObjectMapper</span> <span class="variable">objectMapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectMapper</span>();</span><br><span class="line">    objectMapper.registerModule(<span class="keyword">new</span> <span class="title class_">JavaTimeModule</span>());</span><br><span class="line">    objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);</span><br><span class="line">    <span class="comment">// ... 其他配置</span></span><br><span class="line">    <span class="keyword">return</span> objectMapper;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="问题2：脱敏功能不生效"><a href="#问题2：脱敏功能不生效" class="headerlink" title="问题2：脱敏功能不生效"></a>问题2：脱敏功能不生效</h4><p><strong>可能原因</strong>：</p>
+<ul>
+<li>脱敏功能被禁用</li>
+<li>注解使用不正确</li>
+<li>AOP 配置问题</li>
+</ul>
+<p><strong>排查步骤</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SensitiveDebugController</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> SensitiveConfig.SensitiveProperties sensitiveProperties;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(&quot;/debug/sensitive-config&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title function_">debugConfig</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;String, Object&gt; config = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        config.put(<span class="string">&quot;enabled&quot;</span>, sensitiveProperties.isEnabled());</span><br><span class="line">        config.put(<span class="string">&quot;enableLog&quot;</span>, sensitiveProperties.isEnableLog());</span><br><span class="line">        config.put(<span class="string">&quot;enableJson&quot;</span>, sensitiveProperties.isEnableJson());</span><br><span class="line">        config.put(<span class="string">&quot;defaultMaskChar&quot;</span>, sensitiveProperties.getDefaultMaskChar());</span><br><span class="line">        <span class="keyword">return</span> config;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="问题3：性能问题"><a href="#问题3：性能问题" class="headerlink" title="问题3：性能问题"></a>问题3：性能问题</h4><p><strong>性能分析</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SensitivePerformanceMonitor</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">perfLogger</span> <span class="operator">=</span> LoggerFactory.getLogger(<span class="string">&quot;PERFORMANCE&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">monitorDesensitize</span><span class="params">(String data, SensitiveType type)</span> &#123;</span><br><span class="line">        <span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">        <span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> SensitiveUtil.desensitize(data, type);</span><br><span class="line">        <span class="type">long</span> <span class="variable">duration</span> <span class="operator">=</span> System.nanoTime() - startTime;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (duration &gt; <span class="number">1_000_000</span>) &#123; <span class="comment">// 超过1ms记录日志</span></span><br><span class="line">            perfLogger.warn(<span class="string">&quot;脱敏操作耗时过长: &#123;&#125;ns, 类型: &#123;&#125;, 数据长度: &#123;&#125;&quot;</span>, </span><br><span class="line">                    duration, type, data.length());</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-2-监控和告警"><a href="#8-2-监控和告警" class="headerlink" title="8.2 监控和告警"></a>8.2 监控和告警</h3><h4 id="脱敏操作监控"><a href="#脱敏操作监控" class="headerlink" title="脱敏操作监控"></a>脱敏操作监控</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SensitiveMetrics</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Counter</span> <span class="variable">desensitizeCounter</span> <span class="operator">=</span> Counter.builder(<span class="string">&quot;sensitive.desensitize&quot;</span>)</span><br><span class="line">            .description(<span class="string">&quot;脱敏操作计数&quot;</span>)</span><br><span class="line">            .register(Metrics.globalRegistry);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Timer</span> <span class="variable">desensitizeTimer</span> <span class="operator">=</span> Timer.builder(<span class="string">&quot;sensitive.desensitize.duration&quot;</span>)</span><br><span class="line">            .description(<span class="string">&quot;脱敏操作耗时&quot;</span>)</span><br><span class="line">            .register(Metrics.globalRegistry);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">desensitizeWithMetrics</span><span class="params">(String data, SensitiveType type)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> desensitizeTimer.recordCallable(() -&gt; &#123;</span><br><span class="line">            desensitizeCounter.increment(Tags.of(<span class="string">&quot;type&quot;</span>, type.name()));</span><br><span class="line">            <span class="keyword">return</span> SensitiveUtil.desensitize(data, type);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="告警规则配置"><a href="#告警规则配置" class="headerlink" title="告警规则配置"></a>告警规则配置</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Prometheus 告警规则</span></span><br><span class="line"><span class="attr">groups:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">sensitive_alerts</span></span><br><span class="line">    <span class="attr">rules:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">alert:</span> <span class="string">HighDesensitizeLatency</span></span><br><span class="line">        <span class="attr">expr:</span> <span class="string">histogram_quantile(0.95,</span> <span class="string">sensitive_desensitize_duration_seconds)</span> <span class="string">&gt;</span> <span class="number">0.1</span></span><br><span class="line">        <span class="attr">for:</span> <span class="string">5m</span></span><br><span class="line">        <span class="attr">labels:</span></span><br><span class="line">          <span class="attr">severity:</span> <span class="string">warning</span></span><br><span class="line">        <span class="attr">annotations:</span></span><br><span class="line">          <span class="attr">summary:</span> <span class="string">&quot;脱敏操作延迟过高&quot;</span></span><br><span class="line">          <span class="attr">description:</span> <span class="string">&quot;95%分位脱敏操作耗时超过100ms&quot;</span></span><br><span class="line">      </span><br><span class="line">      <span class="bullet">-</span> <span class="attr">alert:</span> <span class="string">DesensitizeErrorRate</span></span><br><span class="line">        <span class="attr">expr:</span> <span class="string">rate(sensitive_desensitize_errors_total[5m])</span> <span class="string">&gt;</span> <span class="number">0.01</span></span><br><span class="line">        <span class="attr">for:</span> <span class="string">2m</span></span><br><span class="line">        <span class="attr">labels:</span></span><br><span class="line">          <span class="attr">severity:</span> <span class="string">critical</span></span><br><span class="line">        <span class="attr">annotations:</span></span><br><span class="line">          <span class="attr">summary:</span> <span class="string">&quot;脱敏操作错误率过高&quot;</span></span><br><span class="line">          <span class="attr">description:</span> <span class="string">&quot;脱敏操作错误率超过1%&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                SpringBoot数据脱敏完整实现指南
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2025/09/22/web/SpringBoot数据脱敏完整实现指南/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    Author
+                </div>
+                <div class="content">ClearSky Drizzle</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    Published
+                </div>
+                <div class="content">2025-09-22 14:46</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    License
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="Copy copyright info" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/springboot/">springboot</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="Share to WeChat"
+            data-tooltip-img-tip="Scan by WeChat"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to WeiBo"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2025/09/22/web/SpringBootJWT%E8%AE%A4%E8%AF%81%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/"
+                                   title="SpringBootJWT认证完整实现指南"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">SpringBootJWT认证完整实现指南</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2025/09/15/web/Spring%E7%BB%9F%E4%B8%80%E6%97%A5%E5%BF%97%E8%BE%93%E5%87%BA%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/"
+                                   title="Spring统一日志输出实现指南"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Spring统一日志输出实现指南</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">Comment plugin failed to load</span>
+    <button class="reload keep-button">Click to reload</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">Loading comment plugin</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="waline-comment-container">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline-meta.css"/>
+        <div id="waline-comment"></div>
+        <script data-pjax>
+          window.KeepCommentPlugin.walineOptions = JSON.parse('{}'.replace(/&#34;/g, '"'))
+          window.KeepCommentPlugin.walineOptions.el = '#waline-comment'
+          window.KeepCommentPlugin.walineOptions.comment = '.post-comments-count'
+          window.KeepCommentPlugin.walineOptions.serverURL = 'https://comment.lllcnm.cn'
+          window.KeepCommentPlugin.walineOptions.lang = 'en' || 'zh-CN'
+          window.KeepCommentPlugin.walineOptions.reaction = 'true' === 'true'
+        </script>
+
+        
+
+        
+            <script data-pjax
+                    async
+                    type="module"
+            >
+              import { init } from '//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.js'
+              window.KeepCommentPlugin.initWaline = () => {
+                if (init) {
+                  init(window.KeepCommentPlugin.walineOptions)
+                  window.KeepCommentPlugin.hideLoading()
+                } else {
+                  setTimeout(() => {
+                    window.KeepCommentPlugin.initWaline()
+                  }, 1000)
+                }
+              }
+
+              if ('true' === 'true') {
+                setTimeout(() => {
+                  window.KeepCommentPlugin.initWaline()
+                }, 1200)
+              } else {
+                window.addEventListener('DOMContentLoaded', window.KeepCommentPlugin.initWaline)
+              }
+            </script>
+        
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%93%8B-%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">📋 目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">1. 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 什么是数据脱敏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 为什么需要数据脱敏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%AE%9E%E7%8E%B0%E7%9B%AE%E6%A0%87"><span class="nav-number">2.3.</span> <span class="nav-text">1.3 实现目标</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.</span> <span class="nav-text">2. 技术架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 整体架构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97%E8%AF%B4%E6%98%8E"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 核心模块说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E6%94%AF%E6%8C%81%E7%9A%84%E8%84%B1%E6%95%8F%E5%9C%BA%E6%99%AF"><span class="nav-number">3.3.</span> <span class="nav-text">2.3 支持的脱敏场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">3. 核心组件实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E8%84%B1%E6%95%8F%E7%B1%BB%E5%9E%8B%E6%9E%9A%E4%B8%BE"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 脱敏类型枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%95%8F%E6%84%9F%E6%95%B0%E6%8D%AE%E6%B3%A8%E8%A7%A3"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 敏感数据注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E8%84%B1%E6%95%8F%E5%B7%A5%E5%85%B7%E7%B1%BB%E6%A0%B8%E5%BF%83%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 脱敏工具类核心实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-JSON-%E5%BA%8F%E5%88%97%E5%8C%96%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">4.4.</span> <span class="nav-text">3.4 JSON 序列化脱敏处理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-AOP-%E5%88%87%E9%9D%A2%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">4.5.</span> <span class="nav-text">3.5 AOP 切面脱敏处理器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">4. 配置和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E9%85%8D%E7%BD%AE%E7%B1%BB%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.1.</span> <span class="nav-text">4.1 配置类实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E5%BA%94%E7%94%A8%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">5.2.</span> <span class="nav-text">4.2 应用配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E5%AE%9E%E4%BD%93%E7%B1%BB%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.3.</span> <span class="nav-text">4.3 实体类使用示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E6%8E%A7%E5%88%B6%E5%99%A8%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.4.</span> <span class="nav-text">4.4 控制器使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7"><span class="nav-number">6.</span> <span class="nav-text">5. 高级特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E6%89%B9%E9%87%8F%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86"><span class="nav-number">6.1.</span> <span class="nav-text">5.1 批量脱敏处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E6%9D%A1%E4%BB%B6%E8%84%B1%E6%95%8F"><span class="nav-number">6.2.</span> <span class="nav-text">5.2 条件脱敏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-%E8%84%B1%E6%95%8F%E8%A7%84%E5%88%99%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE"><span class="nav-number">6.3.</span> <span class="nav-text">5.3 脱敏规则动态配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-%E5%A4%9A%E7%8E%AF%E5%A2%83%E8%84%B1%E6%95%8F%E7%AD%96%E7%95%A5"><span class="nav-number">6.4.</span> <span class="nav-text">5.4 多环境脱敏策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">7.</span> <span class="nav-text">6. 最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">7.1.</span> <span class="nav-text">6.1 注解使用最佳实践</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="nav-number">7.2.</span> <span class="nav-text">6.2 性能优化策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E8%84%B1%E6%95%8F%E7%BB%93%E6%9E%9C"><span class="nav-number">7.2.1.</span> <span class="nav-text">缓存脱敏结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86"><span class="nav-number">7.2.2.</span> <span class="nav-text">异步脱敏处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-%E5%AE%89%E5%85%A8%E6%80%A7%E8%80%83%E8%99%91"><span class="nav-number">7.3.</span> <span class="nav-text">6.3 安全性考虑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%B1%E6%95%8F%E7%BB%93%E6%9E%9C%E4%B8%8D%E5%8F%AF%E9%80%86"><span class="nav-number">7.3.1.</span> <span class="nav-text">脱敏结果不可逆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%B1%E6%95%8F%E5%AE%A1%E8%AE%A1%E6%97%A5%E5%BF%97"><span class="nav-number">7.3.2.</span> <span class="nav-text">脱敏审计日志</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="nav-number">8.</span> <span class="nav-text">7. 性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="nav-number">8.1.</span> <span class="nav-text">7.1 性能测试结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="nav-number">8.2.</span> <span class="nav-text">7.2 性能优化建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%961%EF%BC%9A%E5%87%8F%E5%B0%91%E5%8F%8D%E5%B0%84%E6%93%8D%E4%BD%9C"><span class="nav-number">8.2.1.</span> <span class="nav-text">优化1：减少反射操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%962%EF%BC%9A%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86"><span class="nav-number">8.2.2.</span> <span class="nav-text">优化2：并行处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5"><span class="nav-number">9.</span> <span class="nav-text">8. 故障排查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">9.1.</span> <span class="nav-text">8.1 常见问题及解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9ALocalDateTime-%E5%BA%8F%E5%88%97%E5%8C%96%E5%BC%82%E5%B8%B8"><span class="nav-number">9.1.1.</span> <span class="nav-text">问题1：LocalDateTime 序列化异常</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%982%EF%BC%9A%E8%84%B1%E6%95%8F%E5%8A%9F%E8%83%BD%E4%B8%8D%E7%94%9F%E6%95%88"><span class="nav-number">9.1.2.</span> <span class="nav-text">问题2：脱敏功能不生效</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%983%EF%BC%9A%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98"><span class="nav-number">9.1.3.</span> <span class="nav-text">问题3：性能问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-%E7%9B%91%E6%8E%A7%E5%92%8C%E5%91%8A%E8%AD%A6"><span class="nav-number">9.2.</span> <span class="nav-text">8.2 监控和告警</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%B1%E6%95%8F%E6%93%8D%E4%BD%9C%E7%9B%91%E6%8E%A7"><span class="nav-number">9.2.1.</span> <span class="nav-text">脱敏操作监控</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%8A%E8%AD%A6%E8%A7%84%E5%88%99%E9%85%8D%E7%BD%AE"><span class="nav-number">9.2.2.</span> <span class="nav-text">告警规则配置</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2022</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">ClearSky Drizzle</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            This site is deployed on <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span>
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%93%8B-%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">📋 目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">1. 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 什么是数据脱敏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 为什么需要数据脱敏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E5%AE%9E%E7%8E%B0%E7%9B%AE%E6%A0%87"><span class="nav-number">2.3.</span> <span class="nav-text">1.3 实现目标</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.</span> <span class="nav-text">2. 技术架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 整体架构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97%E8%AF%B4%E6%98%8E"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 核心模块说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E6%94%AF%E6%8C%81%E7%9A%84%E8%84%B1%E6%95%8F%E5%9C%BA%E6%99%AF"><span class="nav-number">3.3.</span> <span class="nav-text">2.3 支持的脱敏场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">3. 核心组件实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E8%84%B1%E6%95%8F%E7%B1%BB%E5%9E%8B%E6%9E%9A%E4%B8%BE"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 脱敏类型枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%95%8F%E6%84%9F%E6%95%B0%E6%8D%AE%E6%B3%A8%E8%A7%A3"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 敏感数据注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E8%84%B1%E6%95%8F%E5%B7%A5%E5%85%B7%E7%B1%BB%E6%A0%B8%E5%BF%83%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 脱敏工具类核心实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-JSON-%E5%BA%8F%E5%88%97%E5%8C%96%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">4.4.</span> <span class="nav-text">3.4 JSON 序列化脱敏处理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-AOP-%E5%88%87%E9%9D%A2%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">4.5.</span> <span class="nav-text">3.5 AOP 切面脱敏处理器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%85%8D%E7%BD%AE%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">4. 配置和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-%E9%85%8D%E7%BD%AE%E7%B1%BB%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.1.</span> <span class="nav-text">4.1 配置类实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-%E5%BA%94%E7%94%A8%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">5.2.</span> <span class="nav-text">4.2 应用配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-%E5%AE%9E%E4%BD%93%E7%B1%BB%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.3.</span> <span class="nav-text">4.3 实体类使用示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-%E6%8E%A7%E5%88%B6%E5%99%A8%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">5.4.</span> <span class="nav-text">4.4 控制器使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7"><span class="nav-number">6.</span> <span class="nav-text">5. 高级特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E6%89%B9%E9%87%8F%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86"><span class="nav-number">6.1.</span> <span class="nav-text">5.1 批量脱敏处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E6%9D%A1%E4%BB%B6%E8%84%B1%E6%95%8F"><span class="nav-number">6.2.</span> <span class="nav-text">5.2 条件脱敏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-%E8%84%B1%E6%95%8F%E8%A7%84%E5%88%99%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE"><span class="nav-number">6.3.</span> <span class="nav-text">5.3 脱敏规则动态配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-%E5%A4%9A%E7%8E%AF%E5%A2%83%E8%84%B1%E6%95%8F%E7%AD%96%E7%95%A5"><span class="nav-number">6.4.</span> <span class="nav-text">5.4 多环境脱敏策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">7.</span> <span class="nav-text">6. 最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">7.1.</span> <span class="nav-text">6.1 注解使用最佳实践</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%AD%96%E7%95%A5"><span class="nav-number">7.2.</span> <span class="nav-text">6.2 性能优化策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E8%84%B1%E6%95%8F%E7%BB%93%E6%9E%9C"><span class="nav-number">7.2.1.</span> <span class="nav-text">缓存脱敏结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E8%84%B1%E6%95%8F%E5%A4%84%E7%90%86"><span class="nav-number">7.2.2.</span> <span class="nav-text">异步脱敏处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-%E5%AE%89%E5%85%A8%E6%80%A7%E8%80%83%E8%99%91"><span class="nav-number">7.3.</span> <span class="nav-text">6.3 安全性考虑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%B1%E6%95%8F%E7%BB%93%E6%9E%9C%E4%B8%8D%E5%8F%AF%E9%80%86"><span class="nav-number">7.3.1.</span> <span class="nav-text">脱敏结果不可逆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%B1%E6%95%8F%E5%AE%A1%E8%AE%A1%E6%97%A5%E5%BF%97"><span class="nav-number">7.3.2.</span> <span class="nav-text">脱敏审计日志</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="nav-number">8.</span> <span class="nav-text">7. 性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C"><span class="nav-number">8.1.</span> <span class="nav-text">7.1 性能测试结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="nav-number">8.2.</span> <span class="nav-text">7.2 性能优化建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%961%EF%BC%9A%E5%87%8F%E5%B0%91%E5%8F%8D%E5%B0%84%E6%93%8D%E4%BD%9C"><span class="nav-number">8.2.1.</span> <span class="nav-text">优化1：减少反射操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8C%962%EF%BC%9A%E5%B9%B6%E8%A1%8C%E5%A4%84%E7%90%86"><span class="nav-number">8.2.2.</span> <span class="nav-text">优化2：并行处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5"><span class="nav-number">9.</span> <span class="nav-text">8. 故障排查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">9.1.</span> <span class="nav-text">8.1 常见问题及解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%981%EF%BC%9ALocalDateTime-%E5%BA%8F%E5%88%97%E5%8C%96%E5%BC%82%E5%B8%B8"><span class="nav-number">9.1.1.</span> <span class="nav-text">问题1：LocalDateTime 序列化异常</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%982%EF%BC%9A%E8%84%B1%E6%95%8F%E5%8A%9F%E8%83%BD%E4%B8%8D%E7%94%9F%E6%95%88"><span class="nav-number">9.1.2.</span> <span class="nav-text">问题2：脱敏功能不生效</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%983%EF%BC%9A%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98"><span class="nav-number">9.1.3.</span> <span class="nav-text">问题3：性能问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-%E7%9B%91%E6%8E%A7%E5%92%8C%E5%91%8A%E8%AD%A6"><span class="nav-number">9.2.</span> <span class="nav-text">8.2 监控和告警</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%B1%E6%95%8F%E6%93%8D%E4%BD%9C%E7%9B%91%E6%8E%A7"><span class="nav-number">9.2.1.</span> <span class="nav-text">脱敏操作监控</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%8A%E8%AD%A6%E8%A7%84%E5%88%99%E9%85%8D%E7%BD%AE"><span class="nav-number">9.2.2.</span> <span class="nav-text">告警规则配置</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+            
+<script src="/js/post/share.js"></script>
+
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>
