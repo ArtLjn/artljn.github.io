@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="ClearSky Drizzle">
+    
+    <title>
+        
+            Solidity基础 |
+        
+        ClearSky Drizzle
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/avatar.jpg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"blog.lllcnm.cn","root":"/","language":"en","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":null,"author":"ClearSky Drizzle","avatar":"/images/avatar.jpg","logo":"/images/avatar.jpg","favicon":"/images/avatar.jpg"},"menu":{"home":"/","archives":"/archives","tags":"/tags","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":null}},"scroll":{"progress_bar":true,"percent":true,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":true,"share":true,"reward":{"enable":true,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"waline","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":"https://comment.lllcnm.cn","reaction":true,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2022,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original post title","author":"Original post author","link":"Original post link"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/avatar.jpg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               ClearSky Drizzle
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                HOME
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                ARCHIVES
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tags">
+                                
+                                TAGS
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                ABOUT
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                            HOME
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                            ARCHIVES
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tags">
+                            
+                            TAGS
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            ABOUT
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        Solidity基础
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">ClearSky Drizzle</span>
+                                
+                                    <span class="author-badge">Lv4</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2023-08-21 11:33:28</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Sun Dec 22 2024 15:43:47 GMT+0800">2024-12-22 15:43:47</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/">区块链</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/solidity/">solidity</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h3 id="solidity基础语法"><a href="#solidity基础语法" class="headerlink" title="solidity基础语法"></a>solidity基础语法</h3><p>:::tip 导航<br><a class="link"   target="_blank" rel="noopener" href="https://github.com/AmazingAng/WTF-Solidity/tree/main" >solidity教程<i class="fas fa-external-link-alt"></i></a><br>:::</p>
+<h4 id="在编写sol文件之前要加上"><a href="#在编写sol文件之前要加上" class="headerlink" title="在编写sol文件之前要加上"></a>在编写sol文件之前要加上</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT </span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: SimPL-3.0</span><br></pre></td></tr></table></figure>
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><p>特殊变量&#x2F;全局变量，是全局可用的变量<br><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/2024-12-22-15-40-33.png"
+                       
+                 ></p>
+<h3 id="Solidity-特殊变量-全局变量"><a href="#Solidity-特殊变量-全局变量" class="headerlink" title="Solidity 特殊变量&#x2F;全局变量"></a>Solidity 特殊变量&#x2F;全局变量</h3><p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/2024-12-22-15-41-09.png"
+                       
+                 ></p>
+<h3 id="Solidity-变量作用域"><a href="#Solidity-变量作用域" class="headerlink" title="Solidity 变量作用域"></a>Solidity 变量作用域</h3><p>局部变量的作用域仅限于定义它们的函数，但是状态变量可以有四种作用域类型：</p>
+<ul>
+<li>public – 公共状态变量可以在内部访问，也可以从外部访问。对于公共状态变量，将自动生成一个 getter 函数。</li>
+<li>private – 私有状态变量只能从当前合约内部访问，派生合约内不能访问。</li>
+<li>internal – 内部状态变量只能从当前合约或其派生合约内访问。</li>
+<li>external - 外部状态变量只能在合约之外调用 ，不能被合约内的其他函数调用。</li>
+</ul>
+<h3 id="Solidity-条件运算符"><a href="#Solidity-条件运算符" class="headerlink" title="Solidity 条件运算符"></a>Solidity 条件运算符</h3><pre><code>? : (条件运算符 )
+</code></pre>
+<p>如果条件为真 ? 则取值X : 否则值Y</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function getResult() public pure returns(uint)&#123;</span><br><span class="line">   uint a = 1; // 局部变量</span><br><span class="line">   uint b = 2;</span><br><span class="line">   uint result = (a &gt; b? a: b);  //条件运算</span><br><span class="line">   return result; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;0&quot;: &quot;uint256: 2&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h3><h4 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function whilexunhuan(uint loop) public pure returns (uint) &#123;</span><br><span class="line">    uint sum = 0;</span><br><span class="line">    uint i = 1;</span><br><span class="line">    while (i &lt;= loop) &#123;</span><br><span class="line">        sum += i;</span><br><span class="line">        i++;</span><br><span class="line">    &#125;</span><br><span class="line">    return sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function forXunhuan(uint loop) public pure returns (uint) &#123;</span><br><span class="line">    uint sum = 0;</span><br><span class="line">    for (uint i = 1;i &lt;= loop;i++) &#123;</span><br><span class="line">        sum += i;</span><br><span class="line">    &#125;</span><br><span class="line">    return sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="do-while循环"><a href="#do-while循环" class="headerlink" title="do-while循环"></a>do-while循环</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function doWhileXunhuan(uint loop) public  pure returns (uint) &#123;</span><br><span class="line">     uint sum = 0;</span><br><span class="line">     uint i = 1;</span><br><span class="line">     do&#123;</span><br><span class="line">         sum += i;</span><br><span class="line">         i++;</span><br><span class="line">     &#125; while (i &lt; loop);</span><br><span class="line">         return sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="pure和view"><a href="#pure和view" class="headerlink" title="pure和view"></a>pure和view</h3><blockquote>
+<p>solidity pure函数，也就是纯函数，是指函数不会读取或修改状态。<br> 换言之，solidity pure函数不会操作链上数据。<br>solidity view函数，也就是视图函数，是指函数只会读取状态，不会修改状态。<br> 换言之，solidity view函数只会读取链上数据，不会修改链上数据。</p>
+</blockquote>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><blockquote>
+<p>Solidity构造函数是一个特殊函数，它仅能在智能合约部署的时候调用一次，之后就不能再次被调用。<br> Solidity构造函数常用来进行状态变量的初始化工作。<br>Solidity编译器中，使用关键词 constructor 作为构造函数。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">uint public user;</span><br><span class="line">address public owner;</span><br><span class="line"></span><br><span class="line">constructor (uint _user) &#123;</span><br><span class="line">    // 将部署者地址存储到owner变量</span><br><span class="line">    owner = msg.sender;</span><br><span class="line">    user = _user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="onlyOwner修饰符"><a href="#onlyOwner修饰符" class="headerlink" title="onlyOwner修饰符"></a>onlyOwner修饰符</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @dev 调用者不是‘主人’，就会抛出异常</span><br><span class="line"> */</span><br><span class="line">modifier onlyOwner() &#123;</span><br><span class="line">  require(msg.sender == owner);</span><br><span class="line">  _;</span><br><span class="line">&#125;</span><br><span class="line">onlyOwner 函数修饰符是这么用的：</span><br><span class="line"></span><br><span class="line">contract MyContract is Ownable &#123;</span><br><span class="line">  event LaughManiacally(string laughter);</span><br><span class="line"></span><br><span class="line">  //注意！ `onlyOwner`上场 :</span><br><span class="line">  function likeABoss() external onlyOwner &#123;</span><br><span class="line">    LaughManiacally(&quot;Muahahahaha&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Solidity-加密函数"><a href="#Solidity-加密函数" class="headerlink" title="Solidity 加密函数"></a>Solidity 加密函数</h3><ul>
+<li>keccak256(bytes memory) returns (bytes32) 计算输入的Keccak-256散列。</li>
+<li>sha256(bytes memory) returns (bytes32) 计算输入的SHA-256散列。</li>
+<li>ripemd160(bytes memory) returns (bytes20) 计算输入的RIPEMD-160散列。</li>
+<li>ecrecover(bytes32 hash, uint8 v, bytes32 r, bytes32 s) returns (address) 从椭圆曲线签名中恢复与公钥相关的地址，或在出错时返回零。函数参数对应于签名的ECDSA值: r – 签名的前32字节; s: 签名的第二个32字节; v: 签名的最后一个字节。这个方法返回一个地址。</li>
+</ul>
+<h4 id="keccak256加密"><a href="#keccak256加密" class="headerlink" title="keccak256加密"></a>keccak256加密</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function callkeccak256(string memory a) public pure  returns (bytes memory) &#123;</span><br><span class="line">    bytes memory byteArray = bytes(a);</span><br><span class="line">    bytes32 hash = keccak256(byteArray);</span><br><span class="line">    return abi.encodePacked(hash);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Solidity-不可变量-immutable"><a href="#Solidity-不可变量-immutable" class="headerlink" title="Solidity 不可变量 immutable"></a>Solidity 不可变量 immutable</h3><blockquote>
+<p>Solidity immutable 是另一种常量的表达方式。与常量类似，但是不必硬编码，可以在构造函数时传值，部署后无法改变。<br>immutable 不可变量同样不会占用状态变量存储空间，在部署时，变量的值会被追加的运行时字节码中， 因此它比使用状态变量便宜的多，也同样带来了更多的安全性。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">address public immutable owner = msg.sender;</span><br></pre></td></tr></table></figure>
+<h3 id="Solidity-合约继承"><a href="#Solidity-合约继承" class="headerlink" title="Solidity 合约继承"></a>Solidity 合约继承</h3><h4 id="virtual-和-override"><a href="#virtual-和-override" class="headerlink" title="virtual 和 override"></a>virtual 和 override</h4><blockquote>
+<p>solidity 引入了 virtual，override 关键字，用于重写函数。<br>父合约可以使用 virtual 关键字声明一个虚函数，子合约使用 override 关键字来覆盖父合约的方法</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line">contract test1&#123;</span><br><span class="line">  string public name;</span><br><span class="line">  uint public age;</span><br><span class="line">  function getSalary() external pure virtual returns(string memory)&#123;</span><br><span class="line">    return &quot;Hello World&quot;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">contract test2 is test1&#123;</span><br><span class="line">  function getSalary() external pure override returns(string memory)&#123;</span><br><span class="line">    return &quot;hahahaha&quot;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="abstract"><a href="#abstract" class="headerlink" title="abstract"></a>abstract</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: MIT</span><br><span class="line">pragma solidity ^0.8.0;</span><br><span class="line">abstract contract test3&#123; //抽象合约</span><br><span class="line">    function getTest() public pure virtual returns (string memory);</span><br><span class="line">&#125;</span><br><span class="line">contract test4 is test3 &#123; //实现合约</span><br><span class="line">    function getTest() public pure override returns (string memory) &#123;</span><br><span class="line">        return &quot;I am an implementation class&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Solidity-异常处理"><a href="#Solidity-异常处理" class="headerlink" title="Solidity 异常处理"></a>Solidity 异常处理</h3><blockquote>
+<p>Solidity 是通过回退状态的方式来处理异常错误。<br> Solidity 发生异常时，会撤消当前调用和所有子调用改变的状态，同时给调用者返回一个错误标识。<br>Solidity 提供了require 、assert 和 revert 来处理异常。</p>
+</blockquote>
+<h4 id="require"><a href="#require" class="headerlink" title="require"></a>require</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">uint a = 8;</span><br><span class="line">function shuru(uint b) public view returns (uint) &#123;</span><br><span class="line">    require(b == a, &quot;b is not equal to a&quot;);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>随便输入一个不等于8的数字提示<br><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/2024-12-22-15-41-49.png"
+                       
+                 ></p>
+<h4 id="assert"><a href="#assert" class="headerlink" title="assert"></a>assert</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function shuru2(uint b) public view returns (uint) &#123;</span><br><span class="line">    assert(a == b);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>随便输入一个不等于8的数字提示<br><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/2024-12-22-15-42-29.png"
+                       
+                 ></p>
+<h3 id="require、assert-使用场景"><a href="#require、assert-使用场景" class="headerlink" title="require、assert 使用场景"></a>require、assert 使用场景</h3><blockquote>
+<p>require() 函数用于检测输入变量或状态变量是否满足条件，以及验证调用外部合约的返回值。<br> require() 语句的失败报错，应该被看作一个正常的判断语句流程不能通过的事件。<br> assert()语句的失败报错，意味着发生了代码层面的错误事件，很大可能是合约中有一个bug需要修复。</p>
+</blockquote>
+<h3 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h3><blockquote>
+<p>用于将某个变量重置为初始值。对于整数，运算符的效果等同于a &#x3D; 0。而对于定长数组，则是把数组中的每个元素置为初始值，变长数组则是将长度置为0。对于结构体，也是类似，是将所有的成员均重置为初始值。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">uint data;</span><br><span class="line"></span><br><span class="line">function change(uint  i) internal &#123;</span><br><span class="line">    data = i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function getData() public returns (uint) &#123;</span><br><span class="line">    delete data;</span><br><span class="line">    return data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="接受函数receive"><a href="#接受函数receive" class="headerlink" title="接受函数receive"></a>接受函数receive</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 定义事件</span><br><span class="line">event Received(address Sender, uint Value);</span><br><span class="line">// 接收ETH时释放Received事件</span><br><span class="line">receive() external payable &#123;</span><br><span class="line">    emit Received(msg.sender, msg.value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="回退函数"><a href="#回退函数" class="headerlink" title="回退函数"></a>回退函数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">event fallbackCalled(address Sender, uint Value, bytes Data);</span><br><span class="line"></span><br><span class="line">// fallback</span><br><span class="line">function fallback() external payable&#123;</span><br><span class="line">    emit fallbackCalled(msg.sender, msg.value, msg.data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="回退函数fallback和receive区别"><a href="#回退函数fallback和receive区别" class="headerlink" title="回退函数fallback和receive区别"></a>回退函数fallback和receive区别</h4><blockquote>
+<p>简单来说，合约接收ETH时，msg.data为空且存在receive()时，会触发receive()；msg.data不为空或不存在receive()时，会触发fallback()，此时fallback()必须为payable。<br>receive()和payable fallback()均不存在的时候，向合约直接发送ETH将会报错（你仍可以通过带有payable的函数向合约发送ETH）。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">触发fallback() 还是 receive()?</span><br><span class="line">           接收ETH</span><br><span class="line">              |</span><br><span class="line">         msg.data是空？</span><br><span class="line">            /  \</span><br><span class="line">          是    否</span><br><span class="line">          /      \</span><br><span class="line">receive()存在?   fallback()</span><br><span class="line">        / \</span><br><span class="line">       是  否</span><br><span class="line">      /     \</span><br><span class="line">receive()   fallback()</span><br></pre></td></tr></table></figure>
+<h5 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h5><ul>
+<li>一个合约最多存在一个回退函数。</li>
+<li>它必须被标记为外部（external）函数。</li>
+</ul>
+<h3 id="selfdestruct-自毁函数"><a href="#selfdestruct-自毁函数" class="headerlink" title="selfdestruct 自毁函数"></a>selfdestruct 自毁函数</h3><p><a class="link"   target="_blank" rel="noopener" href="https://learnblockchain.cn/article/3331" >文章链接<i class="fas fa-external-link-alt"></i></a></p>
+<h3 id="msg-sender和tx-origin的区别"><a href="#msg-sender和tx-origin的区别" class="headerlink" title="msg.sender和tx.origin的区别"></a>msg.sender和tx.origin的区别</h3><blockquote>
+<p>在Solidity中，<code>msg.sender</code>和<code>tx.origin</code>都代表了交易的发送者，但两者的含义和应用场景有所不同。</p>
+<ol>
+<li><code>msg.sender</code>：它代表直接调用智能合约函数的账户地址或智能合约地址。无论是外部账户还是智能合约内部的其他合约，只要是直接发起调用的，其地址都会被记录为<code>msg.sender</code>。这意味着，如果一个合约A内部调用了另一个合约B的一个函数，那么在合约B中，<code>msg.sender</code>将表示合约A的地址。</li>
+<li><code>tx.origin</code>：它代表整个交易过程中最初的那个交易发送方的地址。这通常是一个外部账户的地址，因为只有外部账户的地址才被视为交易的发起者。在智能合约内部，如果一个合约接收到来自外部账户的交易调用，那么在合约内部，<code>tx.origin</code>将表示发起该交易的外部账户地址。</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>简而言之，<code>msg.sender</code>关注的是直接调用者，而<code>tx.origin</code>关注的是原始交易的发送者。在实际应用中，开发者需要根据具体的场景和需求来决定使用哪一个。</p>
+</blockquote>
+<h3 id="abi编码"><a href="#abi编码" class="headerlink" title="abi编码"></a>abi编码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">// SPDX-License-Identifier: UNLICENSED</span><br><span class="line">pragma solidity ^0.8.9;</span><br><span class="line"></span><br><span class="line">contract Test &#123;</span><br><span class="line">    uint256 x = 10;</span><br><span class="line">    address addr = 0x13a6D1fe418de7e5B03Fb4a15352DfeA3249eAA4;</span><br><span class="line">    string str = &quot;This is China&quot;;</span><br><span class="line">    uint256[2] arr = [1, 2];</span><br><span class="line"></span><br><span class="line">    function core(uint256 _x, address _addr, string calldata _str, uint256[2] calldata _arr) public &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function testEncode() public view returns (bytes memory result) &#123;</span><br><span class="line">        result = abi.encode(x, addr, str, arr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function testEncodePacked() public view returns (bytes memory result) &#123;</span><br><span class="line">        result = abi.encodePacked(x, addr, str, arr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function testEncodeWithSignature() public view returns (bytes memory result) &#123;</span><br><span class="line">        result = abi.encodeWithSignature(&quot;core(uint256,address,string,uint256[2])&quot;, x, addr, str, arr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function testEncodeWithSelector() public view returns (bytes memory result) &#123;</span><br><span class="line">        result = abi.encodeWithSelector(bytes4(keccak256(&quot;core(uint256,address,string,uint256[2])&quot;)), x, addr, str, arr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    function testDecode() public view returns (uint256 _x, address _addr, string memory _str, uint256[2] memory _arr) &#123;</span><br><span class="line">        bytes memory result = testEncode();</span><br><span class="line">        return abi.decode(result, (uint256, address, string, uint256[2]));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/2024-12-22-15-43-00.png"
+                       
+                 ><br><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/2024-12-22-15-43-41.png"
+                       
+                 ></p>
+<blockquote>
+<p><span style="color:red;">abi.encodePacked(x, addr, str, arr)</span> 的作用是将参数 x、addr、str 和 arr 进行打包编码。在 Solidity 中，当需要将多个类型不同的参数一起传递给一个函数时，可以使用 abi.encodePacked() 函数将这些参数打包成一个字节数组。这样可以减少调用数据的成本，因为打包后的数据只需要占用一个存储空间。<br><span style="color:red;">abi.encodeWithSignature()</span> 函数用于将参数编码为字节数组，并附加一个签名。这个签名可以用于在智能合约中调用该函数时进行验证。<br>具体来说，abi.encodeWithSignature(“core(uint256,address,string,uint256[2])”, x, addr, str, arr) 的作用是将参数 x、addr、str 和 arr 按照指定的函数签名 “core(uint256,address,string,uint256[2])” 进行编码，生成一个字节数组。这个字节数组可以作为交易数据或消息体发送给其他智能合约。<br>需要注意的是，使用 abi.encodeWithSignature() 函数时，需要确保传入的参数类型与函数签名中的参数类型相匹配，否则会导致编码失败。<br><span style="color:red;">abi.encodeWithSelector()</span> 函数用于将参数编码为字节数组，并附加一个选择器。这个选择器可以用于在智能合约中调用该函数时进行验证。<br>具体来说，abi.encodeWithSelector(bytes4(keccak256(“core(uint256,address,string,uint256[2])”)), x, addr, str, arr) 的作用是将参数 x、addr、str 和 arr 按照指定的函数签名 “core(uint256,address,string,uint256[2])” 进行编码，生成一个字节数组。这个字节数组可以作为交易数据或消息体发送给其他智能合约。<br>需要注意的是，使用 abi.encodeWithSelector() 函数时，需要确保传入的参数类型与函数签名中的参数类型相匹配，否则会导致编码失败。</p>
+</blockquote>
+<h5 id="完结"><a href="#完结" class="headerlink" title="完结"></a>完结</h5><img    
+                       lazyload
+                       alt="image"
+                       data-src="https://s1.chu0.com/src/img/gif/7f/7ff33469d8d148998adc4371ff22fd50.gif?e=1735488000&token=1srnZGLKZ0Aqlz6dk7yF4SkiYf4eP-YrEOdM1sob:bwGC7sqerarUu1DVragekmF7ZtI="
+                        
+                 >
+
+
+
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                Solidity基础
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2023/08/21/区块链/Solidity基础/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    Author
+                </div>
+                <div class="content">ClearSky Drizzle</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    Published
+                </div>
+                <div class="content">2023-08-21 11:33</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    License
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="Copy copyright info" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/solidity/">solidity</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="Share to WeChat"
+            data-tooltip-img-tip="Scan by WeChat"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to WeiBo"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2024/01/25/web/%E4%BD%BF%E7%94%A8el-image-viewer%E6%9F%A5%E7%9C%8B%E5%A4%A7%E5%9B%BE/"
+                                   title="使用el-image-viewer查看大图"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">使用el-image-viewer查看大图</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2023/08/12/web/%E5%88%9D%E8%AF%86Golang-Gin/"
+                                   title="初识Golang-Gin"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">初识Golang-Gin</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">Comment plugin failed to load</span>
+    <button class="reload keep-button">Click to reload</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">Loading comment plugin</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="waline-comment-container">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline-meta.css"/>
+        <div id="waline-comment"></div>
+        <script data-pjax>
+          window.KeepCommentPlugin.walineOptions = JSON.parse('{}'.replace(/&#34;/g, '"'))
+          window.KeepCommentPlugin.walineOptions.el = '#waline-comment'
+          window.KeepCommentPlugin.walineOptions.comment = '.post-comments-count'
+          window.KeepCommentPlugin.walineOptions.serverURL = 'https://comment.lllcnm.cn'
+          window.KeepCommentPlugin.walineOptions.lang = 'en' || 'zh-CN'
+          window.KeepCommentPlugin.walineOptions.reaction = 'true' === 'true'
+        </script>
+
+        
+
+        
+            <script data-pjax
+                    async
+                    type="module"
+            >
+              import { init } from '//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.js'
+              window.KeepCommentPlugin.initWaline = () => {
+                if (init) {
+                  init(window.KeepCommentPlugin.walineOptions)
+                  window.KeepCommentPlugin.hideLoading()
+                } else {
+                  setTimeout(() => {
+                    window.KeepCommentPlugin.initWaline()
+                  }, 1000)
+                }
+              }
+
+              if ('true' === 'true') {
+                setTimeout(() => {
+                  window.KeepCommentPlugin.initWaline()
+                }, 1200)
+              } else {
+                window.addEventListener('DOMContentLoaded', window.KeepCommentPlugin.initWaline)
+              }
+            </script>
+        
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#solidity%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">solidity基础语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E7%BC%96%E5%86%99sol%E6%96%87%E4%BB%B6%E4%B9%8B%E5%89%8D%E8%A6%81%E5%8A%A0%E4%B8%8A"><span class="nav-number">1.1.</span> <span class="nav-text">在编写sol文件之前要加上</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F-%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">Solidity 特殊变量&#x2F;全局变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E5%8F%98%E9%87%8F%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">4.</span> <span class="nav-text">Solidity 变量作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">5.</span> <span class="nav-text">Solidity 条件运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5"><span class="nav-number">6.</span> <span class="nav-text">循环语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#while%E5%BE%AA%E7%8E%AF"><span class="nav-number">6.1.</span> <span class="nav-text">while循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#for%E5%BE%AA%E7%8E%AF"><span class="nav-number">6.2.</span> <span class="nav-text">for循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#do-while%E5%BE%AA%E7%8E%AF"><span class="nav-number">6.3.</span> <span class="nav-text">do-while循环</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pure%E5%92%8Cview"><span class="nav-number">7.</span> <span class="nav-text">pure和view</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">8.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onlyOwner%E4%BF%AE%E9%A5%B0%E7%AC%A6"><span class="nav-number">9.</span> <span class="nav-text">onlyOwner修饰符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E5%8A%A0%E5%AF%86%E5%87%BD%E6%95%B0"><span class="nav-number">10.</span> <span class="nav-text">Solidity 加密函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#keccak256%E5%8A%A0%E5%AF%86"><span class="nav-number">10.1.</span> <span class="nav-text">keccak256加密</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E4%B8%8D%E5%8F%AF%E5%8F%98%E9%87%8F-immutable"><span class="nav-number">11.</span> <span class="nav-text">Solidity 不可变量 immutable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E5%90%88%E7%BA%A6%E7%BB%A7%E6%89%BF"><span class="nav-number">12.</span> <span class="nav-text">Solidity 合约继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#virtual-%E5%92%8C-override"><span class="nav-number">12.1.</span> <span class="nav-text">virtual 和 override</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#abstract"><span class="nav-number">12.2.</span> <span class="nav-text">abstract</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-number">13.</span> <span class="nav-text">Solidity 异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#require"><span class="nav-number">13.1.</span> <span class="nav-text">require</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#assert"><span class="nav-number">13.2.</span> <span class="nav-text">assert</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#require%E3%80%81assert-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">14.</span> <span class="nav-text">require、assert 使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delete"><span class="nav-number">15.</span> <span class="nav-text">delete</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%97%E5%87%BD%E6%95%B0receive"><span class="nav-number">15.1.</span> <span class="nav-text">接受函数receive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9E%E9%80%80%E5%87%BD%E6%95%B0"><span class="nav-number">15.2.</span> <span class="nav-text">回退函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9E%E9%80%80%E5%87%BD%E6%95%B0fallback%E5%92%8Creceive%E5%8C%BA%E5%88%AB"><span class="nav-number">15.3.</span> <span class="nav-text">回退函数fallback和receive区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-number">15.3.1.</span> <span class="nav-text">特点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#selfdestruct-%E8%87%AA%E6%AF%81%E5%87%BD%E6%95%B0"><span class="nav-number">16.</span> <span class="nav-text">selfdestruct 自毁函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#msg-sender%E5%92%8Ctx-origin%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">17.</span> <span class="nav-text">msg.sender和tx.origin的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#abi%E7%BC%96%E7%A0%81"><span class="nav-number">18.</span> <span class="nav-text">abi编码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%8C%E7%BB%93"><span class="nav-number">18.0.1.</span> <span class="nav-text">完结</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2022</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">ClearSky Drizzle</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            This site is deployed on <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span>
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#solidity%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">solidity基础语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E7%BC%96%E5%86%99sol%E6%96%87%E4%BB%B6%E4%B9%8B%E5%89%8D%E8%A6%81%E5%8A%A0%E4%B8%8A"><span class="nav-number">1.1.</span> <span class="nav-text">在编写sol文件之前要加上</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F-%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">Solidity 特殊变量&#x2F;全局变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E5%8F%98%E9%87%8F%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">4.</span> <span class="nav-text">Solidity 变量作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E6%9D%A1%E4%BB%B6%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">5.</span> <span class="nav-text">Solidity 条件运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5"><span class="nav-number">6.</span> <span class="nav-text">循环语句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#while%E5%BE%AA%E7%8E%AF"><span class="nav-number">6.1.</span> <span class="nav-text">while循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#for%E5%BE%AA%E7%8E%AF"><span class="nav-number">6.2.</span> <span class="nav-text">for循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#do-while%E5%BE%AA%E7%8E%AF"><span class="nav-number">6.3.</span> <span class="nav-text">do-while循环</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pure%E5%92%8Cview"><span class="nav-number">7.</span> <span class="nav-text">pure和view</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">8.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onlyOwner%E4%BF%AE%E9%A5%B0%E7%AC%A6"><span class="nav-number">9.</span> <span class="nav-text">onlyOwner修饰符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E5%8A%A0%E5%AF%86%E5%87%BD%E6%95%B0"><span class="nav-number">10.</span> <span class="nav-text">Solidity 加密函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#keccak256%E5%8A%A0%E5%AF%86"><span class="nav-number">10.1.</span> <span class="nav-text">keccak256加密</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E4%B8%8D%E5%8F%AF%E5%8F%98%E9%87%8F-immutable"><span class="nav-number">11.</span> <span class="nav-text">Solidity 不可变量 immutable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E5%90%88%E7%BA%A6%E7%BB%A7%E6%89%BF"><span class="nav-number">12.</span> <span class="nav-text">Solidity 合约继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#virtual-%E5%92%8C-override"><span class="nav-number">12.1.</span> <span class="nav-text">virtual 和 override</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#abstract"><span class="nav-number">12.2.</span> <span class="nav-text">abstract</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solidity-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-number">13.</span> <span class="nav-text">Solidity 异常处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#require"><span class="nav-number">13.1.</span> <span class="nav-text">require</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#assert"><span class="nav-number">13.2.</span> <span class="nav-text">assert</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#require%E3%80%81assert-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">14.</span> <span class="nav-text">require、assert 使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delete"><span class="nav-number">15.</span> <span class="nav-text">delete</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%97%E5%87%BD%E6%95%B0receive"><span class="nav-number">15.1.</span> <span class="nav-text">接受函数receive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9E%E9%80%80%E5%87%BD%E6%95%B0"><span class="nav-number">15.2.</span> <span class="nav-text">回退函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9E%E9%80%80%E5%87%BD%E6%95%B0fallback%E5%92%8Creceive%E5%8C%BA%E5%88%AB"><span class="nav-number">15.3.</span> <span class="nav-text">回退函数fallback和receive区别</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-number">15.3.1.</span> <span class="nav-text">特点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#selfdestruct-%E8%87%AA%E6%AF%81%E5%87%BD%E6%95%B0"><span class="nav-number">16.</span> <span class="nav-text">selfdestruct 自毁函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#msg-sender%E5%92%8Ctx-origin%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">17.</span> <span class="nav-text">msg.sender和tx.origin的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#abi%E7%BC%96%E7%A0%81"><span class="nav-number">18.</span> <span class="nav-text">abi编码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%8C%E7%BB%93"><span class="nav-number">18.0.1.</span> <span class="nav-text">完结</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+            
+<script src="/js/post/share.js"></script>
+
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="ClearSky Drizzle">
+    
+    <title>
+        
+            初识Golang-Gin |
+        
+        ClearSky Drizzle
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/avatar.jpg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"blog.lllcnm.cn","root":"/","language":"en","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":null,"author":"ClearSky Drizzle","avatar":"/images/avatar.jpg","logo":"/images/avatar.jpg","favicon":"/images/avatar.jpg"},"menu":{"home":"/","archives":"/archives","tags":"/tags","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":null}},"scroll":{"progress_bar":true,"percent":true,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":true,"share":true,"reward":{"enable":true,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"waline","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":"https://comment.lllcnm.cn","reaction":true,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2022,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original post title","author":"Original post author","link":"Original post link"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/avatar.jpg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               ClearSky Drizzle
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                HOME
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                ARCHIVES
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tags">
+                                
+                                TAGS
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                ABOUT
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                            HOME
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                            ARCHIVES
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tags">
+                            
+                            TAGS
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            ABOUT
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        初识Golang-Gin
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">ClearSky Drizzle</span>
+                                
+                                    <span class="author-badge">Lv4</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2023-08-12 12:24:13</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Mon Jan 20 2025 16:05:57 GMT+0800">2025-01-20 16:05:57</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/web/">web</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Golang/">Golang</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Gin/">Gin</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h3 id="go拉取包命令"><a href="#go拉取包命令" class="headerlink" title="go拉取包命令"></a>go拉取包命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go get</span><br><span class="line">go get -u github.com/gin-gonic/gin  <span class="comment">#拉取gin包</span></span><br></pre></td></tr></table></figure>
+<h3 id="Gin接口"><a href="#Gin接口" class="headerlink" title="Gin接口"></a>Gin接口</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;encoding/json&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 自定义Go中间件 拦截器</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">myHandler</span><span class="params">()</span></span> gin.HandlerFunc &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">		context.Set(<span class="string">&quot;usersession&quot;</span>, <span class="string">&quot;userid-1&quot;</span>)</span><br><span class="line">		context.Next() <span class="comment">//放行</span></span><br><span class="line">		<span class="comment">//context.Abort() //阻止</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ginServer := gin.Default()</span><br><span class="line">	<span class="comment">//ginServer.Use(myHandler()) //注册中间件之后全局使用</span></span><br><span class="line">	ginServer.GET(<span class="string">&quot;/hello&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">		context.JSON(<span class="number">200</span>, gin.H&#123;<span class="string">&quot;msg&quot;</span>: <span class="string">&quot;hello,gin&quot;</span>&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//加载静态页面</span></span><br><span class="line">	ginServer.LoadHTMLGlob(<span class="string">&quot;../templates/*&quot;</span>)</span><br><span class="line"></span><br><span class="line">	ginServer.GET(<span class="string">&quot;/index&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">		context.HTML(http.StatusOK, <span class="string">&quot;index.html&quot;</span>, gin.H&#123;</span><br><span class="line">			<span class="string">&quot;msg&quot;</span>: <span class="string">&quot;This is go give message&quot;</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//接受前端传过来的参数</span></span><br><span class="line">	ginServer.GET(<span class="string">&quot;/user/Info&quot;</span>, myHandler(), <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//取出中间件的值</span></span><br><span class="line">		usersession := context.MustGet(<span class="string">&quot;usersession&quot;</span>).(<span class="type">string</span>)</span><br><span class="line">		log.Println(usersession)</span><br><span class="line"></span><br><span class="line">		userid := context.Query(<span class="string">&quot;userid&quot;</span>)</span><br><span class="line">		username := context.Query(<span class="string">&quot;username&quot;</span>)</span><br><span class="line">		context.JSON(http.StatusOK, gin.H&#123;</span><br><span class="line">			<span class="string">&quot;userid&quot;</span>:   userid,</span><br><span class="line">			<span class="string">&quot;username&quot;</span>: username,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//接受参数</span></span><br><span class="line">	ginServer.GET(<span class="string">&quot;/user/Info/:userid/:username&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">		userid := context.Param(<span class="string">&quot;userid&quot;</span>)</span><br><span class="line">		username := context.Param(<span class="string">&quot;username&quot;</span>)</span><br><span class="line">		context.JSON(http.StatusOK, gin.H&#123;</span><br><span class="line">			<span class="string">&quot;userid&quot;</span>:   userid,</span><br><span class="line">			<span class="string">&quot;username&quot;</span>: username,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//json序列化</span></span><br><span class="line">	ginServer.POST(<span class="string">&quot;/json&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">		data, _ := context.GetRawData()</span><br><span class="line">		<span class="keyword">var</span> m <span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">		_ = json.Unmarshal(data, &amp;m)</span><br><span class="line">		context.JSON(http.StatusOK, m)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//表单传递</span></span><br><span class="line">	<span class="comment">//支持函数式编程</span></span><br><span class="line">	ginServer.POST(<span class="string">&quot;/user/add&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">		username := context.PostForm(<span class="string">&quot;username&quot;</span>)</span><br><span class="line">		password := context.PostForm(<span class="string">&quot;password&quot;</span>)</span><br><span class="line">		context.JSON(http.StatusOK, gin.H&#123;</span><br><span class="line">			<span class="string">&quot;msg&quot;</span>:      <span class="string">&quot;ok&quot;</span>,</span><br><span class="line">			<span class="string">&quot;username&quot;</span>: username,</span><br><span class="line">			<span class="string">&quot;password&quot;</span>: password,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//重定向</span></span><br><span class="line">	ginServer.GET(<span class="string">&quot;/test&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">		context.Redirect(http.StatusMovedPermanently, <span class="string">&quot;https://lllcnm.cn&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//路由组</span></span><br><span class="line">	<span class="comment">//userGroup := ginServer.Group(&quot;/user&quot;)</span></span><br><span class="line">	<span class="comment">//&#123;</span></span><br><span class="line">	<span class="comment">//	userGroup.GET(&quot;/add&quot;)</span></span><br><span class="line">	<span class="comment">//	userGroup.GET(&quot;/login&quot;)</span></span><br><span class="line">	<span class="comment">//	userGroup.GET(&quot;/logout&quot;, func(context *gin.Context) &#123;</span></span><br><span class="line">	<span class="comment">//		//处理请求</span></span><br><span class="line">	<span class="comment">//	&#125;)</span></span><br><span class="line">	<span class="comment">//&#125;</span></span><br><span class="line">	<span class="comment">//服务器端口</span></span><br><span class="line">	ginServer.Run(<span class="string">&quot;:8082&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="开启多线程"><a href="#开启多线程" class="headerlink" title="开启多线程"></a>开启多线程</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">@author LJN</span></span><br><span class="line"><span class="comment">@dev 多线程</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">//go的多线程-协程</span></span><br><span class="line">	<span class="keyword">go</span> goRun()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;main ========&gt;&quot;</span>, i)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	time.Sleep(time.Second * <span class="number">3</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">goRun</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;goRun ========&gt;&quot;</span>, i)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="Gin连接数据库"><a href="#Gin连接数据库" class="headerlink" title="Gin连接数据库"></a>Gin连接数据库</h3><ul>
+<li>下载mysql驱动包<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/go-sql-driver/mysql</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> dao</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;database/sql&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	_ <span class="string">&quot;github.com/go-sql-driver/mysql&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	username = <span class="string">&quot;root&quot;</span></span><br><span class="line">	password = <span class="string">&quot;fdsafdfa&quot;</span></span><br><span class="line">	host     = <span class="string">&quot;localhost&quot;</span></span><br><span class="line">	port     = <span class="number">3306</span></span><br><span class="line">	dbname   = <span class="string">&quot;test&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> User2 <span class="keyword">struct</span> &#123;</span><br><span class="line">	ID       <span class="type">int</span>    <span class="string">`json:&quot;id&quot;`</span></span><br><span class="line">	Name     <span class="type">string</span> <span class="string">`json:&quot;name&quot;`</span></span><br><span class="line">	Password <span class="type">string</span> <span class="string">`json:&quot;password&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ConnectToDb</span><span class="params">()</span></span> (*sql.DB, <span class="type">error</span>) &#123;</span><br><span class="line">	dataSourceName := fmt.Sprintf(<span class="string">&quot;%s:%s@tcp(%s:%d)/%s&quot;</span>, username, password, host, port, dbname)</span><br><span class="line">	db, err := sql.Open(<span class="string">&quot;mysql&quot;</span>, dataSourceName) <span class="comment">// 打开名为 MySQL 的SQL数据库</span></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	err = db.Ping() <span class="comment">// 检查连接是否建立，以确保连接存活</span></span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> db, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Gin数据库增删改查"><a href="#Gin数据库增删改查" class="headerlink" title="Gin数据库增删改查"></a>Gin数据库增删改查</h3><h4 id="使用原生sql语句进行增删改查"><a href="#使用原生sql语句进行增删改查" class="headerlink" title="使用原生sql语句进行增删改查"></a>使用原生sql语句进行增删改查</h4><ol>
+<li>在UserController中编写增删改查方法<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> controller</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;database/sql&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;main/dao&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> UserController <span class="keyword">struct</span> &#123;</span><br><span class="line">	BaseController</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">查询单个用户</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *UserController)</span></span> GetUser(ctx *gin.Context) &#123;</span><br><span class="line">	<span class="comment">// 获取数据库连接</span></span><br><span class="line">	db, err := dao.ConnectToDb()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Database connection error:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Database error&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> db.Close()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> (</span><br><span class="line">		user   dao.User2</span><br><span class="line">		result gin.H</span><br><span class="line">	)</span><br><span class="line">	id := ctx.Param(<span class="string">&quot;id&quot;</span>)</span><br><span class="line">	log.Println(<span class="string">&quot;获取到的id&quot;</span>, id)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 查询用户</span></span><br><span class="line">	row := db.QueryRow(<span class="string">&quot;SELECT * FROM user2 WHERE id = ?&quot;</span>, id)</span><br><span class="line">	err = row.Scan(&amp;user.ID, &amp;user.Name, &amp;user.Password)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> err == sql.ErrNoRows &#123;</span><br><span class="line">			result = gin.H&#123;</span><br><span class="line">				<span class="string">&quot;message&quot;</span>: <span class="string">&quot;User not found&quot;</span>,</span><br><span class="line">			&#125;</span><br><span class="line">			ctx.JSON(http.StatusNotFound, result)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			log.Println(<span class="string">&quot;Error retrieving user:&quot;</span>, err)</span><br><span class="line">			ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Error retrieving user&quot;</span>&#125;)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		result = gin.H&#123;<span class="string">&quot;data&quot;</span>: user&#125;</span><br><span class="line">		ctx.JSON(http.StatusOK, result)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查询所有用户</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *UserController)</span></span> GetAllUser(ctx *gin.Context) &#123;</span><br><span class="line">	db, err := dao.ConnectToDb()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Database find error ....&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Database error&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> db.Close()</span><br><span class="line">	<span class="keyword">var</span> (</span><br><span class="line">		users  []dao.User2</span><br><span class="line">		result gin.H</span><br><span class="line">	)</span><br><span class="line">	rows, err := db.Query(<span class="string">&quot;SELECT * FROM user2&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Error retrieving users:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Error retrieving users&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> rows.Close()</span><br><span class="line">	<span class="keyword">for</span> rows.Next() &#123;</span><br><span class="line">		<span class="keyword">var</span> user dao.User2</span><br><span class="line">		err := rows.Scan(&amp;user.ID, &amp;user.Name, &amp;user.Password)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Println(<span class="string">&quot;Error scanning user data:&quot;</span>, err)</span><br><span class="line">			<span class="keyword">continue</span></span><br><span class="line">		&#125;</span><br><span class="line">		users = <span class="built_in">append</span>(users, user)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	result = gin.H&#123;<span class="string">&quot;data&quot;</span>: users&#125;</span><br><span class="line">	ctx.JSON(http.StatusOK, result)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加用户</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *UserController)</span></span> AddUser(ctx *gin.Context) &#123;</span><br><span class="line">	db, err := dao.ConnectToDb()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;database connect error&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Database error&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> db.Close()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> newUser dao.User2</span><br><span class="line">	<span class="keyword">if</span> err := ctx.ShouldBindJSON(&amp;newUser); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		ctx.JSON(http.StatusBadRequest, gin.H&#123;<span class="string">&quot;error&quot;</span>: err.Error()&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 插入用户到数据库</span></span><br><span class="line">	_, err = db.Exec(<span class="string">&quot;INSERT INTO user2(name,password) VALUES (?,?)&quot;</span>, newUser.Name, newUser.Password)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Error adding user:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Error adding User&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	ctx.JSON(http.StatusCreated, gin.H&#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;User added successfully&quot;</span>&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 更新用户</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *UserController)</span></span> UpdateUser(ctx *gin.Context) &#123;</span><br><span class="line">	db, err := dao.ConnectToDb()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;databse connection error&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Database error&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> db.Close()</span><br><span class="line"></span><br><span class="line">	id := ctx.Param(<span class="string">&quot;id&quot;</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> updateUser dao.User2</span><br><span class="line">	<span class="keyword">if</span> err := ctx.ShouldBindJSON(&amp;updateUser); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		ctx.JSON(http.StatusBadRequest, gin.H&#123;<span class="string">&quot;error&quot;</span>: err.Error()&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	_, err = db.Exec(<span class="string">&quot;UPDATE user2 SET name = ?,password = ? WHERE id = ?&quot;</span>,</span><br><span class="line">		updateUser.Name, updateUser.Password, id)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Error adding user:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Error adding User&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	ctx.JSON(http.StatusCreated, gin.H&#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Update User is Succefully&quot;</span>&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *UserController)</span></span> DeleteUser(ctx *gin.Context) &#123;</span><br><span class="line">	db, err := dao.ConnectToDb()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;databse connection error&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Database error&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> db.Close()</span><br><span class="line">	id := ctx.Param(<span class="string">&quot;id&quot;</span>)</span><br><span class="line"></span><br><span class="line">	_, err = db.Exec(<span class="string">&quot;DELETE FROM user2 WHERE id = ?&quot;</span>, id)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Error adding user:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Error adding User&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	ctx.JSON(http.StatusOK, gin.H&#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Delete User is Succefully&quot;</span>&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+2.在router目录下UserRouter文件中注册路由<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> router</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line">	<span class="string">&quot;main/controller&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">UserRouterInit</span><span class="params">(r *gin.Engine)</span></span> &#123;</span><br><span class="line">	user := &amp;controller.UserController&#123;&#125;</span><br><span class="line">	userGroup := r.Group(<span class="string">&quot;/user&quot;</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		userGroup.GET(<span class="string">&quot;/getUser/:id&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">			user.GetUser(context)</span><br><span class="line">		&#125;)</span><br><span class="line">		userGroup.GET(<span class="string">&quot;/getAllUser&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">			user.GetAllUser(context)</span><br><span class="line">		&#125;)</span><br><span class="line">		userGroup.POST(<span class="string">&quot;/addUser&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">			user.AddUser(context)</span><br><span class="line">		&#125;)</span><br><span class="line">		userGroup.POST(<span class="string">&quot;/updateUser/:id&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">			user.UpdateUser(context)</span><br><span class="line">		&#125;)</span><br><span class="line">		userGroup.DELETE(<span class="string">&quot;/deleteUser/:id&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">			user.DeleteUser(context)</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+3.在main.go文件中引入注册路由</li>
+</ol>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line">	<span class="string">&quot;main/router&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	r := gin.Default()</span><br><span class="line">	router.StudyRouterInit(r)</span><br><span class="line">	router.UserRouterInit(r)</span><br><span class="line">	r.Run(<span class="string">&quot;:8082&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="上面是原生sql语句执行增删改查的方法-下面我们将介绍gorm增删改查"><a href="#上面是原生sql语句执行增删改查的方法-下面我们将介绍gorm增删改查" class="headerlink" title="上面是原生sql语句执行增删改查的方法,下面我们将介绍gorm增删改查"></a>上面是原生sql语句执行增删改查的方法,下面我们将介绍gorm增删改查</h4><h3 id="GORM增删改查"><a href="#GORM增删改查" class="headerlink" title="GORM增删改查"></a>GORM增删改查</h3><p><a class="link"   target="_blank" rel="noopener" href="https://gorm.io/zh_CN/docs/create.html" >官方文档<i class="fas fa-external-link-alt"></i></a><br><a class="link"   target="_blank" rel="noopener" href="https://jasperxu.github.io/gorm-zh/" >教学文档<i class="fas fa-external-link-alt"></i></a></p>
+<ul>
+<li>先来了解一下orm<blockquote>
+<p>ORM（Object Relational Mapping，对象关系映射）框架是一种将数据库表与对象模型之间进行映射的技术。它允许开发者使用面向对象的方式操作数据库，而无需直接编写SQL语句</p>
+</blockquote>
+</li>
+<li>引入gorm包<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com/jinzhu/gorm</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>1.在UserGormController添加增删改查方法</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> controller</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;main/dao&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> UserGormController <span class="keyword">struct</span> &#123;</span><br><span class="line">	BaseController</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">查询单个用户</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(ctrl *UserGormController)</span></span> SearchUser(ctx *gin.Context) &#123;</span><br><span class="line">	db, err := dao.ConnectDataBase()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Database connection error:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Database error&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	userID := ctx.Param(<span class="string">&quot;id&quot;</span>)</span><br><span class="line">	<span class="keyword">var</span> user dao.User2</span><br><span class="line">	<span class="keyword">if</span> err := db.Where(<span class="string">&quot;id = ?&quot;</span>, userID).First(&amp;user).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;User not found:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusNotFound, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;User not found&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	ctx.JSON(http.StatusOK, user)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查询所有用户</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(ctrl *UserGormController)</span></span> SearchAllUser(ctx *gin.Context) &#123;</span><br><span class="line">	db, err := dao.ConnectDataBase()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Database connection error:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Database error&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> users []dao.User2</span><br><span class="line">	<span class="keyword">if</span> err := db.Find(&amp;users).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;User not found:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusNotFound, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;User not found&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	ctx.JSON(http.StatusOK, users)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 更新用户</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(ctrl *UserGormController)</span></span> UpdateUser(ctx *gin.Context) &#123;</span><br><span class="line">	db, err := dao.ConnectDataBase()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Database connection error:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Database error&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 获取要更新的用户ID</span></span><br><span class="line">	userID := ctx.Param(<span class="string">&quot;id&quot;</span>)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 解析请求体中的用户名和密码</span></span><br><span class="line">	<span class="keyword">var</span> user dao.User2</span><br><span class="line">	<span class="keyword">if</span> err := ctx.ShouldBindJSON(&amp;user); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Invalid request body:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusBadRequest, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Invalid request body&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 更新用户信息</span></span><br><span class="line">	<span class="keyword">if</span> err := db.Model(&amp;dao.User2&#123;&#125;).Where(<span class="string">&quot;id = ?&quot;</span>, userID).Updates(user).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Error updating user:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Error updating user&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	ctx.JSON(http.StatusOK, gin.H&#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;User updated successfully&quot;</span>&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建字段</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(ctrl *UserGormController)</span></span> AddUser(ctx *gin.Context) &#123;</span><br><span class="line">	db, err := dao.ConnectDataBase()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Database connection error:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Database error&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> user dao.User2</span><br><span class="line">	<span class="keyword">if</span> err := ctx.ShouldBindJSON(&amp;user); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Invalid request body:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusBadRequest, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Invalid request body&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> err := db.Create(&amp;user).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Add User Error !&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Add User Error&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	ctx.JSON(http.StatusCreated, gin.H&#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Add User is successfully&quot;</span>&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除字段</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(ctrl *UserGormController)</span></span> DeleteUser(ctx *gin.Context) &#123;</span><br><span class="line">	db, err := dao.ConnectDataBase()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Database connection error:&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Database error&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	userID := ctx.Param(<span class="string">&quot;id&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err := db.Where(<span class="string">&quot;id = ?&quot;</span>, userID).Delete(&amp;dao.User2&#123;&#125;).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;Delete User Error !&quot;</span>, err)</span><br><span class="line">		ctx.JSON(http.StatusInternalServerError, gin.H&#123;<span class="string">&quot;error&quot;</span>: <span class="string">&quot;Delete User Error&quot;</span>&#125;)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	ctx.JSON(http.StatusOK, gin.H&#123;<span class="string">&quot;message&quot;</span>: <span class="string">&quot;Delete User is successfully&quot;</span>&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.在UserGormRouter注册方法路由</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> router</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;github.com/gin-gonic/gin&quot;</span></span><br><span class="line">	<span class="string">&quot;main/controller&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">UserGormInit</span><span class="params">(r *gin.Engine)</span></span> &#123;</span><br><span class="line">	user := controller.UserGormController&#123;&#125;</span><br><span class="line">	userGroup := r.Group(<span class="string">&quot;/gorm&quot;</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		userGroup.GET(<span class="string">&quot;/searchUser/:id&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">			user.SearchUser(context)</span><br><span class="line">		&#125;)</span><br><span class="line">		userGroup.GET(<span class="string">&quot;/searchAllUser&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">			user.SearchAllUser(context)</span><br><span class="line">		&#125;)</span><br><span class="line">		userGroup.POST(<span class="string">&quot;/updateUser/:id&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">			user.UpdateUser(context)</span><br><span class="line">		&#125;)</span><br><span class="line">		userGroup.POST(<span class="string">&quot;/addUser&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">			user.AddUser(context)</span><br><span class="line">		&#125;)</span><br><span class="line">		userGroup.DELETE(<span class="string">&quot;/deleteUser/:id&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(context *gin.Context)</span></span> &#123;</span><br><span class="line">			user.DeleteUser(context)</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>在main.go文件中执行该路由组<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">router.UserGormInit(r)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Gin邮件服务"><a href="#Gin邮件服务" class="headerlink" title="Gin邮件服务"></a>Gin邮件服务</h3><ul>
+<li>下载依赖包<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get gopkg.in/gomail.v2</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> service</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;gopkg.in/gomail.v2&quot;</span></span><br><span class="line">	<span class="string">&quot;gopkg.in/ini.v1&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> MailService <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	username <span class="type">string</span></span><br><span class="line">	password <span class="type">string</span></span><br><span class="line">	host     <span class="type">string</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">InitMail</span><span class="params">()</span></span> &#123;</span><br><span class="line">	cfg, err := ini.Load(<span class="string">&quot;D:\\Go-Web\\Blog-go\\main\\config\\config.ini&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;读取失败:&quot;</span>, err)</span><br><span class="line">		os.Exit(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	username = cfg.Section(<span class="string">&quot;Mail&quot;</span>).Key(<span class="string">&quot;username&quot;</span>).String()</span><br><span class="line">	password = cfg.Section(<span class="string">&quot;Mail&quot;</span>).Key(<span class="string">&quot;password&quot;</span>).String()</span><br><span class="line">	host = cfg.Section(<span class="string">&quot;Mail&quot;</span>).Key(<span class="string">&quot;host&quot;</span>).String()</span><br><span class="line">	log.Println(<span class="string">&quot;==========================&gt;邮件配置构建&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SendEmail</span><span class="params">(to <span class="type">string</span>, sub <span class="type">string</span>, body <span class="type">string</span>)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">	m := gomail.NewMessage()</span><br><span class="line">	m.SetHeader(<span class="string">&quot;From&quot;</span>, username)</span><br><span class="line">	m.SetHeader(<span class="string">&quot;To&quot;</span>, to)</span><br><span class="line">	m.SetHeader(<span class="string">&quot;Subject&quot;</span>, sub)</span><br><span class="line">	m.SetBody(<span class="string">&quot;text/plain&quot;</span>, body)</span><br><span class="line">	d := gomail.NewDialer(host, <span class="number">465</span>, username, password)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> err := d.DialAndSend(m); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(err)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Gin加载ini配置文件"><a href="#Gin加载ini配置文件" class="headerlink" title="Gin加载ini配置文件"></a>Gin加载ini配置文件</h3><ul>
+<li>加载依赖包<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get gopkg.in/ini.v1</span><br></pre></td></tr></table></figure></li>
+<li>config.ini文件<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Mail]</span></span><br><span class="line"><span class="attr">username</span> = <span class="number">1323231313</span>@qq.com</span><br><span class="line"><span class="attr">password</span> = fdsfasfdafdsfdf</span><br><span class="line"><span class="attr">port</span> = <span class="number">465</span></span><br><span class="line"><span class="attr">host</span> = smtp.qq.com</span><br><span class="line"></span><br><span class="line"><span class="section">[Mysql]</span></span><br><span class="line"><span class="attr">url</span> = root:fdfsfaliu@/personblog?charset=utf8&amp;parseTime=<span class="literal">True</span>&amp;loc=Local</span><br></pre></td></tr></table></figure></li>
+<li>获取配置文件内容<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">InitMail</span><span class="params">()</span></span> &#123;</span><br><span class="line">	cfg, err := ini.Load(<span class="string">&quot;D:\\Go-Web\\Blog-go\\main\\config\\config.ini&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;读取失败:&quot;</span>, err)</span><br><span class="line">		os.Exit(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	username = cfg.Section(<span class="string">&quot;Mail&quot;</span>).Key(<span class="string">&quot;username&quot;</span>).String()</span><br><span class="line">	password = cfg.Section(<span class="string">&quot;Mail&quot;</span>).Key(<span class="string">&quot;password&quot;</span>).String()</span><br><span class="line">	host = cfg.Section(<span class="string">&quot;Mail&quot;</span>).Key(<span class="string">&quot;host&quot;</span>).String()</span><br><span class="line">	log.Println(<span class="string">&quot;==========================&gt;邮件配置构建&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Gin-Redis"><a href="#Gin-Redis" class="headerlink" title="Gin Redis"></a>Gin Redis</h3><ul>
+<li>redis基础用法<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">InitRDB</span><span class="params">()</span></span> &#123;</span><br><span class="line">	cfg, err := ini.Load(<span class="string">&quot;D:\\Go-Web\\Blog-go\\main\\config\\config.ini&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;读取失败:&quot;</span>, err)</span><br><span class="line">		os.Exit(<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	host = cfg.Section(<span class="string">&quot;Redis&quot;</span>).Key(<span class="string">&quot;host&quot;</span>).String()</span><br><span class="line">	password = cfg.Section(<span class="string">&quot;Redis&quot;</span>).Key(<span class="string">&quot;password&quot;</span>).String()</span><br><span class="line">	strdb := cfg.Section(<span class="string">&quot;Redis&quot;</span>).Key(<span class="string">&quot;db&quot;</span>).String()</span><br><span class="line">	db, _ = strconv.Atoi(strdb)</span><br><span class="line">	rdb = redis.NewClient(&amp;redis.Options&#123;</span><br><span class="line">		Addr:     host,</span><br><span class="line">		Password: password,</span><br><span class="line">		DB:       db,</span><br><span class="line">	&#125;)</span><br><span class="line">	log.Println(<span class="string">&quot;=========================&gt;Redis配置文件构建&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SetCache</span><span class="params">(key <span class="type">string</span>, value <span class="type">string</span>, expiration time.Duration)</span></span> &#123;</span><br><span class="line">	err := rdb.Set(ctx, key, value, expiration).Err()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;缓存设置成功&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Get</span><span class="params">(key <span class="type">string</span>)</span></span> (<span class="type">string</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	val, err := rdb.Get(ctx, key).Result()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;&quot;</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> val, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Delete</span><span class="params">(key <span class="type">string</span>)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">	err := rdb.Del(ctx, key).Err()</span><br><span class="line">	log.Println(<span class="string">&quot;删除成功&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SetHashField</span><span class="params">(hashKey <span class="type">string</span>, field <span class="type">string</span>, value <span class="type">string</span>)</span></span> &#123;</span><br><span class="line">	err := rdb.HSet(ctx, hashKey, field, value).Err()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;设置哈希表字段失败:&quot;</span>, err)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;设置哈希表字段成功&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetHashField</span><span class="params">(hashKey <span class="type">string</span>, field <span class="type">string</span>)</span></span> (<span class="type">string</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	val, err := rdb.HGet(ctx, hashKey, field).Result()</span><br><span class="line">	<span class="keyword">if</span> err == redis.Nil &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;哈希表字段不存在:&quot;</span>, field)</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;&quot;</span>, <span class="literal">nil</span></span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;&quot;</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> val, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddToListLeft</span><span class="params">(listKey <span class="type">string</span>, values ...<span class="type">string</span>)</span></span> &#123;</span><br><span class="line">	err := rdb.LPush(ctx, listKey, values).Err()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;向列表左端添加元素失败:&quot;</span>, err)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;向列表左端添加元素成功&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddToListRight</span><span class="params">(listKey <span class="type">string</span>, values ...<span class="type">string</span>)</span></span> &#123;</span><br><span class="line">	err := rdb.RPush(ctx, listKey, values).Err()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;向列表右端添加元素失败:&quot;</span>, err)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;向列表右端添加元素成功&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetListRange</span><span class="params">(listKey <span class="type">string</span>, start, stop <span class="type">int64</span>)</span></span> ([]<span class="type">string</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	vals, err := rdb.LRange(ctx, listKey, start, stop).Result()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> vals, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AddJSONToListLeft</span><span class="params">(listKey <span class="type">string</span>, item Item)</span></span> &#123;</span><br><span class="line">	itemJSON, err := json.Marshal(item)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;JSON 序列化失败:&quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	err = rdb.LPush(ctx, listKey, itemJSON).Err()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;向列表左端添加 JSON 元素失败:&quot;</span>, err)</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		log.Println(<span class="string">&quot;向列表左端添加 JSON 元素成功&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetJSONListRange</span><span class="params">(listKey <span class="type">string</span>, start, stop <span class="type">int64</span>)</span></span> ([]Item, <span class="type">error</span>) &#123;</span><br><span class="line">	vals, err := rdb.LRange(ctx, listKey, start, stop).Result()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> items []Item</span><br><span class="line">	<span class="keyword">for</span> _, val := <span class="keyword">range</span> vals &#123;</span><br><span class="line">		<span class="keyword">var</span> item Item</span><br><span class="line">		err := json.Unmarshal([]<span class="type">byte</span>(val), &amp;item)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			log.Println(<span class="string">&quot;JSON 反序列化失败:&quot;</span>, err)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			items = <span class="built_in">append</span>(items, item)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> items, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                初识Golang-Gin
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2023/08/12/web/初识Golang-Gin/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    Author
+                </div>
+                <div class="content">ClearSky Drizzle</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    Published
+                </div>
+                <div class="content">2023-08-12 12:24</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    License
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="Copy copyright info" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/Golang/">Golang</a>
+                                    </li>
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/Gin/">Gin</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="Share to WeChat"
+            data-tooltip-img-tip="Scan by WeChat"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to WeiBo"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2023/08/21/%E5%8C%BA%E5%9D%97%E9%93%BE/Solidity%E5%9F%BA%E7%A1%80/"
+                                   title="Solidity基础"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Solidity基础</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2023/07/22/%E6%95%B0%E6%8D%AE%E5%BA%93/SQL%E5%9F%BA%E7%A1%80/"
+                                   title="SQL基础"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">SQL基础</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">Comment plugin failed to load</span>
+    <button class="reload keep-button">Click to reload</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">Loading comment plugin</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="waline-comment-container">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline-meta.css"/>
+        <div id="waline-comment"></div>
+        <script data-pjax>
+          window.KeepCommentPlugin.walineOptions = JSON.parse('{}'.replace(/&#34;/g, '"'))
+          window.KeepCommentPlugin.walineOptions.el = '#waline-comment'
+          window.KeepCommentPlugin.walineOptions.comment = '.post-comments-count'
+          window.KeepCommentPlugin.walineOptions.serverURL = 'https://comment.lllcnm.cn'
+          window.KeepCommentPlugin.walineOptions.lang = 'en' || 'zh-CN'
+          window.KeepCommentPlugin.walineOptions.reaction = 'true' === 'true'
+        </script>
+
+        
+
+        
+            <script data-pjax
+                    async
+                    type="module"
+            >
+              import { init } from '//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.js'
+              window.KeepCommentPlugin.initWaline = () => {
+                if (init) {
+                  init(window.KeepCommentPlugin.walineOptions)
+                  window.KeepCommentPlugin.hideLoading()
+                } else {
+                  setTimeout(() => {
+                    window.KeepCommentPlugin.initWaline()
+                  }, 1000)
+                }
+              }
+
+              if ('true' === 'true') {
+                setTimeout(() => {
+                  window.KeepCommentPlugin.initWaline()
+                }, 1200)
+              } else {
+                window.addEventListener('DOMContentLoaded', window.KeepCommentPlugin.initWaline)
+              }
+            </script>
+        
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#go%E6%8B%89%E5%8F%96%E5%8C%85%E5%91%BD%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">go拉取包命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.</span> <span class="nav-text">Gin接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">开启多线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">Gin连接数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5"><span class="nav-number">5.</span> <span class="nav-text">Gin数据库增删改查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8E%9F%E7%94%9Fsql%E8%AF%AD%E5%8F%A5%E8%BF%9B%E8%A1%8C%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5"><span class="nav-number">5.1.</span> <span class="nav-text">使用原生sql语句进行增删改查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8A%E9%9D%A2%E6%98%AF%E5%8E%9F%E7%94%9Fsql%E8%AF%AD%E5%8F%A5%E6%89%A7%E8%A1%8C%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E7%9A%84%E6%96%B9%E6%B3%95-%E4%B8%8B%E9%9D%A2%E6%88%91%E4%BB%AC%E5%B0%86%E4%BB%8B%E7%BB%8Dgorm%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5"><span class="nav-number">5.2.</span> <span class="nav-text">上面是原生sql语句执行增删改查的方法,下面我们将介绍gorm增删改查</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GORM%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5"><span class="nav-number">6.</span> <span class="nav-text">GORM增删改查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin%E9%82%AE%E4%BB%B6%E6%9C%8D%E5%8A%A1"><span class="nav-number">7.</span> <span class="nav-text">Gin邮件服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin%E5%8A%A0%E8%BD%BDini%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">8.</span> <span class="nav-text">Gin加载ini配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin-Redis"><span class="nav-number">9.</span> <span class="nav-text">Gin Redis</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2022</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">ClearSky Drizzle</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            This site is deployed on <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span>
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#go%E6%8B%89%E5%8F%96%E5%8C%85%E5%91%BD%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">go拉取包命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.</span> <span class="nav-text">Gin接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">开启多线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">Gin连接数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5"><span class="nav-number">5.</span> <span class="nav-text">Gin数据库增删改查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%8E%9F%E7%94%9Fsql%E8%AF%AD%E5%8F%A5%E8%BF%9B%E8%A1%8C%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5"><span class="nav-number">5.1.</span> <span class="nav-text">使用原生sql语句进行增删改查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8A%E9%9D%A2%E6%98%AF%E5%8E%9F%E7%94%9Fsql%E8%AF%AD%E5%8F%A5%E6%89%A7%E8%A1%8C%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E7%9A%84%E6%96%B9%E6%B3%95-%E4%B8%8B%E9%9D%A2%E6%88%91%E4%BB%AC%E5%B0%86%E4%BB%8B%E7%BB%8Dgorm%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5"><span class="nav-number">5.2.</span> <span class="nav-text">上面是原生sql语句执行增删改查的方法,下面我们将介绍gorm增删改查</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GORM%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5"><span class="nav-number">6.</span> <span class="nav-text">GORM增删改查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin%E9%82%AE%E4%BB%B6%E6%9C%8D%E5%8A%A1"><span class="nav-number">7.</span> <span class="nav-text">Gin邮件服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin%E5%8A%A0%E8%BD%BDini%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">8.</span> <span class="nav-text">Gin加载ini配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gin-Redis"><span class="nav-number">9.</span> <span class="nav-text">Gin Redis</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+            
+<script src="/js/post/share.js"></script>
+
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

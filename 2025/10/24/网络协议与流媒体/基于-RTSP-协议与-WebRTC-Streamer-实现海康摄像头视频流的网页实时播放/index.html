@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="ClearSky Drizzle">
+    
+    <title>
+        
+            基于 RTSP 协议与 WebRTC-Streamer 实现海康摄像头视频流的网页实时播放 |
+        
+        ClearSky Drizzle
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/avatar.jpg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"blog.lllcnm.cn","root":"/","language":"en","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":null,"author":"ClearSky Drizzle","avatar":"/images/avatar.jpg","logo":"/images/avatar.jpg","favicon":"/images/avatar.jpg"},"menu":{"home":"/","archives":"/archives","tags":"/tags","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":null}},"scroll":{"progress_bar":true,"percent":true,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":true,"share":true,"reward":{"enable":true,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"waline","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":"https://comment.lllcnm.cn","reaction":true,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2022,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original post title","author":"Original post author","link":"Original post link"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/avatar.jpg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               ClearSky Drizzle
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                HOME
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                ARCHIVES
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tags">
+                                
+                                TAGS
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                ABOUT
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                            HOME
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                            ARCHIVES
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tags">
+                            
+                            TAGS
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            ABOUT
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        基于 RTSP 协议与 WebRTC-Streamer 实现海康摄像头视频流的网页实时播放
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">ClearSky Drizzle</span>
+                                
+                                    <span class="author-badge">Lv4</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2025-10-24 16:45:33</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Fri Oct 24 2025 17:46:17 GMT+0800">2025-10-24 17:46:17</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E4%B8%8E%E6%B5%81%E5%AA%92%E4%BD%93/">网络协议与流媒体</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/RTSP/">RTSP</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p>最近在做一个安防监控项目时，遇到了一个常见的技术难题：如何在网页上实时播放海康摄像头的视频流？大家都知道，海康等主流摄像头通常使用 RTSP 协议输出视频，但浏览器并不支持直接播放 RTSP 流，这给 Web 端集成带来了很大挑战。</p>
+<p>经过多次尝试和踩坑，我发现 WebRTC-Streamer 是一个非常轻量级且高效的解决方案。它能将 RTSP 流实时转换为浏览器支持的 WebRTC 流，实现毫秒级延迟的视频播放。今天就把整个实现过程和经验分享给大家，希望能帮助到有类似需求的开发者。</p>
+<hr>
+<h3 id="二、核心原理解析"><a href="#二、核心原理解析" class="headerlink" title="二、核心原理解析"></a>二、核心原理解析</h3><h4 id="1-RTSP-协议简介"><a href="#1-RTSP-协议简介" class="headerlink" title="1. RTSP 协议简介"></a>1. RTSP 协议简介</h4><p>先简单说一下 RTSP 协议。RTSP（Real Time Streaming Protocol）是专门为实时流媒体设计的控制协议，海康、大华等主流安防设备都默认支持。我们平时访问摄像头时，常用的 RTSP URL 格式是这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rtsp://用户名:密码@摄像头IP:554/Streaming/Channels/101</span><br></pre></td></tr></table></figure>
+
+<p>这里有个小细节需要注意：URL 中的数字组合很关键，<code>101</code> 代表主码流（高清），而 <code>102</code> 则代表子码流（标清）。在实际应用中，如果网络带宽有限，可以考虑使用子码流来保证流畅度。</p>
+<p>RTSP 最大的优势是延迟低，但它的缺点也很明显——浏览器并不支持直接播放，这也是我们需要 WebRTC-Streamer 的原因。</p>
+<h4 id="2-WebRTC-协议简介"><a href="#2-WebRTC-协议简介" class="headerlink" title="2. WebRTC 协议简介"></a>2. WebRTC 协议简介</h4><p>WebRTC（Web Real-Time Communication）相信大家都不陌生，它是浏览器原生支持的实时通信技术。在实际使用中，我发现 WebRTC 有几个非常突出的优势：</p>
+<ul>
+<li>完全不需要安装任何插件，所有现代浏览器都原生支持</li>
+<li>延迟极低，实际测试中通常能控制在 500ms 以内</li>
+<li>内置了 NAT 穿透功能，这对于复杂网络环境下的部署非常友好</li>
+<li>支持端到端加密，安全性有保障</li>
+</ul>
+<p>正是这些特性，让 WebRTC 成为了浏览器实时视频播放的理想选择。</p>
+<h4 id="3-WebRTC-Streamer-作用"><a href="#3-WebRTC-Streamer-作用" class="headerlink" title="3. WebRTC-Streamer 作用"></a>3. WebRTC-Streamer 作用</h4><p>WebRTC-Streamer 是整个解决方案的核心，它就像一个「翻译官」，在 RTSP 和 WebRTC 之间架起了一座桥梁。我在项目中使用后发现，它的设计非常巧妙：</p>
+<ul>
+<li>首先，它能接收来自摄像头的 RTSP 流（实际上它还支持 RTMP、HTTP 等多种协议）</li>
+<li>然后，它会智能地进行转封装处理，尽可能避免全量转码（这对性能影响很大）</li>
+<li>最后，它通过 WebRTC 协议将视频流输出给浏览器</li>
+<li>同时，它还内置了 WebSocket 信令服务，让前端可以方便地控制视频流</li>
+</ul>
+<p>这样一来，就形成了一条完整的传输链路：摄像头 → WebRTC-Streamer → 浏览器，实现了从专业安防设备到 Web 前端的无缝衔接。</p>
+<hr>
+<h3 id="三、部署环境准备"><a href="#三、部署环境准备" class="headerlink" title="三、部署环境准备"></a>三、部署环境准备</h3><h4 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1. 前置条件"></a>1. 前置条件</h4><p>在开始之前，我们需要准备以下环境：</p>
+<ul>
+<li>一台支持 RTSP 协议的海康摄像头（确保 RTSP 功能已开启）</li>
+<li>一台服务器或本地电脑（用于部署 WebRTC-Streamer）</li>
+<li>Docker 环境（强烈推荐，能极大简化部署流程）</li>
+</ul>
+<h4 id="2-获取摄像头-RTSP-地址"><a href="#2-获取摄像头-RTSP-地址" class="headerlink" title="2. 获取摄像头 RTSP 地址"></a>2. 获取摄像头 RTSP 地址</h4><p>这一步很关键，很多朋友在这里遇到问题。首先，登录海康摄像头的管理后台，进入「网络设置 → 高级设置 → 端口」，确认 RTSP 端口是否为默认的 554（大多数情况下都是）。</p>
+<p>然后，根据摄像头的用户名、密码和 IP 地址，按照格式拼接 RTSP URL：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rtsp://admin:12345@192.168.1.64:554/Streaming/Channels/101</span><br></pre></td></tr></table></figure>
+
+<p>这里要注意，不同型号的海康摄像头可能 URL 格式略有不同。如果遇到连接问题，可以查阅对应型号的官方文档。</p>
+<hr>
+<h3 id="四、使用-WebRTC-Streamer-转推-RTSP-流"><a href="#四、使用-WebRTC-Streamer-转推-RTSP-流" class="headerlink" title="四、使用 WebRTC-Streamer 转推 RTSP 流"></a>四、使用 WebRTC-Streamer 转推 RTSP 流</h3><h4 id="1-拉取镜像并运行"><a href="#1-拉取镜像并运行" class="headerlink" title="1. 拉取镜像并运行"></a>1. 拉取镜像并运行</h4><p>使用 Docker 部署是最简便的方式，一行命令就能搞定：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  --name webrtc-streamer \</span><br><span class="line">  -p 8000:8000 \</span><br><span class="line">  -e RTSP_URL=<span class="string">&quot;rtsp://admin:12345@192.168.1.64:554/Streaming/Channels/101&quot;</span> \</span><br><span class="line">  mpromonet/webrtc-streamer</span><br></pre></td></tr></table></figure>
+
+<p>这里用的是官方维护的 <code>mpromonet/webrtc-streamer</code> 镜像，支持多种操作系统和硬件平台，稳定性和兼容性都很不错。启动后，服务会默认监听 8000 端口。</p>
+<h4 id="2-验证服务"><a href="#2-验证服务" class="headerlink" title="2. 验证服务"></a>2. 验证服务</h4><p>部署完成后，我们需要验证服务是否正常运行。打开浏览器，访问：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://&lt;你的服务器IP&gt;:8000</span><br></pre></td></tr></table></figure>
+
+<p>如果一切顺利，你会看到 WebRTC-Streamer 的默认播放页面。在页面的输入框中，你可以手动输入 RTSP 地址，或者如果之前在启动容器时已经通过环境变量指定了 RTSP URL，系统可能会自动识别并显示对应的流。点击播放按钮，就能看到摄像头的实时画面了。</p>
+<hr>
+<h3 id="五、前端网页嵌入-WebRTC-播放"><a href="#五、前端网页嵌入-WebRTC-播放" class="headerlink" title="五、前端网页嵌入 WebRTC 播放"></a>五、前端网页嵌入 WebRTC 播放</h3><p>在实际项目中，我们通常需要将视频播放功能集成到自己的系统中。WebRTC-Streamer 提供了简洁的 HTTP API，可以很方便地嵌入到我们的前端页面。</p>
+<p>下面是一个我在项目中使用过的集成示例，已经过优化并添加了完善的错误处理和用户体验设计：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh-CN&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>海康视频实时预览<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;./webrtcstreamer.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">    * &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">padding</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">box-sizing</span>: border-box;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-tag">body</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">font-family</span>: <span class="string">&#x27;Microsoft YaHei&#x27;</span>, Arial, sans-serif;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background-color</span>: <span class="number">#f5f5f5</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">color</span>: <span class="number">#333</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">line-height</span>: <span class="number">1.6</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">padding</span>: <span class="number">20px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">min-height</span>: <span class="number">100vh</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">flex-direction</span>: column;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">align-items</span>: center;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.container</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">max-width</span>: <span class="number">800px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: white;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border-radius</span>: <span class="number">12px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">4px</span> <span class="number">20px</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>);</span></span><br><span class="line"><span class="language-css">      <span class="attribute">overflow</span>: hidden;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.header</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(<span class="number">135deg</span>, <span class="number">#1e88e5</span>, <span class="number">#2196f3</span>);</span></span><br><span class="line"><span class="language-css">      <span class="attribute">color</span>: white;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">padding</span>: <span class="number">20px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">text-align</span>: center;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.header</span> <span class="selector-tag">h1</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">font-size</span>: <span class="number">1.8rem</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">font-weight</span>: <span class="number">500</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.video-container</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">position</span>: relative;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">padding-top</span>: <span class="number">56.25%</span>; <span class="comment">/* 16:9 Aspect Ratio */</span></span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="number">#000</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">overflow</span>: hidden;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-id">#video</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">position</span>: absolute;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">top</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">left</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">height</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">object-fit</span>: contain;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.status-overlay</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">position</span>: absolute;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">top</span>: <span class="number">10px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">right</span>: <span class="number">10px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">padding</span>: <span class="number">8px</span> <span class="number">12px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border-radius</span>: <span class="number">4px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">font-size</span>: <span class="number">0.9rem</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">font-weight</span>: <span class="number">500</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.7</span>);</span></span><br><span class="line"><span class="language-css">      <span class="attribute">color</span>: white;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">z-index</span>: <span class="number">10</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">align-items</span>: center;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">gap</span>: <span class="number">8px</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.status-indicator</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">width</span>: <span class="number">8px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">height</span>: <span class="number">8px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">animation</span>: pulse <span class="number">2s</span> infinite;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.status-indicator</span><span class="selector-class">.connected</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="number">#4caf50</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.status-indicator</span><span class="selector-class">.disconnected</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="number">#f44336</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.status-indicator</span><span class="selector-class">.connecting</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="number">#ff9800</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="keyword">@keyframes</span> pulse &#123;</span></span><br><span class="line"><span class="language-css">      <span class="number">0%</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">opacity</span>: <span class="number">1</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">      <span class="number">50%</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">opacity</span>: <span class="number">0.6</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">      <span class="number">100%</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">opacity</span>: <span class="number">1</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.controls</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">padding</span>: <span class="number">20px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">flex-wrap</span>: wrap;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">gap</span>: <span class="number">12px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">justify-content</span>: center;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="number">#fafafa</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border-top</span>: <span class="number">1px</span> solid <span class="number">#eee</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-tag">button</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">20px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border</span>: none;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border-radius</span>: <span class="number">6px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">font-size</span>: <span class="number">0.95rem</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">font-weight</span>: <span class="number">500</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">cursor</span>: pointer;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">transition</span>: all <span class="number">0.3s</span> ease;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">align-items</span>: center;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">gap</span>: <span class="number">8px</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.btn-primary</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="number">#2196f3</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">color</span>: white;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.btn-primary</span><span class="selector-pseudo">:hover</span><span class="selector-pseudo">:not</span>(<span class="selector-pseudo">:disabled</span>) &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="number">#1976d2</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-<span class="number">1px</span>);</span></span><br><span class="line"><span class="language-css">      <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">4px</span> <span class="number">8px</span> <span class="built_in">rgba</span>(<span class="number">33</span>, <span class="number">150</span>, <span class="number">243</span>, <span class="number">0.3</span>);</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.btn-danger</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="number">#f44336</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">color</span>: white;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.btn-danger</span><span class="selector-pseudo">:hover</span><span class="selector-pseudo">:not</span>(<span class="selector-pseudo">:disabled</span>) &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="number">#d32f2f</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-<span class="number">1px</span>);</span></span><br><span class="line"><span class="language-css">      <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">4px</span> <span class="number">8px</span> <span class="built_in">rgba</span>(<span class="number">244</span>, <span class="number">67</span>, <span class="number">54</span>, <span class="number">0.3</span>);</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-tag">button</span><span class="selector-pseudo">:disabled</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">opacity</span>: <span class="number">0.6</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">cursor</span>: not-allowed;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">transform</span>: none;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.info</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">padding</span>: <span class="number">20px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">font-size</span>: <span class="number">0.9rem</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">color</span>: <span class="number">#666</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="number">#f9f9f9</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border-top</span>: <span class="number">1px</span> solid <span class="number">#eee</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.info</span> <span class="selector-tag">h3</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">color</span>: <span class="number">#333</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">margin-bottom</span>: <span class="number">10px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">font-size</span>: <span class="number">1.1rem</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.info</span> <span class="selector-tag">p</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">margin-bottom</span>: <span class="number">8px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">word-break</span>: break-all;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.loading-overlay</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">position</span>: absolute;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">top</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">left</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">height</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">background</span>: <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.7</span>);</span></span><br><span class="line"><span class="language-css">      <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">flex-direction</span>: column;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">justify-content</span>: center;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">align-items</span>: center;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">color</span>: white;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">z-index</span>: <span class="number">5</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="selector-class">.spinner</span> &#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">width</span>: <span class="number">40px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">height</span>: <span class="number">40px</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border</span>: <span class="number">3px</span> solid <span class="built_in">rgba</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0.3</span>);</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border-radius</span>: <span class="number">50%</span>;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">border-top-color</span>: white;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">animation</span>: spin <span class="number">1s</span> ease-in-out infinite;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">margin-bottom</span>: <span class="number">15px</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="keyword">@keyframes</span> spin &#123;</span></span><br><span class="line"><span class="language-css">      <span class="selector-tag">to</span> &#123; <span class="attribute">transform</span>: <span class="built_in">rotate</span>(<span class="number">360deg</span>); &#125;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">    </span></span><br><span class="line"><span class="language-css">    <span class="keyword">@media</span> (<span class="attribute">max-width</span>: <span class="number">768px</span>) &#123;</span></span><br><span class="line"><span class="language-css">      <span class="selector-tag">body</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">padding</span>: <span class="number">10px</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">      </span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.header</span> <span class="selector-tag">h1</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">font-size</span>: <span class="number">1.5rem</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">      </span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.controls</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">flex-direction</span>: column;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">      </span></span><br><span class="line"><span class="language-css">      <span class="selector-tag">button</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">justify-content</span>: center;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">  </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;header&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>海康视频实时预览<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;video-container&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">video</span> <span class="attr">id</span>=<span class="string">&quot;video&quot;</span> <span class="attr">autoplay</span> <span class="attr">playsinline</span>&gt;</span><span class="tag">&lt;/<span class="name">video</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;loadingOverlay&quot;</span> <span class="attr">class</span>=<span class="string">&quot;loading-overlay&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;spinner&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>正在连接视频流...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;statusOverlay&quot;</span> <span class="attr">class</span>=<span class="string">&quot;status-overlay&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;statusIndicator&quot;</span> <span class="attr">class</span>=<span class="string">&quot;status-indicator connecting&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;statusText&quot;</span>&gt;</span>连接中...<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;controls&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;connectBtn&quot;</span> <span class="attr">class</span>=<span class="string">&quot;btn-primary&quot;</span> <span class="attr">disabled</span>&gt;</span></span><br><span class="line">        🔄 重新连接</span><br><span class="line">      <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;disconnectBtn&quot;</span> <span class="attr">class</span>=<span class="string">&quot;btn-danger&quot;</span> <span class="attr">disabled</span>&gt;</span></span><br><span class="line">        ⏹️ 断开连接</span><br><span class="line">      <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;info&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h3</span>&gt;</span>连接信息<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span>&gt;</span>WebRTC 服务地址:<span class="tag">&lt;/<span class="name">strong</span>&gt;</span> <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;wsUrlDisplay&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span>&gt;</span>RTSP 摄像头地址:<span class="tag">&lt;/<span class="name">strong</span>&gt;</span> <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;rtspUrlDisplay&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// DOM 元素引用</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> videoElement = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;video&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> loadingOverlay = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;loadingOverlay&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> statusOverlay = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;statusOverlay&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> statusIndicator = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;statusIndicator&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> statusText = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;statusText&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> connectBtn = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;connectBtn&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> disconnectBtn = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;disconnectBtn&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> wsUrlDisplay = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;wsUrlDisplay&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> rtspUrlDisplay = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;rtspUrlDisplay&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    </span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 配置信息</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> wsUrl = <span class="string">&quot;http://192.168.0.109:8000&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> rtspUrl = <span class="string">&quot;rtsp://admin:1212121@192.168.0.207:554/cam/realmonitor?channel=1&amp;subtype=0&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">    </span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 显示连接信息（隐藏敏感信息）</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> sanitizedRtspUrl = rtspUrl.<span class="title function_">replace</span>(<span class="regexp">/admin:[^@]+@/</span>, <span class="string">&#x27;admin:****@&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">    wsUrlDisplay.<span class="property">textContent</span> = wsUrl;</span></span><br><span class="line"><span class="language-javascript">    rtspUrlDisplay.<span class="property">textContent</span> = sanitizedRtspUrl;</span></span><br><span class="line"><span class="language-javascript">    </span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// WebRTC 实例</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">let</span> ws = <span class="literal">null</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">let</span> reconnectAttempts = <span class="number">0</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">const</span> maxReconnectAttempts = <span class="number">3</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">let</span> isConnecting = <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript">    </span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 更新状态显示</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">updateStatus</span>(<span class="params">status</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">switch</span>(status) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">case</span> <span class="string">&#x27;connecting&#x27;</span>:</span></span><br><span class="line"><span class="language-javascript">          statusIndicator.<span class="property">className</span> = <span class="string">&#x27;status-indicator connecting&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">          statusText.<span class="property">textContent</span> = <span class="string">&#x27;连接中...&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">          loadingOverlay.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;flex&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">          connectBtn.<span class="property">disabled</span> = <span class="literal">true</span>;</span></span><br><span class="line"><span class="language-javascript">          disconnectBtn.<span class="property">disabled</span> = <span class="literal">true</span>;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">break</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">case</span> <span class="string">&#x27;connected&#x27;</span>:</span></span><br><span class="line"><span class="language-javascript">          statusIndicator.<span class="property">className</span> = <span class="string">&#x27;status-indicator connected&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">          statusText.<span class="property">textContent</span> = <span class="string">&#x27;已连接&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">          loadingOverlay.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;none&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">          connectBtn.<span class="property">disabled</span> = <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript">          disconnectBtn.<span class="property">disabled</span> = <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript">          reconnectAttempts = <span class="number">0</span>;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">break</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">case</span> <span class="string">&#x27;disconnected&#x27;</span>:</span></span><br><span class="line"><span class="language-javascript">          statusIndicator.<span class="property">className</span> = <span class="string">&#x27;status-indicator disconnected&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">          statusText.<span class="property">textContent</span> = <span class="string">&#x27;已断开&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">          loadingOverlay.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;none&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">          connectBtn.<span class="property">disabled</span> = <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript">          disconnectBtn.<span class="property">disabled</span> = <span class="literal">true</span>;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">break</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">case</span> <span class="string">&#x27;error&#x27;</span>:</span></span><br><span class="line"><span class="language-javascript">          statusIndicator.<span class="property">className</span> = <span class="string">&#x27;status-indicator disconnected&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">          statusText.<span class="property">textContent</span> = <span class="string">&#x27;连接错误&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">          loadingOverlay.<span class="property">style</span>.<span class="property">display</span> = <span class="string">&#x27;none&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">          connectBtn.<span class="property">disabled</span> = <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript">          disconnectBtn.<span class="property">disabled</span> = <span class="literal">true</span>;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">break</span>;</span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">    </span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 连接视频流</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">connectStream</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">if</span> (isConnecting || (ws &amp;&amp; ws.<span class="property">connected</span>)) <span class="keyword">return</span>;</span></span><br><span class="line"><span class="language-javascript">      </span></span><br><span class="line"><span class="language-javascript">      isConnecting = <span class="literal">true</span>;</span></span><br><span class="line"><span class="language-javascript">      <span class="title function_">updateStatus</span>(<span class="string">&#x27;connecting&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      </span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">try</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 销毁旧实例</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (ws) &#123;</span></span><br><span class="line"><span class="language-javascript">          ws.<span class="title function_">disconnect</span>();</span></span><br><span class="line"><span class="language-javascript">          ws = <span class="literal">null</span>;</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 创建新实例并连接</span></span></span><br><span class="line"><span class="language-javascript">        ws = <span class="keyword">new</span> <span class="title class_">WebRtcStreamer</span>(videoElement, wsUrl);</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 重写 onEvent 方法来处理连接事件</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> originalOnEvent = ws.<span class="property">onEvent</span>;</span></span><br><span class="line"><span class="language-javascript">        ws.<span class="property">onEvent</span> = <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;WebRTC Event:&#x27;</span>, event);</span></span><br><span class="line"><span class="language-javascript">          </span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">if</span> (event === <span class="string">&#x27;initialized&#x27;</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;WebRTC 初始化完成&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (event === <span class="string">&#x27;play&#x27;</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;视频播放开始&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">updateStatus</span>(<span class="string">&#x27;connected&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (event === <span class="string">&#x27;disconnected&#x27;</span> || event === <span class="string">&#x27;stopped&#x27;</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;视频连接断开&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">updateStatus</span>(<span class="string">&#x27;disconnected&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (event === <span class="string">&#x27;error&#x27;</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;视频连接错误&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">updateStatus</span>(<span class="string">&#x27;error&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">handleReconnect</span>();</span></span><br><span class="line"><span class="language-javascript">          &#125;</span></span><br><span class="line"><span class="language-javascript">          </span></span><br><span class="line"><span class="language-javascript">          <span class="comment">// 调用原始方法</span></span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">if</span> (originalOnEvent) &#123;</span></span><br><span class="line"><span class="language-javascript">            originalOnEvent.<span class="title function_">call</span>(<span class="variable language_">this</span>, event);</span></span><br><span class="line"><span class="language-javascript">          &#125;</span></span><br><span class="line"><span class="language-javascript">          </span></span><br><span class="line"><span class="language-javascript">          isConnecting = <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript">        &#125;;</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 连接 RTSP 流</span></span></span><br><span class="line"><span class="language-javascript">        ws.<span class="title function_">connect</span>(rtspUrl);</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 设置超时处理</span></span></span><br><span class="line"><span class="language-javascript">        <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">if</span> (isConnecting) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;连接超时&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">updateStatus</span>(<span class="string">&#x27;error&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            isConnecting = <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">handleReconnect</span>();</span></span><br><span class="line"><span class="language-javascript">          &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;, <span class="number">15000</span>);</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">      &#125; <span class="keyword">catch</span> (error) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;连接过程中发生错误:&#x27;</span>, error);</span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">updateStatus</span>(<span class="string">&#x27;error&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        isConnecting = <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">handleReconnect</span>();</span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">    </span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 断开视频流</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">disconnectStream</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">try</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (ws) &#123;</span></span><br><span class="line"><span class="language-javascript">          ws.<span class="title function_">disconnect</span>();</span></span><br><span class="line"><span class="language-javascript">          <span class="title function_">updateStatus</span>(<span class="string">&#x27;disconnected&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">      &#125; <span class="keyword">catch</span> (error) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;断开连接时发生错误:&#x27;</span>, error);</span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">    </span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 处理自动重连</span></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">handleReconnect</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">if</span> (reconnectAttempts &lt; maxReconnectAttempts) &#123;</span></span><br><span class="line"><span class="language-javascript">        reconnectAttempts++;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`尝试重新连接 (<span class="subst">$&#123;reconnectAttempts&#125;</span>/<span class="subst">$&#123;maxReconnectAttempts&#125;</span>)...`</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="title function_">connectStream</span>();</span></span><br><span class="line"><span class="language-javascript">        &#125;, <span class="number">3000</span> * reconnectAttempts); <span class="comment">// 递增延迟时间</span></span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">    </span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 事件监听器</span></span></span><br><span class="line"><span class="language-javascript">    connectBtn.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, connectStream);</span></span><br><span class="line"><span class="language-javascript">    disconnectBtn.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, disconnectStream);</span></span><br><span class="line"><span class="language-javascript">    </span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 页面加载时连接视频</span></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;load&#x27;</span>, connectStream);</span></span><br><span class="line"><span class="language-javascript">    </span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 页面关闭前断开连接</span></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;beforeunload&#x27;</span>, disconnectStream);</span></span><br><span class="line"><span class="language-javascript">    </span></span><br><span class="line"><span class="language-javascript">    <span class="comment">// 监听视频错误事件</span></span></span><br><span class="line"><span class="language-javascript">    videoElement.<span class="title function_">addEventListener</span>(<span class="string">&#x27;error&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&#x27;视频元素错误:&#x27;</span>, e);</span></span><br><span class="line"><span class="language-javascript">      <span class="title function_">updateStatus</span>(<span class="string">&#x27;error&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="title function_">handleReconnect</span>();</span></span><br><span class="line"><span class="language-javascript">    &#125;);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>将上面的代码保存为 HTML 文件，并确保 <code>webrtcstreamer.js</code> 文件在同一目录下，然后在浏览器中打开，就能看到带有状态指示和控制按钮的视频播放页面了。页面会自动连接到配置的摄像头，并显示实时画面。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/webrtc.png"
+                        alt="WebRTC 视频播放效果"
+                 ></h2><h3 id="六、进阶应用与优化"><a href="#六、进阶应用与优化" class="headerlink" title="六、进阶应用与优化"></a>六、进阶应用与优化</h3><h4 id="1-多摄像头接入"><a href="#1-多摄像头接入" class="headerlink" title="1. 多摄像头接入"></a>1. 多摄像头接入</h4><p>在实际项目中，我们经常需要同时管理多个摄像头。WebRTC-Streamer 支持通过环境变量配置多个 RTSP 流：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8000:8000 \</span><br><span class="line">  -e RTSP_URL_1=<span class="string">&quot;rtsp://admin:pass@192.168.1.64:554/Streaming/Channels/101&quot;</span> \</span><br><span class="line">  -e RTSP_URL_2=<span class="string">&quot;rtsp://admin:pass@192.168.1.65:554/Streaming/Channels/101&quot;</span> \</span><br><span class="line">  mpromonet/webrtc-streamer</span><br></pre></td></tr></table></figure>
+
+<p>在前端，我们可以添加一个摄像头选择器，让用户可以方便地切换不同的视频流。我在项目中还实现了画面分割功能，支持同时显示 4 路或 9 路摄像头画面，这样监控效率会大大提高。</p>
+<h4 id="2-延迟优化建议"><a href="#2-延迟优化建议" class="headerlink" title="2. 延迟优化建议"></a>2. 延迟优化建议</h4><p>在实时监控场景中，延迟是一个关键指标。经过实际测试，我总结了几个有效的优化建议：</p>
+<ul>
+<li><strong>使用子码流</strong>：对于普通监控场景，使用子码流（将 URL 中的 <code>101</code> 改为 <code>102</code>）可以在保证基本画面质量的同时，显著降低带宽占用和延迟</li>
+<li><strong>优化网络环境</strong>：确保摄像头和 WebRTC-Streamer 服务器在同一个局域网内，减少网络跳转</li>
+<li><strong>调整服务器配置</strong>：如果服务器性能允许，可以适当调整 WebRTC-Streamer 的缓存参数</li>
+<li><strong>避免转码</strong>：尽量保持视频编码格式的兼容性，让 WebRTC-Streamer 只做转封装而不进行转码，这样能大大减少延迟</li>
+</ul>
+<p>在我的项目中，通过这些优化，视频延迟可以稳定控制在 300ms 以内。</p>
+<h4 id="3-HTTPS-与远程访问"><a href="#3-HTTPS-与远程访问" class="headerlink" title="3. HTTPS 与远程访问"></a>3. HTTPS 与远程访问</h4><p>这里有个重要的安全限制需要注意：WebRTC 必须在安全上下文（HTTPS 或 localhost）中才能正常工作。如果需要远程访问，我们需要配置 HTTPS。</p>
+<p>我的做法是使用 Nginx 作为反向代理，并配置 SSL 证书：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line">    </span><br><span class="line">    <span class="attribute">ssl_certificate</span> /path/to/cert.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /path/to/key.pem;</span><br><span class="line">    </span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://localhost:8000;</span><br><span class="line">        <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Connection <span class="string">&#x27;upgrade&#x27;</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_cache_bypass</span> <span class="variable">$http_upgrade</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样配置后，用户就可以通过 HTTPS 安全地远程访问视频监控系统了。</p>
+<hr>
+<h3 id="七、总结"><a href="#七、总结" class="headerlink" title="七、总结"></a>七、总结</h3><p>经过这次项目实践，我发现 WebRTC-Streamer 确实是连接安防摄像头和 Web 前端的理想桥梁。整个方案具有以下优势：</p>
+<ul>
+<li><strong>兼容性好</strong>：几乎支持所有主流浏览器，无需安装任何插件</li>
+<li><strong>延迟极低</strong>：通过合理优化，延迟可以控制在几百毫秒内</li>
+<li><strong>部署简单</strong>：使用 Docker 可以快速部署，大大降低了运维成本</li>
+<li><strong>扩展性强</strong>：支持多摄像头接入，可以根据实际需求灵活扩展</li>
+</ul>
+<p>这种方案在很多场景下都能发挥作用，比如：</p>
+<ul>
+<li>物联网设备的视频监控中心</li>
+<li>智慧园区的可视化大屏展示</li>
+<li>工厂或工地的远程巡检系统</li>
+<li>零售店铺的实时客流分析</li>
+</ul>
+<p>如果你也在做类似的项目，不妨试试这个方案，相信会给你带来不错的效果。</p>
+<hr>
+<h3 id="八、参考资料"><a href="#八、参考资料" class="headerlink" title="八、参考资料"></a>八、参考资料</h3><p>在实现这个方案的过程中，我查阅了不少资料，这里分享给大家：</p>
+<ul>
+<li><a class="link"   target="_blank" rel="noopener" href="https://github.com/mpromonet/webrtc-streamer" >WebRTC-Streamer 官方仓库<i class="fas fa-external-link-alt"></i></a> - 包含最新的代码和详细文档</li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://www.hikvision.com/cn/support/Downloads/TechnicalDocuments/" >海康威视设备网络SDK使用手册<i class="fas fa-external-link-alt"></i></a></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://webrtc.org/start/" >WebRTC 官方文档<i class="fas fa-external-link-alt"></i></a></li>
+<li><a class="link"   target="_blank" rel="noopener" href="https://docs.docker.com/" >Docker 官方文档<i class="fas fa-external-link-alt"></i></a></li>
+</ul>
+
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                基于 RTSP 协议与 WebRTC-Streamer 实现海康摄像头视频流的网页实时播放
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2025/10/24/网络协议与流媒体/基于-RTSP-协议与-WebRTC-Streamer-实现海康摄像头视频流的网页实时播放/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    Author
+                </div>
+                <div class="content">ClearSky Drizzle</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    Published
+                </div>
+                <div class="content">2025-10-24 16:45</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    License
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="Copy copyright info" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/RTSP/">RTSP</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="Share to WeChat"
+            data-tooltip-img-tip="Scan by WeChat"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to WeiBo"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2025/09/24/%E8%BF%90%E7%BB%B4/linux/Parallel-Ubuntu-initramfs-%E7%9A%84%E7%B4%A7%E6%80%A5%E4%BF%AE%E5%A4%8D%E6%A8%A1%E5%BC%8F%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86/"
+                                   title="Parallel Ubuntu initramfs 的紧急修复模式如何处理"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Parallel Ubuntu initramfs 的紧急修复模式如何处理</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">Comment plugin failed to load</span>
+    <button class="reload keep-button">Click to reload</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">Loading comment plugin</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="waline-comment-container">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline-meta.css"/>
+        <div id="waline-comment"></div>
+        <script data-pjax>
+          window.KeepCommentPlugin.walineOptions = JSON.parse('{}'.replace(/&#34;/g, '"'))
+          window.KeepCommentPlugin.walineOptions.el = '#waline-comment'
+          window.KeepCommentPlugin.walineOptions.comment = '.post-comments-count'
+          window.KeepCommentPlugin.walineOptions.serverURL = 'https://comment.lllcnm.cn'
+          window.KeepCommentPlugin.walineOptions.lang = 'en' || 'zh-CN'
+          window.KeepCommentPlugin.walineOptions.reaction = 'true' === 'true'
+        </script>
+
+        
+
+        
+            <script data-pjax
+                    async
+                    type="module"
+            >
+              import { init } from '//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.js'
+              window.KeepCommentPlugin.initWaline = () => {
+                if (init) {
+                  init(window.KeepCommentPlugin.walineOptions)
+                  window.KeepCommentPlugin.hideLoading()
+                } else {
+                  setTimeout(() => {
+                    window.KeepCommentPlugin.initWaline()
+                  }, 1000)
+                }
+              }
+
+              if ('true' === 'true') {
+                setTimeout(() => {
+                  window.KeepCommentPlugin.initWaline()
+                }, 1200)
+              } else {
+                window.addEventListener('DOMContentLoaded', window.KeepCommentPlugin.initWaline)
+              }
+            </script>
+        
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">二、核心原理解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-RTSP-%E5%8D%8F%E8%AE%AE%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">1. RTSP 协议简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-WebRTC-%E5%8D%8F%E8%AE%AE%E7%AE%80%E4%BB%8B"><span class="nav-number">2.2.</span> <span class="nav-text">2. WebRTC 协议简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-WebRTC-Streamer-%E4%BD%9C%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">3. WebRTC-Streamer 作用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">3.</span> <span class="nav-text">三、部署环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%89%8D%E7%BD%AE%E6%9D%A1%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">1. 前置条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E6%91%84%E5%83%8F%E5%A4%B4-RTSP-%E5%9C%B0%E5%9D%80"><span class="nav-number">3.2.</span> <span class="nav-text">2. 获取摄像头 RTSP 地址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E4%BD%BF%E7%94%A8-WebRTC-Streamer-%E8%BD%AC%E6%8E%A8-RTSP-%E6%B5%81"><span class="nav-number">4.</span> <span class="nav-text">四、使用 WebRTC-Streamer 转推 RTSP 流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F%E5%B9%B6%E8%BF%90%E8%A1%8C"><span class="nav-number">4.1.</span> <span class="nav-text">1. 拉取镜像并运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%AA%8C%E8%AF%81%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.2.</span> <span class="nav-text">2. 验证服务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%89%8D%E7%AB%AF%E7%BD%91%E9%A1%B5%E5%B5%8C%E5%85%A5-WebRTC-%E6%92%AD%E6%94%BE"><span class="nav-number">5.</span> <span class="nav-text">五、前端网页嵌入 WebRTC 播放</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number"></span> <span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">六、进阶应用与优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%A4%9A%E6%91%84%E5%83%8F%E5%A4%B4%E6%8E%A5%E5%85%A5"><span class="nav-number">1.1.</span> <span class="nav-text">1. 多摄像头接入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%BB%B6%E8%BF%9F%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.2.</span> <span class="nav-text">2. 延迟优化建议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-HTTPS-%E4%B8%8E%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE"><span class="nav-number">1.3.</span> <span class="nav-text">3. HTTPS 与远程访问</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">七、总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">3.</span> <span class="nav-text">八、参考资料</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2022</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">ClearSky Drizzle</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            This site is deployed on <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span>
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">一、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">二、核心原理解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-RTSP-%E5%8D%8F%E8%AE%AE%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">1. RTSP 协议简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-WebRTC-%E5%8D%8F%E8%AE%AE%E7%AE%80%E4%BB%8B"><span class="nav-number">2.2.</span> <span class="nav-text">2. WebRTC 协议简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-WebRTC-Streamer-%E4%BD%9C%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">3. WebRTC-Streamer 作用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="nav-number">3.</span> <span class="nav-text">三、部署环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%89%8D%E7%BD%AE%E6%9D%A1%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">1. 前置条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E6%91%84%E5%83%8F%E5%A4%B4-RTSP-%E5%9C%B0%E5%9D%80"><span class="nav-number">3.2.</span> <span class="nav-text">2. 获取摄像头 RTSP 地址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E4%BD%BF%E7%94%A8-WebRTC-Streamer-%E8%BD%AC%E6%8E%A8-RTSP-%E6%B5%81"><span class="nav-number">4.</span> <span class="nav-text">四、使用 WebRTC-Streamer 转推 RTSP 流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F%E5%B9%B6%E8%BF%90%E8%A1%8C"><span class="nav-number">4.1.</span> <span class="nav-text">1. 拉取镜像并运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%AA%8C%E8%AF%81%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.2.</span> <span class="nav-text">2. 验证服务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%89%8D%E7%AB%AF%E7%BD%91%E9%A1%B5%E5%B5%8C%E5%85%A5-WebRTC-%E6%92%AD%E6%94%BE"><span class="nav-number">5.</span> <span class="nav-text">五、前端网页嵌入 WebRTC 播放</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number"></span> <span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">六、进阶应用与优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%A4%9A%E6%91%84%E5%83%8F%E5%A4%B4%E6%8E%A5%E5%85%A5"><span class="nav-number">1.1.</span> <span class="nav-text">1. 多摄像头接入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%BB%B6%E8%BF%9F%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.2.</span> <span class="nav-text">2. 延迟优化建议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-HTTPS-%E4%B8%8E%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE"><span class="nav-number">1.3.</span> <span class="nav-text">3. HTTPS 与远程访问</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">七、总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">3.</span> <span class="nav-text">八、参考资料</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+            
+<script src="/js/post/share.js"></script>
+
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

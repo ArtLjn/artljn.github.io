@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="ClearSky Drizzle">
+    
+    <title>
+        
+            C语言数据结构 |
+        
+        ClearSky Drizzle
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/avatar.jpg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"blog.lllcnm.cn","root":"/","language":"en","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":null,"author":"ClearSky Drizzle","avatar":"/images/avatar.jpg","logo":"/images/avatar.jpg","favicon":"/images/avatar.jpg"},"menu":{"home":"/","archives":"/archives","tags":"/tags","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":null}},"scroll":{"progress_bar":true,"percent":true,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":true,"share":true,"reward":{"enable":true,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"waline","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":"https://comment.lllcnm.cn","reaction":true,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2022,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original post title","author":"Original post author","link":"Original post link"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/avatar.jpg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               ClearSky Drizzle
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                HOME
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                ARCHIVES
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tags">
+                                
+                                TAGS
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                ABOUT
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                            HOME
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                            ARCHIVES
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tags">
+                            
+                            TAGS
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            ABOUT
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        C语言数据结构
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">ClearSky Drizzle</span>
+                                
+                                    <span class="author-badge">Lv4</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2024-12-25 19:10:21</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Thu Dec 26 2024 17:59:20 GMT+0800">2024-12-26 17:59:20</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/C/">C</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h1 id="C语言排序算法"><a href="#C语言排序算法" class="headerlink" title="C语言排序算法"></a>C语言排序算法</h1><h2 id="1-选择排序"><a href="#1-选择排序" class="headerlink" title="1. 选择排序"></a>1. 选择排序</h2><ol>
+<li>升序即，将第一个元素与其他进行比较，要比第一个元素小的就交换，第一轮之后会得到最小元素，第二轮会第二个元素与其他进行比较，小的就交换，至到最后一轮比较交换结束之后就排序完在。</li>
+<li>降序即，每次都找大的。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">select_sort</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> number_list[] = &#123;<span class="number">88</span>,<span class="number">10</span>,<span class="number">99</span>,<span class="number">50</span>,<span class="number">30</span>,<span class="number">100</span>,<span class="number">57</span>,<span class="number">67</span>,<span class="number">29</span>&#125;;</span><br><span class="line">    <span class="comment">// 获取数组长度</span></span><br><span class="line">    <span class="type">int</span> length =  <span class="keyword">sizeof</span>(number_list)/ <span class="keyword">sizeof</span>(number_list[<span class="number">0</span>]);</span><br><span class="line">    <span class="comment">// 创建临时变量</span></span><br><span class="line">    <span class="type">int</span> tmp1;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;i &lt; length - <span class="number">1</span>; i ++) &#123; <span class="comment">// 比较轮数</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = i + <span class="number">1</span>; j &lt;= length - <span class="number">1</span>;j ++ ) &#123; <span class="comment">// 每次比较的数组</span></span><br><span class="line">            <span class="comment">// 进行比较，升序排序</span></span><br><span class="line">            <span class="keyword">if</span> (number_list[i] &gt; number_list[j]) &#123;</span><br><span class="line">                tmp1 = number_list[i];</span><br><span class="line">                number_list[i] = number_list[j];</span><br><span class="line">                number_list[j] = tmp1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">0</span>; k &lt; length;k ++) &#123;</span><br><span class="line">        <span class="comment">// 每三个元素换行</span></span><br><span class="line">        <span class="keyword">if</span> (k != <span class="number">0</span> &amp;&amp; k % <span class="number">3</span> == <span class="number">0</span> ) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,number_list[k]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="2-冒泡排序"><a href="#2-冒泡排序" class="headerlink" title="2. 冒泡排序"></a>2. 冒泡排序</h2><ol>
+<li>升序，则从前面往后开始，依此比较相邻的两个元素的大小，较大的下沉，较小的上升。第一轮过<br>后，最大的元素就放在最后一位了。第二轮过后，次大的元素就放在倒数第二位了，之后依此类推。</li>
+<li>降序，则从前面往后开始，依此比较相邻的两个元素的大小，较小的下沉，较大的上升。第一轮过<br>后，最小的元素就放在最后一位了。第二轮过后，次小的元素就放在倒数第二位了，之后依此类推。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">bubble_sort</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> number_list[] = &#123;<span class="number">88</span>,<span class="number">10</span>,<span class="number">99</span>,<span class="number">50</span>,<span class="number">30</span>,<span class="number">100</span>,<span class="number">57</span>,<span class="number">67</span>,<span class="number">29</span>&#125;;</span><br><span class="line">    <span class="comment">// 获取数组长度</span></span><br><span class="line">    <span class="type">int</span> length =  <span class="keyword">sizeof</span>(number_list)/ <span class="keyword">sizeof</span>(number_list[<span class="number">0</span>]);</span><br><span class="line">    <span class="comment">// 创建临时变量</span></span><br><span class="line">    <span class="type">int</span> tmp1;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;i &lt; length - <span class="number">1</span>;i ++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>;j &lt; length - j - <span class="number">1</span>;j ++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (number_list[j]&gt;number_list[j+<span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="comment">// 交换数据</span></span><br><span class="line">                tmp1 = number_list[j];</span><br><span class="line">                number_list[j] = number_list[j + <span class="number">1</span>];</span><br><span class="line">                number_list[j + <span class="number">1</span>] = tmp1;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> k = <span class="number">0</span>; k &lt; length;k ++) &#123;</span><br><span class="line">        <span class="comment">// 每三个元素换行</span></span><br><span class="line">        <span class="keyword">if</span> (k != <span class="number">0</span> &amp;&amp; k % <span class="number">3</span> == <span class="number">0</span> ) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>,number_list[k]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-快速排序法"><a href="#3-快速排序法" class="headerlink" title="3.快速排序法"></a>3.快速排序法</h2><p>通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都<br>要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数<br>据变成有序序列。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">run1224</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a[] = &#123;<span class="number">88</span>,<span class="number">10</span>,<span class="number">99</span>,<span class="number">50</span>,<span class="number">30</span>,<span class="number">100</span>,<span class="number">57</span>,<span class="number">67</span>,<span class="number">29</span>&#125;;</span><br><span class="line">    <span class="type">int</span> len = <span class="keyword">sizeof</span>(a)/ <span class="keyword">sizeof</span>(a[<span class="number">0</span>]);</span><br><span class="line">    quick_sort(a,<span class="number">0</span>,len<span class="number">-1</span>);</span><br><span class="line">    printList(a,len);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 快速排序</span></span><br><span class="line"><span class="comment"> * @param a 数组</span></span><br><span class="line"><span class="comment"> * @param low 基准值</span></span><br><span class="line"><span class="comment"> * @param high 最后一个元素索引</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">quick_sort</span><span class="params">(<span class="type">int</span>* a,<span class="type">const</span> <span class="type">int</span> low,<span class="type">const</span> <span class="type">int</span> high)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (low &lt; high) &#123; <span class="comment">// 基准值小于最后一个元素索引</span></span><br><span class="line">        <span class="type">int</span> h = high; <span class="comment">// 创建列表最后一个元素索引备份</span></span><br><span class="line">        <span class="type">int</span> j;</span><br><span class="line">        <span class="comment">// 初始变量j为基准值，小于列表最大索引</span></span><br><span class="line">        <span class="keyword">for</span> (j = low;j &lt; h;j++) &#123;</span><br><span class="line">            <span class="comment">// 如果 a[j] 个元素大于基准值，进入下个循环</span></span><br><span class="line">            <span class="keyword">if</span> (a[j] &gt; a[low]) &#123;</span><br><span class="line">                <span class="comment">// 确保j小于列表最大索引</span></span><br><span class="line">                <span class="keyword">for</span> (; h &gt; j; h --) &#123;</span><br><span class="line">                    <span class="comment">// 如果最后一个元素，小于基准值，则进行交换</span></span><br><span class="line">                    <span class="keyword">if</span> (a[h] &lt; a[low]) &#123;</span><br><span class="line">                        <span class="comment">/**</span></span><br><span class="line"><span class="comment">                         * 进行元素交换，列如当前 a[h] = 29,a[low] = 88,a[j] = 99</span></span><br><span class="line"><span class="comment">                         * a[j] = a[j] + a[h] = 128</span></span><br><span class="line"><span class="comment">                         * a[h] = a[j] - a[h] = 99</span></span><br><span class="line"><span class="comment">                         * a[j] = a[j] - a[h] = 29</span></span><br><span class="line"><span class="comment">                         */</span></span><br><span class="line">                        a[j] += a[h];</span><br><span class="line">                        a[h] = a[j] - a[h];</span><br><span class="line">                        a[j]-=a[h];</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (a[low] &gt; a[h]) &#123;</span><br><span class="line">            a[low] += a[h];</span><br><span class="line">            a[h] = a[low] - a[h];</span><br><span class="line">            a[low] -= a[h];</span><br><span class="line">        &#125;</span><br><span class="line">        quick_sort(a,low,h<span class="number">-1</span>);</span><br><span class="line">        quick_sort(a,h,high);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 函数声明，需要传递数组和数组的长度</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">printList</span><span class="params">(<span class="type">int</span> *a, <span class="type">int</span> len)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-直接插入排序法"><a href="#4-直接插入排序法" class="headerlink" title="4. 直接插入排序法"></a>4. 直接插入排序法</h2><p>每一步将一个待排序的元素,按其排序码的大小,插入到前面已经排好序的一组元素的适当位置上去,直到元素<br>全部插入为止。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直接插入升序排序</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">direct_insert_sort_asc</span><span class="params">(<span class="type">int</span> *number_list,<span class="type">int</span> len)</span> &#123;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;i &lt;= len - <span class="number">1</span>;i ++) &#123;</span><br><span class="line">        temp = number_list[i];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = i - <span class="number">1</span>;j &gt;= <span class="number">0</span>;j--) &#123;</span><br><span class="line">            <span class="keyword">if</span> (number_list[j] &gt; temp) &#123;</span><br><span class="line">                number_list[j+<span class="number">1</span>] = number_list[j];</span><br><span class="line">                number_list[j] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    printList(number_list,len);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接插入降序排序</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">direct_insert_sort_desc</span><span class="params">(<span class="type">int</span> *number_list, <span class="type">int</span> len)</span> &#123;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt; len; i++) &#123; <span class="comment">// 从第二个元素开始</span></span><br><span class="line">        temp = number_list[i];</span><br><span class="line">        <span class="type">int</span> j;</span><br><span class="line">        <span class="keyword">for</span> (j = i - <span class="number">1</span>; j &gt;= <span class="number">0</span> &amp;&amp; number_list[j] &lt; temp; j--) &#123; <span class="comment">// 比较条件改为小于</span></span><br><span class="line">            number_list[j + <span class="number">1</span>] = number_list[j]; <span class="comment">// 将元素向后移动</span></span><br><span class="line">        &#125;</span><br><span class="line">        number_list[j + <span class="number">1</span>] = temp; <span class="comment">// 插入正确的位置</span></span><br><span class="line">    &#125;</span><br><span class="line">    printList(number_list, len); <span class="comment">// 打印排序后的列表</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="C语言查找法"><a href="#C语言查找法" class="headerlink" title="C语言查找法"></a>C语言查找法</h1><h2 id="1-顺序查找法"><a href="#1-顺序查找法" class="headerlink" title="1. 顺序查找法"></a>1. 顺序查找法</h2><p>顺序查找又称线性查找，是最基本的查找方法。它的查找过程为：从第一个元素起，逐个与待查元素比较，<br>若与待查元素相等，则查找成功，返回待查元素在查找表中的位置；若与待查元素不等，则继续与<br>查找表中的下一个元素比较，直到查找结束为止。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 顺序查找</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">sequential_search</span><span class="params">(<span class="type">int</span> *number_list,<span class="type">int</span> len,<span class="type">int</span> key)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>;i &lt; len;i ++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (number_list[i] == key) &#123;</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-二分查找法"><a href="#2-二分查找法" class="headerlink" title="2. 二分查找法"></a>2. 二分查找法</h2><p>二分查找法（Binary Search）又称折半查找法，它是一种在有序数组中查找特定元素的搜索算法。二分查找<br>法的基本思想是将待查元素与数组的中间元素进行比较，如果相等，则返回中间元素的索引；如果待查元素<br>小于中间元素，则在数组的左半部分继续查找；如果待查元素大于中间元素，则在数组的右半部分继续查找。重复这个过程，直到找到待查元素或查找范围为空。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 二分查找</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">binary_search</span><span class="params">(<span class="type">int</span> *number_list,<span class="type">int</span> len,<span class="type">int</span> key)</span> &#123;</span><br><span class="line">    <span class="type">int</span> low = <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> high = len - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (low &lt;= high) &#123;</span><br><span class="line">        <span class="type">int</span> mid = (low + high) / <span class="number">2</span>; <span class="comment">// 计算中间元素的索引</span></span><br><span class="line">        <span class="keyword">if</span> (number_list[mid] == key) &#123;</span><br><span class="line">            <span class="keyword">return</span> mid; <span class="comment">// 找到元素，返回索引</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (number_list[mid] &gt; key) &#123;</span><br><span class="line">            high = mid - <span class="number">1</span>; <span class="comment">// 在左半部分继续查找</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            low = mid + <span class="number">1</span>; <span class="comment">// 在右半部分继续查找</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>; <span class="comment">// 未找到元素，返回-1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="C语言栈"><a href="#C语言栈" class="headerlink" title="C语言栈"></a>C语言栈</h1><p>栈是一种后进先出（LIFO）的数据结构，它只允许在一端进行插入和删除操作。栈的基本操作包括压栈（Push）和弹栈（Pop）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_SIZE 100</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> data[MAX_SIZE];</span><br><span class="line">    <span class="type">int</span> top;</span><br><span class="line">&#125; Stack;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">initStack</span><span class="params">(Stack *s)</span> &#123;</span><br><span class="line">    s-&gt;top = <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">isEmpty</span><span class="params">(Stack *s)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> s-&gt;top == <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">isFull</span><span class="params">(Stack *s)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> s-&gt;top == MAX_SIZE - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">push</span><span class="params">(Stack *s, <span class="type">int</span> value)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (isFull(s)) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Stack is full.\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    s-&gt;data[++s-&gt;top] = value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">pop</span><span class="params">(Stack *s)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty(s)) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Stack is empty.\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> s-&gt;data[s-&gt;top--];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    Stack s; initStack(&amp;s);</span><br><span class="line">&#125;</span><br><span class="line">    push(&amp;s, <span class="number">1</span>);</span><br><span class="line">    push(&amp;s, <span class="number">2</span>);</span><br><span class="line">    push(&amp;s, <span class="number">3</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, pop(&amp;s)); <span class="comment">// 输出 3</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, pop(&amp;s)); <span class="comment">// 输出 2</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, pop(&amp;s)); <span class="comment">// 输出 1</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, pop(&amp;s)); <span class="comment">// 输出 &quot;Stack is empty.&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="C语言队列"><a href="#C语言队列" class="headerlink" title="C语言队列"></a>C语言队列</h1><p>队列是一种先进先出（FIFO）的数据结构，它只允许在一端进行插入操作，在另一端进行删除操作。队列的基本操作包括入队（Enqueue）和出队（Dequeue）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_SIZE 100</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> data[MAX_SIZE];</span><br><span class="line">    <span class="type">int</span> front;</span><br><span class="line">    <span class="type">int</span> rear;</span><br><span class="line">&#125; Queue;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">initQueue</span><span class="params">(Queue *q)</span> &#123;</span><br><span class="line">    q-&gt;front = <span class="number">0</span>;</span><br><span class="line">    q-&gt;rear = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">isEmpty</span><span class="params">(Queue *q)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> q-&gt;front == q-&gt;rear;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">isFull</span><span class="params">(Queue *q)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (q-&gt;rear + <span class="number">1</span>) % MAX_SIZE == q-&gt;front;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">enqueue</span><span class="params">(Queue *q, <span class="type">int</span> value)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (isFull(q)) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Queue is full.\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    q-&gt;data[q-&gt;rear] = value;</span><br><span class="line">    q-&gt;rear = (q-&gt;rear + <span class="number">1</span>) % MAX_SIZE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">dequeue</span><span class="params">(Queue *q)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty(q)) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Queue is empty.\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> value = q-&gt;data[q-&gt;front];</span><br><span class="line">    q-&gt;front = (q-&gt;front + <span class="number">1</span>) % MAX_SIZE;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    Queue q; initQueue(&amp;q);</span><br><span class="line">    enqueue(&amp;q, <span class="number">1</span>);</span><br><span class="line">    enqueue(&amp;q, <span class="number">2</span>);</span><br><span class="line">    enqueue(&amp;q, <span class="number">3</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, dequeue(&amp;q)); <span class="comment">// 输出 1</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, dequeue(&amp;q)); <span class="comment">// 输出 2</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, dequeue(&amp;q)); <span class="comment">// 输出 3</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, dequeue(&amp;q)); <span class="comment">// 输出 &quot;Queue is empty.&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="C语言链表"><a href="#C语言链表" class="headerlink" title="C语言链表"></a>C语言链表</h1><p>链表是一种动态数据结构，它由一系列节点组成，每个节点包含数据和指向下一个节点的指针。链表的基本操作包括插入、删除和查找。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125; Node;</span><br><span class="line"></span><br><span class="line">Node *<span class="title function_">createNode</span><span class="params">(<span class="type">int</span> data)</span> &#123;</span><br><span class="line">    Node *node = (Node *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));</span><br><span class="line">    node-&gt;data = data;</span><br><span class="line">    node-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">insertNode</span><span class="params">(Node **head, <span class="type">int</span> data)</span> &#123;</span><br><span class="line">    Node *node = createNode(data);</span><br><span class="line">    node-&gt;next = *head;</span><br><span class="line">    *head = node;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">deleteNode</span><span class="params">(Node **head, <span class="type">int</span> data)</span> &#123;</span><br><span class="line">    Node *temp = *head;</span><br><span class="line">    Node *prev = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">while</span> (temp != <span class="literal">NULL</span> &amp;&amp; temp-&gt;data != data) &#123;</span><br><span class="line">        prev = temp;</span><br><span class="line">        temp = temp-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (temp == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Node with data %d not found.\n&quot;</span>, data);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (prev == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        *head = temp-&gt;next;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        prev-&gt;next = temp-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(temp);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">printList</span><span class="params">(Node *head)</span> &#123;</span><br><span class="line">    Node *temp = head;</span><br><span class="line">    <span class="keyword">while</span> (temp != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, temp-&gt;data);</span><br><span class="line">        temp = temp-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    Node *head = <span class="literal">NULL</span>;</span><br><span class="line">    insertNode(&amp;head, <span class="number">3</span>);</span><br><span class="line">    insertNode(&amp;head, <span class="number">2</span>);</span><br><span class="line">    insertNode(&amp;head, <span class="number">1</span>);</span><br><span class="line">    printList(head); <span class="comment">// 输出 1 2 3</span></span><br><span class="line">    deleteNode(&amp;head, <span class="number">2</span>);</span><br><span class="line">    printList(head); <span class="comment">// 输出 1 3</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="C语言树"><a href="#C语言树" class="headerlink" title="C语言树"></a>C语言树</h1><p>树是一种非线性数据结构，它由一系列节点组成，每个节点包含数据和指向子节点的指针。树的基本操作包括插入、删除和查找。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">left</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">right</span>;</span></span><br><span class="line">&#125; Node;</span><br><span class="line"></span><br><span class="line">Node *<span class="title function_">createNode</span><span class="params">(<span class="type">int</span> data)</span> &#123;</span><br><span class="line">    Node *node = (Node *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));</span><br><span class="line">    node-&gt;data = data;</span><br><span class="line">    node-&gt;left = <span class="literal">NULL</span>;</span><br><span class="line">    node-&gt;right = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">insertNode</span><span class="params">(Node **root, <span class="type">int</span> data)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (*root == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        *root = createNode(data);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (data &lt; (*root)-&gt;data) &#123;</span><br><span class="line">        insertNode(&amp;(*root)-&gt;left, data);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        insertNode(&amp;(*root)-&gt;right, data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">deleteNode</span><span class="params">(Node **root, <span class="type">int</span> data)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (*root == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Node with data %d not found.\n&quot;</span>, data);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (data &lt; (*root)-&gt;data) &#123;</span><br><span class="line">        deleteNode(&amp;(*root)-&gt;left, data);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (data &gt; (*root)-&gt;data) &#123;</span><br><span class="line">        deleteNode(&amp;(*root)-&gt;right, data);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> ((*root)-&gt;left == <span class="literal">NULL</span> &amp;&amp; (*root)-&gt;right == <span class="literal">NULL</span>) &#123;</span><br><span class="line">            <span class="built_in">free</span>(*root);</span><br><span class="line">            *root = <span class="literal">NULL</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((*root)-&gt;left == <span class="literal">NULL</span>) &#123;</span><br><span class="line">            Node *temp = *root;</span><br><span class="line">            *root = (*root)-&gt;right;</span><br><span class="line">            <span class="built_in">free</span>(temp);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((*root)-&gt;right == <span class="literal">NULL</span>) &#123;</span><br><span class="line">            Node *temp = *root;</span><br><span class="line">            *root = (*root)-&gt;left;</span><br><span class="line">            <span class="built_in">free</span>(temp);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Node *temp = findMinNode((*root)-&gt;right);</span><br><span class="line">            (*root)-&gt;data = temp-&gt;data;</span><br><span class="line">            deleteNode(&amp;(*root)-&gt;right, temp-&gt;data);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Node *<span class="title function_">findMinNode</span><span class="params">(Node *root)</span> &#123;</span><br><span class="line">    Node *temp = root;</span><br><span class="line">    <span class="keyword">while</span> (temp-&gt;left != <span class="literal">NULL</span>) &#123;</span><br><span class="line">        temp = temp-&gt;left;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">printTree</span><span class="params">(Node *root)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (root == <span class="literal">NULL</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    printTree(root-&gt;left);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, root-&gt;data);</span><br><span class="line">    printTree(root-&gt;right);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    Node *root = <span class="literal">NULL</span>;</span><br><span class="line">    insertNode(&amp;root, <span class="number">5</span>);</span><br><span class="line">    insertNode(&amp;root, <span class="number">3</span>);</span><br><span class="line">    insertNode(&amp;root, <span class="number">7</span>);</span><br><span class="line">    insertNode(&amp;root, <span class="number">2</span>);</span><br><span class="line">    insertNode(&amp;root, <span class="number">4</span>);</span><br><span class="line">    insertNode(&amp;root, <span class="number">6</span>);</span><br><span class="line">    insertNode(&amp;root, <span class="number">8</span>);</span><br><span class="line">    printTree(root); <span class="comment">// 输出 2 3 4 5 6 7 8</span></span><br><span class="line">    deleteNode(&amp;root, <span class="number">4</span>);</span><br><span class="line">    printTree(root); <span class="comment">// 输出 2 3 5 6 7 8</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="C语言图"><a href="#C语言图" class="headerlink" title="C语言图"></a>C语言图</h1><p>图是一种非线性数据结构，它由一系列节点和边组成，每个节点可以与多个节点相连。图的基本操作包括插入、删除和查找。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Node</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125; Node;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Graph</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> numVertices;</span><br><span class="line">    Node **adjLists;</span><br><span class="line">&#125; Graph;</span><br><span class="line"></span><br><span class="line">Node *<span class="title function_">createNode</span><span class="params">(<span class="type">int</span> data)</span> &#123;</span><br><span class="line">        </span><br><span class="line">    Node *node = (Node *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Node));</span><br><span class="line">    node-&gt;data = data;</span><br><span class="line">    node-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Graph *<span class="title function_">createGraph</span><span class="params">(<span class="type">int</span> numVertices)</span> &#123;</span><br><span class="line">    Graph *graph = (Graph *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Graph));</span><br><span class="line">    graph-&gt;numVertices = numVertices;</span><br><span class="line">    graph-&gt;adjLists = (Node **)<span class="built_in">malloc</span>(numVertices * <span class="keyword">sizeof</span>(Node *));</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; numVertices; i++) &#123;</span><br><span class="line">        graph-&gt;adjLists[i] = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> graph;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">addEdge</span><span class="params">(Graph *graph, <span class="type">int</span> src, <span class="type">int</span> dest)</span> &#123;</span><br><span class="line">    Node *newNode = createNode(dest);</span><br><span class="line">    newNode-&gt;next = graph-&gt;adjLists[src];</span><br><span class="line">    graph-&gt;adjLists[src] = newNode;</span><br><span class="line"></span><br><span class="line">    newNode = createNode(src);</span><br><span class="line">    newNode-&gt;next = graph-&gt;adjLists[dest];</span><br><span class="line">    graph-&gt;adjLists[dest] = newNode;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">printGraph</span><span class="params">(Graph *graph)</span> &#123;</span><br><span class="line">    <span class="type">int</span> v;</span><br><span class="line">    <span class="keyword">for</span> (v = <span class="number">0</span>; v &lt; graph-&gt;numVertices; v++) &#123;</span><br><span class="line">        Node *temp = graph-&gt;adjLists[v];</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\n Adjacency list of vertex %d\n &quot;</span>, v);</span><br><span class="line">        <span class="keyword">while</span> (temp) &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;%d -&gt; &quot;</span>, temp-&gt;data);</span><br><span class="line">            temp = temp-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    Graph *graph = createGraph(<span class="number">5</span>);</span><br><span class="line">    addEdge(graph, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">    addEdge(graph, <span class="number">0</span>, <span class="number">4</span>);</span><br><span class="line">    addEdge(graph, <span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    addEdge(graph, <span class="number">1</span>, <span class="number">3</span>);</span><br><span class="line">    addEdge(graph, <span class="number">1</span>, <span class="number">4</span>);</span><br><span class="line">    addEdge(graph, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">    addEdge(graph, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">    printGraph(graph);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="C语言堆"><a href="#C语言堆" class="headerlink" title="C语言堆"></a>C语言堆</h1><p>堆是一种特殊的树形数据结构，它满足堆属性，即每个节点的值都大于或等于（或小于或等于）其子节点的值。堆的基本操作包括插入、删除和查找。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Heap</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> *<span class="built_in">array</span>;</span><br><span class="line">    <span class="type">int</span> capacity;</span><br><span class="line">    <span class="type">int</span> size;</span><br><span class="line">&#125; Heap;</span><br><span class="line"></span><br><span class="line">Heap *<span class="title function_">createHeap</span><span class="params">(<span class="type">int</span> capacity)</span> &#123;</span><br><span class="line">    Heap *heap = (Heap *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(Heap));</span><br><span class="line">    heap-&gt;<span class="built_in">array</span> = (<span class="type">int</span> *)<span class="built_in">malloc</span>(capacity * <span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">    heap-&gt;capacity = capacity;</span><br><span class="line">    heap-&gt;size = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> heap;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">insert</span><span class="params">(Heap *heap, <span class="type">int</span> data)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (heap-&gt;size == heap-&gt;capacity) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Heap is full\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        heap-&gt;<span class="built_in">array</span>[heap-&gt;size] = data;</span><br><span class="line">        heap-&gt;size++;</span><br><span class="line">        <span class="type">int</span> child = heap-&gt;size - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (child &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="type">int</span> parent = (child - <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (heap-&gt;<span class="built_in">array</span>[child] &lt; heap-&gt;<span class="built_in">array</span>[parent]) &#123;</span><br><span class="line">                <span class="type">int</span> temp = heap-&gt;<span class="built_in">array</span>[child];</span><br><span class="line">                heap-&gt;<span class="built_in">array</span>[child] = heap-&gt;<span class="built_in">array</span>[parent];</span><br><span class="line">                heap-&gt;<span class="built_in">array</span>[parent] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">            child = parent;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">delete</span><span class="params">(Heap *heap)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (heap-&gt;size == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Heap is empty\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        heap-&gt;<span class="built_in">array</span>[<span class="number">0</span>] = heap-&gt;<span class="built_in">array</span>[heap-&gt;size - <span class="number">1</span>];</span><br><span class="line">        heap-&gt;size--;</span><br><span class="line">        <span class="type">int</span> parent = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (parent &lt; heap-&gt;size) &#123;</span><br><span class="line">            <span class="type">int</span> leftChild = <span class="number">2</span> * parent + <span class="number">1</span>; <span class="comment">// left child</span></span><br><span class="line">            <span class="type">int</span> rightChild = <span class="number">2</span> * parent + <span class="number">2</span>; <span class="comment">// right child</span></span><br><span class="line">            <span class="type">int</span> min = parent;</span><br><span class="line">            <span class="keyword">if</span> (leftChild &lt; heap-&gt;size &amp;&amp; heap-&gt;<span class="built_in">array</span>[leftChild] &lt; heap-&gt;<span class="built_in">array</span>[min]) &#123;</span><br><span class="line">                min = leftChild;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (rightChild &lt; heap-&gt;size &amp;&amp; heap-&gt;<span class="built_in">array</span>[rightChild] &lt; heap-&gt;<span class="built_in">array</span>[min]) &#123;</span><br><span class="line">                </span><br><span class="line">                min = rightChild;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (min != parent) &#123;</span><br><span class="line">                <span class="type">int</span> temp = heap-&gt;<span class="built_in">array</span>[min];</span><br><span class="line">                heap-&gt;<span class="built_in">array</span>[min] = heap-&gt;<span class="built_in">array</span>[parent];</span><br><span class="line">                heap-&gt;<span class="built_in">array</span>[parent] = temp;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            parent = min;</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">printHeap</span><span class="params">(Heap *heap)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; heap-&gt;size; i++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d &quot;</span>, heap-&gt;<span class="built_in">array</span>[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    Heap *heap = createHeap(<span class="number">10</span>);</span><br><span class="line">    insert(heap, <span class="number">10</span>);</span><br><span class="line">    insert(heap, <span class="number">20</span>);</span><br><span class="line">    insert(heap, <span class="number">30</span>);</span><br><span class="line">    insert(heap, <span class="number">40</span>);</span><br><span class="line">    insert(heap, <span class="number">50</span>);</span><br><span class="line">    printHeap(heap);</span><br><span class="line">    delete(heap);</span><br><span class="line">    printHeap(heap);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                C语言数据结构
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2024/12/25/数据结构/C语言数据结构/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    Author
+                </div>
+                <div class="content">ClearSky Drizzle</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    Published
+                </div>
+                <div class="content">2024-12-25 19:10</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    License
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="Copy copyright info" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/C/">C</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="Share to WeChat"
+            data-tooltip-img-tip="Scan by WeChat"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to WeiBo"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2024/12/29/%E5%B7%A5%E5%85%B7/%E5%BF%AB%E9%80%9F%E6%9F%A5%E7%9C%8B%E5%91%BD%E4%BB%A4%E5%B8%AE%E5%8A%A9/"
+                                   title="如何在 macOS 和 Ubuntu 上安装 tealdeer — 快速查看命令帮助"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">如何在 macOS 和 Ubuntu 上安装 tealdeer — 快速查看命令帮助</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2024/12/22/web/Golang%E6%8E%A5%E5%85%A5Oauth2/"
+                                   title="Golang接入Oauth2"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Golang接入Oauth2</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">Comment plugin failed to load</span>
+    <button class="reload keep-button">Click to reload</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">Loading comment plugin</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="waline-comment-container">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline-meta.css"/>
+        <div id="waline-comment"></div>
+        <script data-pjax>
+          window.KeepCommentPlugin.walineOptions = JSON.parse('{}'.replace(/&#34;/g, '"'))
+          window.KeepCommentPlugin.walineOptions.el = '#waline-comment'
+          window.KeepCommentPlugin.walineOptions.comment = '.post-comments-count'
+          window.KeepCommentPlugin.walineOptions.serverURL = 'https://comment.lllcnm.cn'
+          window.KeepCommentPlugin.walineOptions.lang = 'en' || 'zh-CN'
+          window.KeepCommentPlugin.walineOptions.reaction = 'true' === 'true'
+        </script>
+
+        
+
+        
+            <script data-pjax
+                    async
+                    type="module"
+            >
+              import { init } from '//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.js'
+              window.KeepCommentPlugin.initWaline = () => {
+                if (init) {
+                  init(window.KeepCommentPlugin.walineOptions)
+                  window.KeepCommentPlugin.hideLoading()
+                } else {
+                  setTimeout(() => {
+                    window.KeepCommentPlugin.initWaline()
+                  }, 1000)
+                }
+              }
+
+              if ('true' === 'true') {
+                setTimeout(() => {
+                  window.KeepCommentPlugin.initWaline()
+                }, 1200)
+              } else {
+                window.addEventListener('DOMContentLoaded', window.KeepCommentPlugin.initWaline)
+              }
+            </script>
+        
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">C语言排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="nav-number">1.1.</span> <span class="nav-text">1. 选择排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="nav-number">1.2.</span> <span class="nav-text">2. 冒泡排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">3.快速排序法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E7%9B%B4%E6%8E%A5%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">4. 直接插入排序法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E6%9F%A5%E6%89%BE%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">C语言查找法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">1. 顺序查找法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">2. 二分查找法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E6%A0%88"><span class="nav-number">3.</span> <span class="nav-text">C语言栈</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E9%98%9F%E5%88%97"><span class="nav-number">4.</span> <span class="nav-text">C语言队列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E9%93%BE%E8%A1%A8"><span class="nav-number">5.</span> <span class="nav-text">C语言链表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E6%A0%91"><span class="nav-number">6.</span> <span class="nav-text">C语言树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E5%9B%BE"><span class="nav-number">7.</span> <span class="nav-text">C语言图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E5%A0%86"><span class="nav-number">8.</span> <span class="nav-text">C语言堆</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2022</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">ClearSky Drizzle</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            This site is deployed on <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span>
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">C语言排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F"><span class="nav-number">1.1.</span> <span class="nav-text">1. 选择排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F"><span class="nav-number">1.2.</span> <span class="nav-text">2. 冒泡排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">3.快速排序法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E7%9B%B4%E6%8E%A5%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">4. 直接插入排序法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E6%9F%A5%E6%89%BE%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">C语言查找法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">1. 顺序查找法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">2. 二分查找法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E6%A0%88"><span class="nav-number">3.</span> <span class="nav-text">C语言栈</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E9%98%9F%E5%88%97"><span class="nav-number">4.</span> <span class="nav-text">C语言队列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E9%93%BE%E8%A1%A8"><span class="nav-number">5.</span> <span class="nav-text">C语言链表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E6%A0%91"><span class="nav-number">6.</span> <span class="nav-text">C语言树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E5%9B%BE"><span class="nav-number">7.</span> <span class="nav-text">C语言图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C%E8%AF%AD%E8%A8%80%E5%A0%86"><span class="nav-number">8.</span> <span class="nav-text">C语言堆</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+            
+<script src="/js/post/share.js"></script>
+
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

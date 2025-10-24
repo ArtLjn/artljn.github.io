@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="ClearSky Drizzle">
+    
+    <title>
+        
+            Parallel Ubuntu initramfs 的紧急修复模式如何处理 |
+        
+        ClearSky Drizzle
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/avatar.jpg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"blog.lllcnm.cn","root":"/","language":"en","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":null,"author":"ClearSky Drizzle","avatar":"/images/avatar.jpg","logo":"/images/avatar.jpg","favicon":"/images/avatar.jpg"},"menu":{"home":"/","archives":"/archives","tags":"/tags","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":null}},"scroll":{"progress_bar":true,"percent":true,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":true,"share":true,"reward":{"enable":true,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"waline","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":"https://comment.lllcnm.cn","reaction":true,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2022,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original post title","author":"Original post author","link":"Original post link"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/avatar.jpg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               ClearSky Drizzle
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                HOME
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                ARCHIVES
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tags">
+                                
+                                TAGS
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                ABOUT
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                            HOME
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                            ARCHIVES
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tags">
+                            
+                            TAGS
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            ABOUT
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        Parallel Ubuntu initramfs 的紧急修复模式如何处理
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">ClearSky Drizzle</span>
+                                
+                                    <span class="author-badge">Lv4</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2025-09-24 15:44:19</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Wed Sep 24 2025 15:53:55 GMT+0800">2025-09-24 15:53:55</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/%E8%BF%90%E7%BB%B4/">运维</a></li>
+                        
+                    
+                            <li class="category-item">&nbsp;<i class="icon fas fa-angle-right"></i>&nbsp;<a href="/categories/%E8%BF%90%E7%BB%B4/linux/">linux</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/linux/">linux</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/ubuntu/">ubuntu</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/initramfs/">initramfs</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E6%95%85%E9%9A%9C%E4%BF%AE%E5%A4%8D/">故障修复</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">文件系统</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <p><img  
+                       lazyload
+                       alt="image"
+                       data-src="/images/linux-initramfs.png"
+                        alt="alt text"
+                 ></p>
+<h2 id="什么是-initramfs-紧急修复模式"><a href="#什么是-initramfs-紧急修复模式" class="headerlink" title="什么是 initramfs 紧急修复模式"></a>什么是 initramfs 紧急修复模式</h2><p>当 Ubuntu 系统启动过程中遇到文件系统错误或磁盘问题时，系统会自动进入 initramfs 紧急修复模式。这是一个最小化的根文件系统，用于在系统无法正常启动时进行故障排除和修复。</p>
+<h3 id="常见触发原因"><a href="#常见触发原因" class="headerlink" title="常见触发原因"></a>常见触发原因</h3><ul>
+<li>文件系统损坏或出现错误</li>
+<li>磁盘空间不足</li>
+<li>硬盘物理故障</li>
+<li>不正常关机导致的文件系统不一致</li>
+<li><code>/etc/fstab</code> 配置错误</li>
+<li>内核模块加载失败</li>
+</ul>
+<h2 id="进入紧急修复模式的表现"><a href="#进入紧急修复模式的表现" class="headerlink" title="进入紧急修复模式的表现"></a>进入紧急修复模式的表现</h2><p>当系统进入 initramfs 模式时，你会看到类似以下的提示：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BusyBox v1.30.1 (Ubuntu 1:1.30.1-4ubuntu6.3) built-in shell (ash)</span><br><span class="line">Enter &#x27;help&#x27; for a list of built-in commands.</span><br><span class="line"></span><br><span class="line">(initramfs) </span><br></pre></td></tr></table></figure>
+
+<h2 id="快速修复方法"><a href="#快速修复方法" class="headerlink" title="快速修复方法"></a>快速修复方法</h2><h3 id="1-文件系统检查和修复"><a href="#1-文件系统检查和修复" class="headerlink" title="1. 文件系统检查和修复"></a>1. 文件系统检查和修复</h3><p>最常用的修复命令是使用 <code>fsck</code> 对文件系统进行检查和修复：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fsck -y /dev/sda2</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li><code>-y</code>：对所有询问自动回答 “yes”，自动修复发现的错误</li>
+<li><code>/dev/sda2</code>：需要检查的分区，通常是根分区</li>
+</ul>
+<h3 id="2-确认修复结果"><a href="#2-确认修复结果" class="headerlink" title="2. 确认修复结果"></a>2. 确认修复结果</h3><p>修复完成后，你会看到类似以下输出：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fsck from util-linux 2.39.3</span><br><span class="line">e2fsck 1.46.2 (28-Feb-2021)</span><br><span class="line">/dev/sda2: clean, 1234/567890 files, 123456/2345678 blocks</span><br></pre></td></tr></table></figure>
+
+<p>输出说明：</p>
+<ul>
+<li><code>clean</code>：表示文件系统已经干净，没有错误</li>
+<li><code>files</code>：显示已使用的 inode 数量</li>
+<li><code>blocks</code>：显示已使用的数据块数量</li>
+</ul>
+<h3 id="3-退出并重启"><a href="#3-退出并重启" class="headerlink" title="3. 退出并重启"></a>3. 退出并重启</h3><p>修复完成后，使用以下命令退出并重启系统：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="进阶故障排除"><a href="#进阶故障排除" class="headerlink" title="进阶故障排除"></a>进阶故障排除</h2><h3 id="检查磁盘分区"><a href="#检查磁盘分区" class="headerlink" title="检查磁盘分区"></a>检查磁盘分区</h3><p>如果不确定哪个分区是根分区，可以使用以下命令查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">blkid</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">fdisk -l</span><br></pre></td></tr></table></figure>
+
+<h3 id="挂载文件系统进行手动修复"><a href="#挂载文件系统进行手动修复" class="headerlink" title="挂载文件系统进行手动修复"></a>挂载文件系统进行手动修复</h3><p>有时需要挂载文件系统进行更详细的检查：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建挂载点</span></span><br><span class="line"><span class="built_in">mkdir</span> /mnt/root</span><br><span class="line"></span><br><span class="line"><span class="comment"># 挂载根分区</span></span><br><span class="line">mount /dev/sda2 /mnt/root</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查关键文件</span></span><br><span class="line"><span class="built_in">ls</span> -la /mnt/root/etc/</span><br><span class="line"><span class="built_in">cat</span> /mnt/root/etc/fstab</span><br><span class="line"></span><br><span class="line"><span class="comment"># 卸载</span></span><br><span class="line">umount /mnt/root</span><br></pre></td></tr></table></figure>
+
+<h3 id="修复特定类型的文件系统"><a href="#修复特定类型的文件系统" class="headerlink" title="修复特定类型的文件系统"></a>修复特定类型的文件系统</h3><p>不同的文件系统使用不同的检查工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ext2/ext3/ext4 文件系统</span></span><br><span class="line">fsck.ext4 -y /dev/sda2</span><br><span class="line"></span><br><span class="line"><span class="comment"># XFS 文件系统</span></span><br><span class="line">xfs_repair /dev/sda2</span><br><span class="line"></span><br><span class="line"><span class="comment"># NTFS 文件系统</span></span><br><span class="line">ntfsfix /dev/sda2</span><br></pre></td></tr></table></figure>
+
+<h2 id="预防措施"><a href="#预防措施" class="headerlink" title="预防措施"></a>预防措施</h2><h3 id="1-定期检查文件系统"><a href="#1-定期检查文件系统" class="headerlink" title="1. 定期检查文件系统"></a>1. 定期检查文件系统</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定期运行文件系统检查（在维护时间）</span></span><br><span class="line"><span class="built_in">sudo</span> fsck -f /dev/sda2</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-监控磁盘健康状态"><a href="#2-监控磁盘健康状态" class="headerlink" title="2. 监控磁盘健康状态"></a>2. 监控磁盘健康状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装并使用 smartmontools</span></span><br><span class="line"><span class="built_in">sudo</span> apt install smartmontools</span><br><span class="line"><span class="built_in">sudo</span> smartctl -a /dev/sda</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-正确关机"><a href="#3-正确关机" class="headerlink" title="3. 正确关机"></a>3. 正确关机</h3><p>避免强制断电，始终使用正确的关机命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> shutdown -h now</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line"><span class="built_in">sudo</span> reboot</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-备份重要数据"><a href="#4-备份重要数据" class="headerlink" title="4. 备份重要数据"></a>4. 备份重要数据</h3><p>定期备份重要数据，以防止数据丢失：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 rsync 进行增量备份</span></span><br><span class="line">rsync -av --delete /home/user/ /backup/user/</span><br></pre></td></tr></table></figure>
+
+<h2 id="常见问题和解决方案"><a href="#常见问题和解决方案" class="headerlink" title="常见问题和解决方案"></a>常见问题和解决方案</h2><h3 id="Q-fsck-修复后仍然进入-initramfs-模式"><a href="#Q-fsck-修复后仍然进入-initramfs-模式" class="headerlink" title="Q: fsck 修复后仍然进入 initramfs 模式"></a>Q: fsck 修复后仍然进入 initramfs 模式</h3><p><strong>A:</strong> 可能的原因和解决方案：</p>
+<ol>
+<li>检查 <code>/etc/fstab</code> 文件是否正确</li>
+<li>验证分区 UUID 是否匹配</li>
+<li>检查是否有硬件故障</li>
+</ol>
+<h3 id="Q-修复过程中出现大量错误"><a href="#Q-修复过程中出现大量错误" class="headerlink" title="Q: 修复过程中出现大量错误"></a>Q: 修复过程中出现大量错误</h3><p><strong>A:</strong> 建议：</p>
+<ol>
+<li>不要使用 <code>-y</code> 参数，手动确认每个修复操作</li>
+<li>先进行只读检查：<code>fsck -n /dev/sda2</code></li>
+<li>如果错误过多，考虑数据恢复后重新安装系统</li>
+</ol>
+<h3 id="Q-找不到正确的设备分区"><a href="#Q-找不到正确的设备分区" class="headerlink" title="Q: 找不到正确的设备分区"></a>Q: 找不到正确的设备分区</h3><p><strong>A:</strong> 使用以下命令定位：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看所有分区</span></span><br><span class="line">lsblk</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看分区UUID和文件系统类型</span></span><br><span class="line">blkid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看当前挂载情况</span></span><br><span class="line">mount | grep <span class="string">&quot;/&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>initramfs 紧急修复模式是 Ubuntu 系统的重要安全机制，当遇到文件系统问题时：</p>
+<ol>
+<li><strong>保持冷静</strong>：这是可以修复的常见问题</li>
+<li><strong>使用 fsck</strong>：大多数问题可以通过 <code>fsck -y /dev/sda2</code> 解决</li>
+<li><strong>验证修复</strong>：确认看到 “clean” 状态后再重启</li>
+<li><strong>预防为主</strong>：定期维护和正确使用系统可以避免大多数问题</li>
+</ol>
+<p>通过正确的故障排除步骤，大多数 initramfs 相关问题都可以得到有效解决，确保系统快速恢复正常运行。</p>
+
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                Parallel Ubuntu initramfs 的紧急修复模式如何处理
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2025/09/24/运维/linux/Parallel-Ubuntu-initramfs-的紧急修复模式如何处理/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    Author
+                </div>
+                <div class="content">ClearSky Drizzle</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    Published
+                </div>
+                <div class="content">2025-09-24 15:44</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    License
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="Copy copyright info" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/linux/">linux</a>
+                                    </li>
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/ubuntu/">ubuntu</a>
+                                    </li>
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/initramfs/">initramfs</a>
+                                    </li>
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/%E6%95%85%E9%9A%9C%E4%BF%AE%E5%A4%8D/">故障修复</a>
+                                    </li>
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">文件系统</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="Share to WeChat"
+            data-tooltip-img-tip="Scan by WeChat"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to WeiBo"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2025/10/24/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E4%B8%8E%E6%B5%81%E5%AA%92%E4%BD%93/%E5%9F%BA%E4%BA%8E-RTSP-%E5%8D%8F%E8%AE%AE%E4%B8%8E-WebRTC-Streamer-%E5%AE%9E%E7%8E%B0%E6%B5%B7%E5%BA%B7%E6%91%84%E5%83%8F%E5%A4%B4%E8%A7%86%E9%A2%91%E6%B5%81%E7%9A%84%E7%BD%91%E9%A1%B5%E5%AE%9E%E6%97%B6%E6%92%AD%E6%94%BE/"
+                                   title="基于 RTSP 协议与 WebRTC-Streamer 实现海康摄像头视频流的网页实时播放"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">基于 RTSP 协议与 WebRTC-Streamer 实现海康摄像头视频流的网页实时播放</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2025/09/22/web/SpringBootJWT%E8%AE%A4%E8%AF%81%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/"
+                                   title="SpringBootJWT认证完整实现指南"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">SpringBootJWT认证完整实现指南</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">Comment plugin failed to load</span>
+    <button class="reload keep-button">Click to reload</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">Loading comment plugin</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="waline-comment-container">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline-meta.css"/>
+        <div id="waline-comment"></div>
+        <script data-pjax>
+          window.KeepCommentPlugin.walineOptions = JSON.parse('{}'.replace(/&#34;/g, '"'))
+          window.KeepCommentPlugin.walineOptions.el = '#waline-comment'
+          window.KeepCommentPlugin.walineOptions.comment = '.post-comments-count'
+          window.KeepCommentPlugin.walineOptions.serverURL = 'https://comment.lllcnm.cn'
+          window.KeepCommentPlugin.walineOptions.lang = 'en' || 'zh-CN'
+          window.KeepCommentPlugin.walineOptions.reaction = 'true' === 'true'
+        </script>
+
+        
+
+        
+            <script data-pjax
+                    async
+                    type="module"
+            >
+              import { init } from '//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.js'
+              window.KeepCommentPlugin.initWaline = () => {
+                if (init) {
+                  init(window.KeepCommentPlugin.walineOptions)
+                  window.KeepCommentPlugin.hideLoading()
+                } else {
+                  setTimeout(() => {
+                    window.KeepCommentPlugin.initWaline()
+                  }, 1000)
+                }
+              }
+
+              if ('true' === 'true') {
+                setTimeout(() => {
+                  window.KeepCommentPlugin.initWaline()
+                }, 1200)
+              } else {
+                window.addEventListener('DOMContentLoaded', window.KeepCommentPlugin.initWaline)
+              }
+            </script>
+        
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-initramfs-%E7%B4%A7%E6%80%A5%E4%BF%AE%E5%A4%8D%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">什么是 initramfs 紧急修复模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E8%A7%A6%E5%8F%91%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.1.</span> <span class="nav-text">常见触发原因</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5%E7%B4%A7%E6%80%A5%E4%BF%AE%E5%A4%8D%E6%A8%A1%E5%BC%8F%E7%9A%84%E8%A1%A8%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">进入紧急修复模式的表现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E4%BF%AE%E5%A4%8D%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">快速修复方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%A3%80%E6%9F%A5%E5%92%8C%E4%BF%AE%E5%A4%8D"><span class="nav-number">3.1.</span> <span class="nav-text">1. 文件系统检查和修复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%A1%AE%E8%AE%A4%E4%BF%AE%E5%A4%8D%E7%BB%93%E6%9E%9C"><span class="nav-number">3.2.</span> <span class="nav-text">2. 确认修复结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%80%80%E5%87%BA%E5%B9%B6%E9%87%8D%E5%90%AF"><span class="nav-number">3.3.</span> <span class="nav-text">3. 退出并重启</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4"><span class="nav-number">4.</span> <span class="nav-text">进阶故障排除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA"><span class="nav-number">4.1.</span> <span class="nav-text">检查磁盘分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%82%E8%BD%BD%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%BF%9B%E8%A1%8C%E6%89%8B%E5%8A%A8%E4%BF%AE%E5%A4%8D"><span class="nav-number">4.2.</span> <span class="nav-text">挂载文件系统进行手动修复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E5%A4%8D%E7%89%B9%E5%AE%9A%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.3.</span> <span class="nav-text">修复特定类型的文件系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E9%98%B2%E6%8E%AA%E6%96%BD"><span class="nav-number">5.</span> <span class="nav-text">预防措施</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%9A%E6%9C%9F%E6%A3%80%E6%9F%A5%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">5.1.</span> <span class="nav-text">1. 定期检查文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98%E5%81%A5%E5%BA%B7%E7%8A%B6%E6%80%81"><span class="nav-number">5.2.</span> <span class="nav-text">2. 监控磁盘健康状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%AD%A3%E7%A1%AE%E5%85%B3%E6%9C%BA"><span class="nav-number">5.3.</span> <span class="nav-text">3. 正确关机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A4%87%E4%BB%BD%E9%87%8D%E8%A6%81%E6%95%B0%E6%8D%AE"><span class="nav-number">5.4.</span> <span class="nav-text">4. 备份重要数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">6.</span> <span class="nav-text">常见问题和解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-fsck-%E4%BF%AE%E5%A4%8D%E5%90%8E%E4%BB%8D%E7%84%B6%E8%BF%9B%E5%85%A5-initramfs-%E6%A8%A1%E5%BC%8F"><span class="nav-number">6.1.</span> <span class="nav-text">Q: fsck 修复后仍然进入 initramfs 模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-%E4%BF%AE%E5%A4%8D%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%87%BA%E7%8E%B0%E5%A4%A7%E9%87%8F%E9%94%99%E8%AF%AF"><span class="nav-number">6.2.</span> <span class="nav-text">Q: 修复过程中出现大量错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-%E6%89%BE%E4%B8%8D%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E8%AE%BE%E5%A4%87%E5%88%86%E5%8C%BA"><span class="nav-number">6.3.</span> <span class="nav-text">Q: 找不到正确的设备分区</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2022</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">ClearSky Drizzle</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            This site is deployed on <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span>
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-initramfs-%E7%B4%A7%E6%80%A5%E4%BF%AE%E5%A4%8D%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">什么是 initramfs 紧急修复模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E8%A7%A6%E5%8F%91%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.1.</span> <span class="nav-text">常见触发原因</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5%E7%B4%A7%E6%80%A5%E4%BF%AE%E5%A4%8D%E6%A8%A1%E5%BC%8F%E7%9A%84%E8%A1%A8%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">进入紧急修复模式的表现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E4%BF%AE%E5%A4%8D%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">快速修复方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%A3%80%E6%9F%A5%E5%92%8C%E4%BF%AE%E5%A4%8D"><span class="nav-number">3.1.</span> <span class="nav-text">1. 文件系统检查和修复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%A1%AE%E8%AE%A4%E4%BF%AE%E5%A4%8D%E7%BB%93%E6%9E%9C"><span class="nav-number">3.2.</span> <span class="nav-text">2. 确认修复结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%80%80%E5%87%BA%E5%B9%B6%E9%87%8D%E5%90%AF"><span class="nav-number">3.3.</span> <span class="nav-text">3. 退出并重启</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E6%95%85%E9%9A%9C%E6%8E%92%E9%99%A4"><span class="nav-number">4.</span> <span class="nav-text">进阶故障排除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA"><span class="nav-number">4.1.</span> <span class="nav-text">检查磁盘分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%82%E8%BD%BD%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E8%BF%9B%E8%A1%8C%E6%89%8B%E5%8A%A8%E4%BF%AE%E5%A4%8D"><span class="nav-number">4.2.</span> <span class="nav-text">挂载文件系统进行手动修复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E5%A4%8D%E7%89%B9%E5%AE%9A%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.3.</span> <span class="nav-text">修复特定类型的文件系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E9%98%B2%E6%8E%AA%E6%96%BD"><span class="nav-number">5.</span> <span class="nav-text">预防措施</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%9A%E6%9C%9F%E6%A3%80%E6%9F%A5%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">5.1.</span> <span class="nav-text">1. 定期检查文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%9B%91%E6%8E%A7%E7%A3%81%E7%9B%98%E5%81%A5%E5%BA%B7%E7%8A%B6%E6%80%81"><span class="nav-number">5.2.</span> <span class="nav-text">2. 监控磁盘健康状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%AD%A3%E7%A1%AE%E5%85%B3%E6%9C%BA"><span class="nav-number">5.3.</span> <span class="nav-text">3. 正确关机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A4%87%E4%BB%BD%E9%87%8D%E8%A6%81%E6%95%B0%E6%8D%AE"><span class="nav-number">5.4.</span> <span class="nav-text">4. 备份重要数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E5%92%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">6.</span> <span class="nav-text">常见问题和解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-fsck-%E4%BF%AE%E5%A4%8D%E5%90%8E%E4%BB%8D%E7%84%B6%E8%BF%9B%E5%85%A5-initramfs-%E6%A8%A1%E5%BC%8F"><span class="nav-number">6.1.</span> <span class="nav-text">Q: fsck 修复后仍然进入 initramfs 模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-%E4%BF%AE%E5%A4%8D%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%87%BA%E7%8E%B0%E5%A4%A7%E9%87%8F%E9%94%99%E8%AF%AF"><span class="nav-number">6.2.</span> <span class="nav-text">Q: 修复过程中出现大量错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-%E6%89%BE%E4%B8%8D%E5%88%B0%E6%AD%A3%E7%A1%AE%E7%9A%84%E8%AE%BE%E5%A4%87%E5%88%86%E5%8C%BA"><span class="nav-number">6.3.</span> <span class="nav-text">Q: 找不到正确的设备分区</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+            
+<script src="/js/post/share.js"></script>
+
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

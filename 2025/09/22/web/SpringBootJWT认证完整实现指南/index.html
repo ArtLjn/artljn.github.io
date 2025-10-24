@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="ClearSky Drizzle">
+    
+    <title>
+        
+            SpringBootJWT认证完整实现指南 |
+        
+        ClearSky Drizzle
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/avatar.jpg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"blog.lllcnm.cn","root":"/","language":"en","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":null,"author":"ClearSky Drizzle","avatar":"/images/avatar.jpg","logo":"/images/avatar.jpg","favicon":"/images/avatar.jpg"},"menu":{"home":"/","archives":"/archives","tags":"/tags","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":null}},"scroll":{"progress_bar":true,"percent":true,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":true,"share":true,"reward":{"enable":true,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"waline","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":"https://comment.lllcnm.cn","reaction":true,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2022,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original post title","author":"Original post author","link":"Original post link"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/avatar.jpg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               ClearSky Drizzle
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                HOME
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                ARCHIVES
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tags">
+                                
+                                TAGS
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                ABOUT
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                            HOME
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                            ARCHIVES
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tags">
+                            
+                            TAGS
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            ABOUT
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        SpringBootJWT认证完整实现指南
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">ClearSky Drizzle</span>
+                                
+                                    <span class="author-badge">Lv4</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2025-09-22 20:47:57</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Wed Sep 24 2025 15:44:57 GMT+0800">2025-09-24 15:44:57</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/web/">web</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/springboot/">springboot</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <blockquote>
+<p>在现代Web应用开发中，JWT（JSON Web Token）已经成为最流行的身份认证解决方案之一。本文将基于Spring Boot项目实战，详细介绍如何实现一套完整的JWT认证系统，包括双Token机制、安全配置、最佳实践等内容。</p>
+</blockquote>
+<h2 id="📋-目录"><a href="#📋-目录" class="headerlink" title="📋 目录"></a>📋 目录</h2><ul>
+<li><a href="#1-jwt%E6%A6%82%E8%BF%B0">1. JWT概述</a></li>
+<li><a href="#2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1">2. 技术架构设计</a></li>
+<li><a href="#3-%E4%BE%9D%E8%B5%96%E9%85%8D%E7%BD%AE">3. 依赖配置</a></li>
+<li><a href="#4-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%AE%9E%E7%8E%B0">4. 核心组件实现</a></li>
+<li><a href="#5-%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE">5. 安全配置</a></li>
+<li><a href="#6-api%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0">6. API接口实现</a></li>
+<li><a href="#7-%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BD%BF%E7%94%A8">7. 客户端使用</a></li>
+<li><a href="#8-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5">8. 最佳实践</a></li>
+<li><a href="#9-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98">9. 常见问题</a></li>
+<li><a href="#10-%E6%80%BB%E7%BB%93">10. 总结</a></li>
+</ul>
+<h2 id="1-JWT概述"><a href="#1-JWT概述" class="headerlink" title="1. JWT概述"></a>1. JWT概述</h2><h3 id="1-1-什么是JWT"><a href="#1-1-什么是JWT" class="headerlink" title="1.1 什么是JWT"></a>1.1 什么是JWT</h3><p>JWT（JSON Web Token）是一种开放标准（RFC 7519），它定义了一种紧凑且自包含的方式，用于在各方之间以JSON对象的形式安全地传输信息。</p>
+<h3 id="1-2-JWT结构"><a href="#1-2-JWT结构" class="headerlink" title="1.2 JWT结构"></a>1.2 JWT结构</h3><p>JWT由三部分组成，用点（.）分隔：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Header.Payload.Signature</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Header（头部）</strong>：包含令牌类型和加密算法</li>
+<li><strong>Payload（载荷）</strong>：包含声明（claims）</li>
+<li><strong>Signature（签名）</strong>：用于验证令牌的完整性</li>
+</ul>
+<h3 id="1-3-JWT优势"><a href="#1-3-JWT优势" class="headerlink" title="1.3 JWT优势"></a>1.3 JWT优势</h3><p>✅ <strong>无状态</strong>：服务器不需要存储会话信息<br>✅ <strong>跨域支持</strong>：支持跨域认证<br>✅ <strong>扩展性强</strong>：易于水平扩展<br>✅ <strong>性能优良</strong>：减少数据库查询<br>✅ <strong>移动友好</strong>：适合移动应用开发</p>
+<h3 id="1-4-双Token机制"><a href="#1-4-双Token机制" class="headerlink" title="1.4 双Token机制"></a>1.4 双Token机制</h3><p>为了平衡安全性和用户体验，我们采用双Token机制：</p>
+<ul>
+<li><strong>Access Token（访问令牌）</strong>：短期有效（2小时）</li>
+<li><strong>Refresh Token（刷新令牌）</strong>：长期有效（7天）</li>
+</ul>
+<h2 id="2-技术架构设计"><a href="#2-技术架构设计" class="headerlink" title="2. 技术架构设计"></a>2. 技术架构设计</h2><h3 id="2-1-整体架构图"><a href="#2-1-整体架构图" class="headerlink" title="2.1 整体架构图"></a>2.1 整体架构图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────────────────────────────────────┐</span><br><span class="line">│                    JWT认证系统架构                            │</span><br><span class="line">├─────────────────────────────────────────────────────────────┤</span><br><span class="line">│                                                             │</span><br><span class="line">│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │</span><br><span class="line">│  │  前端应用    │    │  移动应用    │    │  第三方应用  │      │</span><br><span class="line">│  └─────────────┘    └─────────────┘    └─────────────┘      │</span><br><span class="line">│         │                   │                   │           │</span><br><span class="line">│         └───────────────────┼───────────────────┘           │</span><br><span class="line">│                             │                               │</span><br><span class="line">│                             ▼                               │</span><br><span class="line">│  ┌─────────────────────────────────────────────────────────┐ │</span><br><span class="line">│  │                    API网关层                            │ │</span><br><span class="line">│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │ │</span><br><span class="line">│  │  │ JWT拦截器   │  │ 异常处理器  │  │ 跨域配置    │     │ │</span><br><span class="line">│  │  └─────────────┘  └─────────────┘  └─────────────┘     │ │</span><br><span class="line">│  └─────────────────────────────────────────────────────────┘ │</span><br><span class="line">│                             │                               │</span><br><span class="line">│                             ▼                               │</span><br><span class="line">│  ┌─────────────────────────────────────────────────────────┐ │</span><br><span class="line">│  │                    业务服务层                            │ │</span><br><span class="line">│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │ │</span><br><span class="line">│  │  │ 用户服务    │  │ JWT工具类   │  │ 认证服务    │     │ │</span><br><span class="line">│  │  └─────────────┘  └─────────────┘  └─────────────┘     │ │</span><br><span class="line">│  └─────────────────────────────────────────────────────────┘ │</span><br><span class="line">│                             │                               │</span><br><span class="line">│                             ▼                               │</span><br><span class="line">│  ┌─────────────────────────────────────────────────────────┐ │</span><br><span class="line">│  │                    数据存储层                            │ │</span><br><span class="line">│  │       MySQL数据库        Redis缓存        配置文件      │ │</span><br><span class="line">│  └─────────────────────────────────────────────────────────┘ │</span><br><span class="line">└─────────────────────────────────────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-核心组件说明"><a href="#2-2-核心组件说明" class="headerlink" title="2.2 核心组件说明"></a>2.2 核心组件说明</h3><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>功能</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>JwtUtil</strong></td>
+<td>JWT工具类</td>
+<td>Token生成、解析、验证</td>
+</tr>
+<tr>
+<td><strong>JwtConfig</strong></td>
+<td>JWT配置类</td>
+<td>配置参数管理</td>
+</tr>
+<tr>
+<td><strong>JwtInterceptor</strong></td>
+<td>JWT拦截器</td>
+<td>自动验证Token</td>
+</tr>
+<tr>
+<td><strong>WebMvcConfig</strong></td>
+<td>Web配置类</td>
+<td>注册拦截器</td>
+</tr>
+<tr>
+<td><strong>UserService</strong></td>
+<td>用户服务</td>
+<td>认证业务逻辑</td>
+</tr>
+</tbody></table>
+<h2 id="3-依赖配置"><a href="#3-依赖配置" class="headerlink" title="3. 依赖配置"></a>3. 依赖配置</h2><h3 id="3-1-Maven依赖"><a href="#3-1-Maven依赖" class="headerlink" title="3.1 Maven依赖"></a>3.1 Maven依赖</h3><p>在<code>pom.xml</code>中添加JWT相关依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- JWT 依赖 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.jsonwebtoken<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jjwt-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.11.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.jsonwebtoken<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jjwt-impl<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.11.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.jsonwebtoken<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jjwt-jackson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.11.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Jackson JSR310 模块，支持 Java 8 时间类型 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.datatype<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-datatype-jsr310<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-配置文件"><a href="#3-2-配置文件" class="headerlink" title="3.2 配置文件"></a>3.2 配置文件</h3><p>在<code>application.yml</code>中添加JWT配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># JWT配置</span></span><br><span class="line"><span class="attr">jwt:</span></span><br><span class="line">  <span class="attr">secret:</span> <span class="string">surveymaster-jwt-secret-key-for-authentication-very-secure-2025</span></span><br><span class="line">  <span class="attr">access-token-expiration:</span> <span class="number">7200000</span>      <span class="comment"># 访问令牌过期时间（毫秒）- 2小时</span></span><br><span class="line">  <span class="attr">refresh-token-expiration:</span> <span class="number">604800000</span>   <span class="comment"># 刷新令牌过期时间（毫秒）- 7天</span></span><br><span class="line">  <span class="attr">token-header:</span> <span class="string">Authorization</span>           <span class="comment"># token请求头名称</span></span><br><span class="line">  <span class="attr">token-prefix:</span> <span class="string">&quot;Bearer &quot;</span>               <span class="comment"># token前缀</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Jackson 配置（支持 Java 8 时间类型）</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">jackson:</span></span><br><span class="line">    <span class="attr">date-format:</span> <span class="string">yyyy-MM-dd</span> <span class="string">HH:mm:ss</span></span><br><span class="line">    <span class="attr">time-zone:</span> <span class="string">GMT+8</span></span><br><span class="line">    <span class="attr">serialization:</span></span><br><span class="line">      <span class="attr">write-dates-as-timestamps:</span> <span class="literal">false</span></span><br><span class="line">    <span class="attr">deserialization:</span></span><br><span class="line">      <span class="attr">fail-on-unknown-properties:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-核心组件实现"><a href="#4-核心组件实现" class="headerlink" title="4. 核心组件实现"></a>4. 核心组件实现</h2><h3 id="4-1-JWT工具类"><a href="#4-1-JWT工具类" class="headerlink" title="4.1 JWT工具类"></a>4.1 JWT工具类</h3><p>创建功能完善的JWT工具类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JwtUtil</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jwt.secret:surveymaster-jwt-secret-key-for-authentication-very-secure&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String secret;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jwt.access-token-expiration:7200000&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Long accessTokenExpiration;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;jwt.refresh-token-expiration:604800000&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Long refreshTokenExpiration;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取签名密钥</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> SecretKey <span class="title function_">getSigningKey</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> Keys.hmacShaKeyFor(secret.getBytes());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 生成访问令牌</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">generateAccessToken</span><span class="params">(Long userId, String username)</span> &#123;</span><br><span class="line">        Map&lt;String, Object&gt; claims = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        claims.put(<span class="string">&quot;userId&quot;</span>, userId);</span><br><span class="line">        claims.put(<span class="string">&quot;username&quot;</span>, username);</span><br><span class="line">        claims.put(<span class="string">&quot;tokenType&quot;</span>, <span class="string">&quot;access&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> createToken(claims, username, accessTokenExpiration);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 生成刷新令牌</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">generateRefreshToken</span><span class="params">(Long userId, String username)</span> &#123;</span><br><span class="line">        Map&lt;String, Object&gt; claims = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        claims.put(<span class="string">&quot;userId&quot;</span>, userId);</span><br><span class="line">        claims.put(<span class="string">&quot;username&quot;</span>, username);</span><br><span class="line">        claims.put(<span class="string">&quot;tokenType&quot;</span>, <span class="string">&quot;refresh&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> createToken(claims, username, refreshTokenExpiration);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 创建Token</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String <span class="title function_">createToken</span><span class="params">(Map&lt;String, Object&gt; claims, String subject, Long expiration)</span> &#123;</span><br><span class="line">        <span class="type">Date</span> <span class="variable">now</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line">        <span class="type">Date</span> <span class="variable">expiryDate</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>(now.getTime() + expiration);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Jwts.builder()</span><br><span class="line">                .setClaims(claims)</span><br><span class="line">                .setSubject(subject)</span><br><span class="line">                .setIssuedAt(now)</span><br><span class="line">                .setExpiration(expiryDate)</span><br><span class="line">                .signWith(getSigningKey(), SignatureAlgorithm.HS256)</span><br><span class="line">                .compact();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从token中获取用户名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getUsernameFromToken</span><span class="params">(String token)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> getClaimFromToken(token, Claims::getSubject);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从token中获取用户ID</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> Long <span class="title function_">getUserIdFromToken</span><span class="params">(String token)</span> &#123;</span><br><span class="line">        <span class="type">Claims</span> <span class="variable">claims</span> <span class="operator">=</span> getAllClaimsFromToken(token);</span><br><span class="line">        <span class="keyword">return</span> Long.valueOf(claims.get(<span class="string">&quot;userId&quot;</span>).toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 验证访问令牌</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> Boolean <span class="title function_">validateAccessToken</span><span class="params">(String token)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">tokenType</span> <span class="operator">=</span> getTokenTypeFromToken(token);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;access&quot;</span>.equals(tokenType) &amp;&amp; !isTokenExpired(token);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 验证刷新令牌</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> Boolean <span class="title function_">validateRefreshToken</span><span class="params">(String token)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">tokenType</span> <span class="operator">=</span> getTokenTypeFromToken(token);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;refresh&quot;</span>.equals(tokenType) &amp;&amp; !isTokenExpired(token);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ... 其他辅助方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-JWT配置类"><a href="#4-2-JWT配置类" class="headerlink" title="4.2 JWT配置类"></a>4.2 JWT配置类</h3><p>创建配置类管理JWT参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;jwt&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JwtConfig</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">secret</span> <span class="operator">=</span> <span class="string">&quot;surveymaster-jwt-secret-key-for-authentication-very-secure&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">Long</span> <span class="variable">accessTokenExpiration</span> <span class="operator">=</span> <span class="number">7200000L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">Long</span> <span class="variable">refreshTokenExpiration</span> <span class="operator">=</span> <span class="number">604800000L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">tokenHeader</span> <span class="operator">=</span> <span class="string">&quot;Authorization&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">tokenPrefix</span> <span class="operator">=</span> <span class="string">&quot;Bearer &quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// getters and setters...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-JWT拦截器"><a href="#4-3-JWT拦截器" class="headerlink" title="4.3 JWT拦截器"></a>4.3 JWT拦截器</h3><p>实现自动验证Token的拦截器：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JwtInterceptor</span> <span class="keyword">implements</span> <span class="title class_">HandlerInterceptor</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> JwtUtil jwtUtil;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> JwtConfig jwtConfig;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ObjectMapper objectMapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">JwtInterceptor</span><span class="params">(JwtUtil jwtUtil, JwtConfig jwtConfig, ObjectMapper objectMapper)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.jwtUtil = jwtUtil;</span><br><span class="line">        <span class="built_in">this</span>.jwtConfig = jwtConfig;</span><br><span class="line">        <span class="built_in">this</span>.objectMapper = objectMapper;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">// 获取请求头中的token</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">token</span> <span class="operator">=</span> getTokenFromRequest(request);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (!StringUtils.hasText(token)) &#123;</span><br><span class="line">            <span class="keyword">return</span> handleUnauthorized(response, <span class="string">&quot;缺少认证token&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 验证token是否为有效的访问令牌</span></span><br><span class="line">            <span class="keyword">if</span> (!jwtUtil.validateAccessToken(token)) &#123;</span><br><span class="line">                <span class="keyword">return</span> handleUnauthorized(response, <span class="string">&quot;无效的访问令牌&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 从token中获取用户信息并设置到请求属性中</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> jwtUtil.getUsernameFromToken(token);</span><br><span class="line">            <span class="type">Long</span> <span class="variable">userId</span> <span class="operator">=</span> jwtUtil.getUserIdFromToken(token);</span><br><span class="line">            </span><br><span class="line">            request.setAttribute(<span class="string">&quot;currentUsername&quot;</span>, username);</span><br><span class="line">            request.setAttribute(<span class="string">&quot;currentUserId&quot;</span>, userId);</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">return</span> handleUnauthorized(response, <span class="string">&quot;token验证失败：&quot;</span> + e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从请求中获取token</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String <span class="title function_">getTokenFromRequest</span><span class="params">(HttpServletRequest request)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">bearerToken</span> <span class="operator">=</span> request.getHeader(jwtConfig.getTokenHeader());</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.hasText(bearerToken) &amp;&amp; bearerToken.startsWith(jwtConfig.getTokenPrefix())) &#123;</span><br><span class="line">            <span class="keyword">return</span> bearerToken.substring(jwtConfig.getTokenPrefix().length());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理未授权的请求</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">handleUnauthorized</span><span class="params">(HttpServletResponse response, String message)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);</span><br><span class="line">        response.setContentType(<span class="string">&quot;application/json;charset=UTF-8&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        ApiResponse&lt;Object&gt; apiResponse = ApiResponse.error(ErrorCode.UNAUTHORIZED, message);</span><br><span class="line">        <span class="type">String</span> <span class="variable">jsonResponse</span> <span class="operator">=</span> objectMapper.writeValueAsString(apiResponse);</span><br><span class="line">        </span><br><span class="line">        response.getWriter().write(jsonResponse);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-Web配置类"><a href="#4-4-Web配置类" class="headerlink" title="4.4 Web配置类"></a>4.4 Web配置类</h3><p>注册JWT拦截器：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WebMvcConfig</span> <span class="keyword">implements</span> <span class="title class_">WebMvcConfigurer</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> JwtInterceptor jwtInterceptor;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">WebMvcConfig</span><span class="params">(JwtInterceptor jwtInterceptor)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.jwtInterceptor = jwtInterceptor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addInterceptors</span><span class="params">(InterceptorRegistry registry)</span> &#123;</span><br><span class="line">        registry.addInterceptor(jwtInterceptor)</span><br><span class="line">                .addPathPatterns(<span class="string">&quot;/api/**&quot;</span>)                    <span class="comment">// 拦截所有API路径</span></span><br><span class="line">                .excludePathPatterns(</span><br><span class="line">                        <span class="string">&quot;/api/user/login&quot;</span>,                     <span class="comment">// 排除登录接口</span></span><br><span class="line">                        <span class="string">&quot;/api/user/register&quot;</span>,                  <span class="comment">// 排除注册接口</span></span><br><span class="line">                        <span class="string">&quot;/api/user/refresh-token&quot;</span>,            <span class="comment">// 排除刷新token接口</span></span><br><span class="line">                        <span class="string">&quot;/api/health/**&quot;</span>,                     <span class="comment">// 排除健康检查接口</span></span><br><span class="line">                        <span class="string">&quot;/api/public/**&quot;</span>                      <span class="comment">// 排除公共接口</span></span><br><span class="line">                );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-安全配置"><a href="#5-安全配置" class="headerlink" title="5. 安全配置"></a>5. 安全配置</h2><h3 id="5-1-登录响应对象"><a href="#5-1-登录响应对象" class="headerlink" title="5.1 登录响应对象"></a>5.1 登录响应对象</h3><p>设计包含Token信息的响应对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LoginResponse</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 用户信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> User user;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 访问令牌</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String accessToken;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 刷新令牌</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String refreshToken;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 访问令牌类型</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">tokenType</span> <span class="operator">=</span> <span class="string">&quot;Bearer&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 访问令牌过期时间（毫秒时间戳）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Long expiresIn;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">LoginResponse</span><span class="params">()</span> &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">LoginResponse</span><span class="params">(User user, String accessToken, String refreshToken, Long expiresIn)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.user = user;</span><br><span class="line">        <span class="built_in">this</span>.accessToken = accessToken;</span><br><span class="line">        <span class="built_in">this</span>.refreshToken = refreshToken;</span><br><span class="line">        <span class="built_in">this</span>.expiresIn = expiresIn;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-用户服务实现"><a href="#5-2-用户服务实现" class="headerlink" title="5.2 用户服务实现"></a>5.2 用户服务实现</h3><p>实现包含JWT功能的用户服务：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">UserService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> UserMapper userMapper;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> JwtUtil jwtUtil;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> JwtConfig jwtConfig;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">UserServiceImpl</span><span class="params">(UserMapper userMapper, JwtUtil jwtUtil, JwtConfig jwtConfig)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.userMapper = userMapper;</span><br><span class="line">        <span class="built_in">this</span>.jwtUtil = jwtUtil;</span><br><span class="line">        <span class="built_in">this</span>.jwtConfig = jwtConfig;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> LoginResponse <span class="title function_">login</span><span class="params">(String username, String password)</span> &#123;</span><br><span class="line">        <span class="comment">// 1. 验证用户凭据</span></span><br><span class="line">        <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> userMapper.selectByUsernameAndPassword(username, MD5Util.md5(password));</span><br><span class="line">        <span class="keyword">if</span> (user == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(ErrorCode.USER_PASSWORD_ERROR);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 2. 生成JWT token</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">accessToken</span> <span class="operator">=</span> jwtUtil.generateAccessToken((<span class="type">long</span>) user.getId(), user.getUsername());</span><br><span class="line">        <span class="type">String</span> <span class="variable">refreshToken</span> <span class="operator">=</span> jwtUtil.generateRefreshToken((<span class="type">long</span>) user.getId(), user.getUsername());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 3. 返回登录响应信息</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">LoginResponse</span>(user, accessToken, refreshToken, jwtConfig.getAccessTokenExpiration());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> LoginResponse <span class="title function_">refreshAccessToken</span><span class="params">(String refreshToken)</span> &#123;</span><br><span class="line">        <span class="comment">// 1. 验证刷新令牌的有效性</span></span><br><span class="line">        <span class="keyword">if</span> (!jwtUtil.validateRefreshToken(refreshToken)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(ErrorCode.TOKEN_INVALID);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 2. 从刷新令牌中获取用户信息</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> jwtUtil.getUsernameFromToken(refreshToken);</span><br><span class="line">            <span class="type">Long</span> <span class="variable">userId</span> <span class="operator">=</span> jwtUtil.getUserIdFromToken(refreshToken);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 3. 生成新的访问令牌和刷新令牌</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">newAccessToken</span> <span class="operator">=</span> jwtUtil.generateAccessToken(userId, username);</span><br><span class="line">            <span class="type">String</span> <span class="variable">newRefreshToken</span> <span class="operator">=</span> jwtUtil.generateRefreshToken(userId, username);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 4. 查找用户信息</span></span><br><span class="line">            <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> userMapper.selectByUsername(username);</span><br><span class="line">            <span class="keyword">if</span> (user == <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="comment">// 如果查不到用户，创建一个简单的用户对象用于响应</span></span><br><span class="line">                user = <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">                user.setId(userId.intValue());</span><br><span class="line">                user.setUsername(username);</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 5. 返回新的登录响应</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">LoginResponse</span>(user, newAccessToken, newRefreshToken, jwtConfig.getAccessTokenExpiration());</span><br><span class="line">            </span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(ErrorCode.TOKEN_INVALID);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-API接口实现"><a href="#6-API接口实现" class="headerlink" title="6. API接口实现"></a>6. API接口实现</h2><h3 id="6-1-用户控制器"><a href="#6-1-用户控制器" class="headerlink" title="6.1 用户控制器"></a>6.1 用户控制器</h3><p>实现JWT相关的API接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/api/user&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> UserService userService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">UserController</span><span class="params">(UserService userService)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.userService = userService;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 用户登录</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@PostMapping(&quot;/login&quot;)</span></span><br><span class="line">    <span class="meta">@LogBusiness(&quot;用户登录&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;LoginResponse&gt; <span class="title function_">login</span><span class="params">(<span class="meta">@Valid</span> <span class="meta">@RequestBody</span> UserLogin userLogin)</span> &#123;</span><br><span class="line">        <span class="type">LoginResponse</span> <span class="variable">loginResponse</span> <span class="operator">=</span> userService.login(userLogin.getUsername(), userLogin.getPassword());</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.success(<span class="string">&quot;登录成功&quot;</span>, loginResponse);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 刷新访问令牌</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@PostMapping(&quot;/refresh-token&quot;)</span></span><br><span class="line">    <span class="meta">@LogBusiness(&quot;刷新令牌&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;LoginResponse&gt; <span class="title function_">refreshToken</span><span class="params">(<span class="meta">@RequestParam(&quot;refreshToken&quot;)</span> String refreshToken)</span> &#123;</span><br><span class="line">        <span class="type">LoginResponse</span> <span class="variable">loginResponse</span> <span class="operator">=</span> userService.refreshAccessToken(refreshToken);</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.success(<span class="string">&quot;令牌刷新成功&quot;</span>, loginResponse);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 用户注册</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@PostMapping(&quot;/register&quot;)</span></span><br><span class="line">    <span class="meta">@LogBusiness(&quot;用户注册&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;String&gt; <span class="title function_">register</span><span class="params">(<span class="meta">@Valid</span> <span class="meta">@RequestBody</span> UserRegister userRegister)</span> &#123;</span><br><span class="line">        userService.register(userRegister);</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.success(<span class="string">&quot;注册成功&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-测试控制器"><a href="#6-2-测试控制器" class="headerlink" title="6.2 测试控制器"></a>6.2 测试控制器</h3><p>创建测试JWT功能的控制器：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/api/jwt&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JwtTestController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/protected&quot;)</span></span><br><span class="line">    <span class="meta">@LogBusiness(&quot;访问受保护资源&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;String&gt; <span class="title function_">protectedEndpoint</span><span class="params">(HttpServletRequest request)</span> &#123;</span><br><span class="line">        <span class="comment">// 从请求属性中获取当前用户信息（由JWT拦截器设置）</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">currentUsername</span> <span class="operator">=</span> (String) request.getAttribute(<span class="string">&quot;currentUsername&quot;</span>);</span><br><span class="line">        <span class="type">Long</span> <span class="variable">currentUserId</span> <span class="operator">=</span> (Long) request.getAttribute(<span class="string">&quot;currentUserId&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="type">String</span> <span class="variable">message</span> <span class="operator">=</span> String.format(<span class="string">&quot;欢迎，%s (用户ID: %d)！这是一个受JWT保护的资源。&quot;</span>, </span><br><span class="line">                                      currentUsername, currentUserId);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> ApiResponse.success(<span class="string">&quot;访问成功&quot;</span>, message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/user-info&quot;)</span></span><br><span class="line">    <span class="meta">@LogBusiness(&quot;获取当前用户信息&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;Object&gt; <span class="title function_">getCurrentUserInfo</span><span class="params">(HttpServletRequest request)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">currentUsername</span> <span class="operator">=</span> (String) request.getAttribute(<span class="string">&quot;currentUsername&quot;</span>);</span><br><span class="line">        <span class="type">Long</span> <span class="variable">currentUserId</span> <span class="operator">=</span> (Long) request.getAttribute(<span class="string">&quot;currentUserId&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="type">Object</span> <span class="variable">userInfo</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>() &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> currentUsername;</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">Long</span> <span class="variable">userId</span> <span class="operator">=</span> currentUserId;</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">message</span> <span class="operator">=</span> <span class="string">&quot;通过JWT认证获取的用户信息&quot;</span>;</span><br><span class="line">        &#125;;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> ApiResponse.success(<span class="string">&quot;获取用户信息成功&quot;</span>, userInfo);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-客户端使用"><a href="#7-客户端使用" class="headerlink" title="7. 客户端使用"></a>7. 客户端使用</h2><h3 id="7-1-登录获取Token"><a href="#7-1-登录获取Token" class="headerlink" title="7.1 登录获取Token"></a>7.1 登录获取Token</h3><p><strong>请求示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST http://localhost:8080/api/user/login \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">    &quot;username&quot;: &quot;admin&quot;,</span></span><br><span class="line"><span class="string">    &quot;password&quot;: &quot;123456&quot;</span></span><br><span class="line"><span class="string">  &#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>响应示例：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;success&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;message&quot;</span><span class="punctuation">:</span> <span class="string">&quot;登录成功&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;user&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;admin&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;admin@example.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;createdAt&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2025-09-22 10:30:00&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;accessToken&quot;</span><span class="punctuation">:</span> <span class="string">&quot;eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoidGVzdCIsInRva2VuVHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3QiLCJpYXQiOjE2OTU0MjcyMDAsImV4cCI6MTY5NTQzNDQwMH0.abc123...&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;refreshToken&quot;</span><span class="punctuation">:</span> <span class="string">&quot;eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoidGVzdCIsInRva2VuVHlwZSI6InJlZnJlc2giLCJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk1NDI3MjAwLCJleHAiOjE2OTYwMzIwMDB9.def456...&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;tokenType&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Bearer&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;expiresIn&quot;</span><span class="punctuation">:</span> <span class="number">7200000</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-使用Token访问受保护API"><a href="#7-2-使用Token访问受保护API" class="headerlink" title="7.2 使用Token访问受保护API"></a>7.2 使用Token访问受保护API</h3><p><strong>请求示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -X GET http://localhost:8080/api/jwt/protected \</span><br><span class="line">  -H <span class="string">&quot;Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoidGVzdCIsInRva2VuVHlwZSI6ImFjY2VzcyIsInN1YiI6InRlc3QiLCJpYXQiOjE2OTU0MjcyMDAsImV4cCI6MTY5NTQzNDQwMH0.abc123...&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>成功响应：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;success&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;message&quot;</span><span class="punctuation">:</span> <span class="string">&quot;访问成功&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="string">&quot;欢迎，admin (用户ID: 1)！这是一个受JWT保护的资源。&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>未授权响应：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;success&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="string">&quot;COMM-0201&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;message&quot;</span><span class="punctuation">:</span> <span class="string">&quot;缺少认证token&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">null</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="7-3-刷新Token"><a href="#7-3-刷新Token" class="headerlink" title="7.3 刷新Token"></a>7.3 刷新Token</h3><p><strong>请求示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST http://localhost:8080/api/user/refresh-token \</span><br><span class="line">  -H <span class="string">&quot;Content-Type: application/x-www-form-urlencoded&quot;</span> \</span><br><span class="line">  -d <span class="string">&quot;refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoidGVzdCIsInRva2VuVHlwZSI6InJlZnJlc2giLCJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjk1NDI3MjAwLCJleHAiOjE2OTYwMzIwMDB9.def456...&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>成功响应：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;success&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;message&quot;</span><span class="punctuation">:</span> <span class="string">&quot;令牌刷新成功&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;user&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;username&quot;</span><span class="punctuation">:</span> <span class="string">&quot;admin&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;accessToken&quot;</span><span class="punctuation">:</span> <span class="string">&quot;eyJhbGciOiJIUzI1NiJ9.new_access_token...&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;refreshToken&quot;</span><span class="punctuation">:</span> <span class="string">&quot;eyJhbGciOiJIUzI1NiJ9.new_refresh_token...&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;tokenType&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Bearer&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;expiresIn&quot;</span><span class="punctuation">:</span> <span class="number">7200000</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="7-4-前端集成示例"><a href="#7-4-前端集成示例" class="headerlink" title="7.4 前端集成示例"></a>7.4 前端集成示例</h3><p><strong>JavaScript&#x2F;Vue.js示例：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// API配置</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">API_BASE_URL</span> = <span class="string">&#x27;http://localhost:8080/api&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Token管理</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TokenManager</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="title function_">setTokens</span>(<span class="params">accessToken, refreshToken</span>) &#123;</span><br><span class="line">        <span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&#x27;accessToken&#x27;</span>, accessToken);</span><br><span class="line">        <span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&#x27;refreshToken&#x27;</span>, refreshToken);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span> <span class="title function_">getAccessToken</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&#x27;accessToken&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span> <span class="title function_">getRefreshToken</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&#x27;refreshToken&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span> <span class="title function_">clearTokens</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">localStorage</span>.<span class="title function_">removeItem</span>(<span class="string">&#x27;accessToken&#x27;</span>);</span><br><span class="line">        <span class="variable language_">localStorage</span>.<span class="title function_">removeItem</span>(<span class="string">&#x27;refreshToken&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// HTTP请求拦截器</span></span><br><span class="line">axios.<span class="property">interceptors</span>.<span class="property">request</span>.<span class="title function_">use</span>(<span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> token = <span class="title class_">TokenManager</span>.<span class="title function_">getAccessToken</span>();</span><br><span class="line">    <span class="keyword">if</span> (token) &#123;</span><br><span class="line">        config.<span class="property">headers</span>.<span class="property">Authorization</span> = <span class="string">`Bearer <span class="subst">$&#123;token&#125;</span>`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> config;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// HTTP响应拦截器</span></span><br><span class="line">axios.<span class="property">interceptors</span>.<span class="property">response</span>.<span class="title function_">use</span>(</span><br><span class="line">    <span class="function"><span class="params">response</span> =&gt;</span> response,</span><br><span class="line">    <span class="keyword">async</span> error =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (error.<span class="property">response</span>?.<span class="property">status</span> === <span class="number">401</span>) &#123;</span><br><span class="line">            <span class="comment">// Token过期，尝试刷新</span></span><br><span class="line">            <span class="keyword">const</span> refreshToken = <span class="title class_">TokenManager</span>.<span class="title function_">getRefreshToken</span>();</span><br><span class="line">            <span class="keyword">if</span> (refreshToken) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">const</span> response = <span class="keyword">await</span> axios.<span class="title function_">post</span>(<span class="string">`<span class="subst">$&#123;API_BASE_URL&#125;</span>/user/refresh-token`</span>, </span><br><span class="line">                        <span class="string">`refreshToken=<span class="subst">$&#123;refreshToken&#125;</span>`</span>, </span><br><span class="line">                        &#123; <span class="attr">headers</span>: &#123; <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/x-www-form-urlencoded&#x27;</span> &#125;&#125;</span><br><span class="line">                    );</span><br><span class="line">                    </span><br><span class="line">                    <span class="keyword">const</span> &#123; accessToken, <span class="attr">refreshToken</span>: newRefreshToken &#125; = response.<span class="property">data</span>.<span class="property">data</span>;</span><br><span class="line">                    <span class="title class_">TokenManager</span>.<span class="title function_">setTokens</span>(accessToken, newRefreshToken);</span><br><span class="line">                    </span><br><span class="line">                    <span class="comment">// 重试原请求</span></span><br><span class="line">                    error.<span class="property">config</span>.<span class="property">headers</span>.<span class="property">Authorization</span> = <span class="string">`Bearer <span class="subst">$&#123;accessToken&#125;</span>`</span>;</span><br><span class="line">                    <span class="keyword">return</span> axios.<span class="title function_">request</span>(error.<span class="property">config</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (refreshError) &#123;</span><br><span class="line">                    <span class="comment">// 刷新失败，跳转到登录页</span></span><br><span class="line">                    <span class="title class_">TokenManager</span>.<span class="title function_">clearTokens</span>();</span><br><span class="line">                    <span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">href</span> = <span class="string">&#x27;/login&#x27;</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 没有刷新Token，跳转到登录页</span></span><br><span class="line">                <span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">href</span> = <span class="string">&#x27;/login&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error);</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 登录方法</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">login</span>(<span class="params">username, password</span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> response = <span class="keyword">await</span> axios.<span class="title function_">post</span>(<span class="string">`<span class="subst">$&#123;API_BASE_URL&#125;</span>/user/login`</span>, &#123;</span><br><span class="line">            username,</span><br><span class="line">            password</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">const</span> &#123; accessToken, refreshToken &#125; = response.<span class="property">data</span>.<span class="property">data</span>;</span><br><span class="line">        <span class="title class_">TokenManager</span>.<span class="title function_">setTokens</span>(accessToken, refreshToken);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> response.<span class="property">data</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">        <span class="keyword">throw</span> error;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 退出登录</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">logout</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title class_">TokenManager</span>.<span class="title function_">clearTokens</span>();</span><br><span class="line">    <span class="variable language_">window</span>.<span class="property">location</span>.<span class="property">href</span> = <span class="string">&#x27;/login&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>React示例：</strong></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createContext, useContext, useState, useEffect &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 认证上下文</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">AuthContext</span> = <span class="title function_">createContext</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">useAuth</span> = (<span class="params"></span>) =&gt; <span class="title function_">useContext</span>(<span class="title class_">AuthContext</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">AuthProvider</span> = (<span class="params">&#123; children &#125;</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> [user, setUser] = <span class="title function_">useState</span>(<span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">const</span> [loading, setLoading] = <span class="title function_">useState</span>(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> token = <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&#x27;accessToken&#x27;</span>);</span><br><span class="line">        <span class="keyword">if</span> (token) &#123;</span><br><span class="line">            <span class="comment">// 验证token有效性</span></span><br><span class="line">            <span class="title function_">validateToken</span>();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="title function_">setLoading</span>(<span class="literal">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, []);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">validateToken</span> = <span class="keyword">async</span> (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> response = <span class="keyword">await</span> axios.<span class="title function_">get</span>(<span class="string">&#x27;/api/jwt/user-info&#x27;</span>);</span><br><span class="line">            <span class="title function_">setUser</span>(response.<span class="property">data</span>.<span class="property">data</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">            <span class="variable language_">localStorage</span>.<span class="title function_">removeItem</span>(<span class="string">&#x27;accessToken&#x27;</span>);</span><br><span class="line">            <span class="variable language_">localStorage</span>.<span class="title function_">removeItem</span>(<span class="string">&#x27;refreshToken&#x27;</span>);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="title function_">setLoading</span>(<span class="literal">false</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">login</span> = <span class="keyword">async</span> (<span class="params">username, password</span>) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> response = <span class="keyword">await</span> axios.<span class="title function_">post</span>(<span class="string">&#x27;/api/user/login&#x27;</span>, &#123;</span><br><span class="line">            username,</span><br><span class="line">            password</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">const</span> &#123; user, accessToken, refreshToken &#125; = response.<span class="property">data</span>.<span class="property">data</span>;</span><br><span class="line">        <span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&#x27;accessToken&#x27;</span>, accessToken);</span><br><span class="line">        <span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&#x27;refreshToken&#x27;</span>, refreshToken);</span><br><span class="line">        <span class="title function_">setUser</span>(user);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> response.<span class="property">data</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="title function_">logout</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">        <span class="variable language_">localStorage</span>.<span class="title function_">removeItem</span>(<span class="string">&#x27;accessToken&#x27;</span>);</span><br><span class="line">        <span class="variable language_">localStorage</span>.<span class="title function_">removeItem</span>(<span class="string">&#x27;refreshToken&#x27;</span>);</span><br><span class="line">        <span class="title function_">setUser</span>(<span class="literal">null</span>);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> value = &#123;</span><br><span class="line">        user,</span><br><span class="line">        login,</span><br><span class="line">        logout,</span><br><span class="line">        loading</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">AuthContext.Provider</span> <span class="attr">value</span>=<span class="string">&#123;value&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            &#123;children&#125;</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">AuthContext.Provider</span>&gt;</span></span></span><br><span class="line">    );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-最佳实践"><a href="#8-最佳实践" class="headerlink" title="8. 最佳实践"></a>8. 最佳实践</h2><h3 id="8-1-安全配置建议"><a href="#8-1-安全配置建议" class="headerlink" title="8.1 安全配置建议"></a>8.1 安全配置建议</h3><h4 id="密钥管理"><a href="#密钥管理" class="headerlink" title="密钥管理"></a>密钥管理</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生产环境配置</span></span><br><span class="line"><span class="attr">jwt:</span></span><br><span class="line">  <span class="attr">secret:</span> <span class="string">$&#123;JWT_SECRET:your-very-secure-secret-key-here&#125;</span></span><br><span class="line">  <span class="attr">access-token-expiration:</span> <span class="string">$&#123;JWT_ACCESS_EXPIRATION:7200000&#125;</span></span><br><span class="line">  <span class="attr">refresh-token-expiration:</span> <span class="string">$&#123;JWT_REFRESH_EXPIRATION:604800000&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="密钥要求"><a href="#密钥要求" class="headerlink" title="密钥要求"></a>密钥要求</h4><ul>
+<li><strong>长度</strong>：至少256位（32字符）</li>
+<li><strong>复杂性</strong>：包含字母、数字、特殊字符</li>
+<li><strong>唯一性</strong>：每个环境使用不同密钥</li>
+<li><strong>定期更换</strong>：建议每季度更换一次</li>
+</ul>
+<h4 id="环境变量配置"><a href="#环境变量配置" class="headerlink" title="环境变量配置"></a>环境变量配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生产环境环境变量</span></span><br><span class="line"><span class="built_in">export</span> JWT_SECRET=<span class="string">&quot;your-production-secret-key-very-secure-2025&quot;</span></span><br><span class="line"><span class="built_in">export</span> JWT_ACCESS_EXPIRATION=7200000</span><br><span class="line"><span class="built_in">export</span> JWT_REFRESH_EXPIRATION=604800000</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-2-Token过期时间策略"><a href="#8-2-Token过期时间策略" class="headerlink" title="8.2 Token过期时间策略"></a>8.2 Token过期时间策略</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>访问令牌</th>
+<th>刷新令牌</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Web应用</strong></td>
+<td>2小时</td>
+<td>7天</td>
+<td>平衡安全性和用户体验</td>
+</tr>
+<tr>
+<td><strong>移动应用</strong></td>
+<td>4小时</td>
+<td>30天</td>
+<td>减少用户登录频率</td>
+</tr>
+<tr>
+<td><strong>API服务</strong></td>
+<td>1小时</td>
+<td>24小时</td>
+<td>高安全要求</td>
+</tr>
+<tr>
+<td><strong>内部系统</strong></td>
+<td>8小时</td>
+<td>7天</td>
+<td>办公时间内免登录</td>
+</tr>
+</tbody></table>
+<h3 id="8-3-错误处理最佳实践"><a href="#8-3-错误处理最佳实践" class="headerlink" title="8.3 错误处理最佳实践"></a>8.3 错误处理最佳实践</h3><h4 id="统一错误码"><a href="#统一错误码" class="headerlink" title="统一错误码"></a>统一错误码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">JwtErrorCode</span> &#123;</span><br><span class="line">    TOKEN_MISSING(<span class="string">&quot;JWT001&quot;</span>, <span class="string">&quot;缺少认证令牌&quot;</span>),</span><br><span class="line">    TOKEN_EXPIRED(<span class="string">&quot;JWT002&quot;</span>, <span class="string">&quot;令牌已过期&quot;</span>),</span><br><span class="line">    TOKEN_INVALID(<span class="string">&quot;JWT003&quot;</span>, <span class="string">&quot;无效的令牌&quot;</span>),</span><br><span class="line">    TOKEN_MALFORMED(<span class="string">&quot;JWT004&quot;</span>, <span class="string">&quot;令牌格式错误&quot;</span>),</span><br><span class="line">    ACCESS_DENIED(<span class="string">&quot;JWT005&quot;</span>, <span class="string">&quot;访问被拒绝&quot;</span>),</span><br><span class="line">    REFRESH_TOKEN_EXPIRED(<span class="string">&quot;JWT006&quot;</span>, <span class="string">&quot;刷新令牌已过期&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String code;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String message;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// constructor, getters...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="异常处理器"><a href="#异常处理器" class="headerlink" title="异常处理器"></a>异常处理器</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JwtExceptionHandler</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ExceptionHandler(ExpiredJwtException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;ApiResponse&lt;Object&gt;&gt; <span class="title function_">handleExpiredJwt</span><span class="params">(ExpiredJwtException e)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED)</span><br><span class="line">                .body(ApiResponse.error(JwtErrorCode.TOKEN_EXPIRED));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@ExceptionHandler(MalformedJwtException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ResponseEntity&lt;ApiResponse&lt;Object&gt;&gt; <span class="title function_">handleMalformedJwt</span><span class="params">(MalformedJwtException e)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED)</span><br><span class="line">                .body(ApiResponse.error(JwtErrorCode.TOKEN_MALFORMED));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-4-性能优化建议"><a href="#8-4-性能优化建议" class="headerlink" title="8.4 性能优化建议"></a>8.4 性能优化建议</h3><h4 id="缓存用户信息"><a href="#缓存用户信息" class="headerlink" title="缓存用户信息"></a>缓存用户信息</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserCacheService</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisTemplate&lt;String, Object&gt; redisTemplate;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">USER_CACHE_KEY</span> <span class="operator">=</span> <span class="string">&quot;user:info:&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Duration</span> <span class="variable">CACHE_DURATION</span> <span class="operator">=</span> Duration.ofMinutes(<span class="number">30</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">getUserFromCache</span><span class="params">(Long userId)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> USER_CACHE_KEY + userId;</span><br><span class="line">        <span class="keyword">return</span> (User) redisTemplate.opsForValue().get(key);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">cacheUser</span><span class="params">(User user)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> USER_CACHE_KEY + user.getId();</span><br><span class="line">        redisTemplate.opsForValue().set(key, user, CACHE_DURATION);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Token黑名单"><a href="#Token黑名单" class="headerlink" title="Token黑名单"></a>Token黑名单</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TokenBlacklistService</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisTemplate&lt;String, String&gt; redisTemplate;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">BLACKLIST_KEY</span> <span class="operator">=</span> <span class="string">&quot;jwt:blacklist:&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addToBlacklist</span><span class="params">(String token, <span class="type">long</span> expiration)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> BLACKLIST_KEY + DigestUtils.md5Hex(token);</span><br><span class="line">        redisTemplate.opsForValue().set(key, <span class="string">&quot;true&quot;</span>, </span><br><span class="line">                Duration.ofMillis(expiration - System.currentTimeMillis()));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isBlacklisted</span><span class="params">(String token)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> BLACKLIST_KEY + DigestUtils.md5Hex(token);</span><br><span class="line">        <span class="keyword">return</span> redisTemplate.hasKey(key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-5-监控和日志"><a href="#8-5-监控和日志" class="headerlink" title="8.5 监控和日志"></a>8.5 监控和日志</h3><h4 id="JWT监控指标"><a href="#JWT监控指标" class="headerlink" title="JWT监控指标"></a>JWT监控指标</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JwtMetrics</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Counter</span> <span class="variable">tokenGeneratedCounter</span> <span class="operator">=</span> Counter.builder(<span class="string">&quot;jwt.token.generated&quot;</span>)</span><br><span class="line">            .description(<span class="string">&quot;生成的JWT令牌数量&quot;</span>)</span><br><span class="line">            .register(Metrics.globalRegistry);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Counter</span> <span class="variable">tokenValidatedCounter</span> <span class="operator">=</span> Counter.builder(<span class="string">&quot;jwt.token.validated&quot;</span>)</span><br><span class="line">            .description(<span class="string">&quot;验证的JWT令牌数量&quot;</span>)</span><br><span class="line">            .tag(<span class="string">&quot;result&quot;</span>, <span class="string">&quot;success&quot;</span>)</span><br><span class="line">            .register(Metrics.globalRegistry);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Timer</span> <span class="variable">tokenValidationTimer</span> <span class="operator">=</span> Timer.builder(<span class="string">&quot;jwt.token.validation.duration&quot;</span>)</span><br><span class="line">            .description(<span class="string">&quot;JWT令牌验证耗时&quot;</span>)</span><br><span class="line">            .register(Metrics.globalRegistry);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">recordTokenGenerated</span><span class="params">()</span> &#123;</span><br><span class="line">        tokenGeneratedCounter.increment();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">recordTokenValidation</span><span class="params">(<span class="type">boolean</span> success, Duration duration)</span> &#123;</span><br><span class="line">        tokenValidatedCounter.increment(Tags.of(<span class="string">&quot;result&quot;</span>, success ? <span class="string">&quot;success&quot;</span> : <span class="string">&quot;failure&quot;</span>));</span><br><span class="line">        tokenValidationTimer.record(duration);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="安全日志"><a href="#安全日志" class="headerlink" title="安全日志"></a>安全日志</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JwtSecurityLogger</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">securityLogger</span> <span class="operator">=</span> LoggerFactory.getLogger(<span class="string">&quot;SECURITY&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">logTokenGenerated</span><span class="params">(String username, String clientIp)</span> &#123;</span><br><span class="line">        securityLogger.info(<span class="string">&quot;JWT令牌生成 - 用户: &#123;&#125;, IP: &#123;&#125;, 时间: &#123;&#125;&quot;</span>, </span><br><span class="line">                username, clientIp, LocalDateTime.now());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">logTokenValidationFailure</span><span class="params">(String token, String reason, String clientIp)</span> &#123;</span><br><span class="line">        securityLogger.warn(<span class="string">&quot;JWT令牌验证失败 - Token: &#123;&#125;, 原因: &#123;&#125;, IP: &#123;&#125;, 时间: &#123;&#125;&quot;</span>, </span><br><span class="line">                maskToken(token), reason, clientIp, LocalDateTime.now());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> String <span class="title function_">maskToken</span><span class="params">(String token)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (token == <span class="literal">null</span> || token.length() &lt; <span class="number">20</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;[INVALID_TOKEN]&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> token.substring(<span class="number">0</span>, <span class="number">10</span>) + <span class="string">&quot;***&quot;</span> + token.substring(token.length() - <span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="9-常见问题"><a href="#9-常见问题" class="headerlink" title="9. 常见问题"></a>9. 常见问题</h2><h3 id="9-1-Token相关问题"><a href="#9-1-Token相关问题" class="headerlink" title="9.1 Token相关问题"></a>9.1 Token相关问题</h3><h4 id="Q1-Token过期后如何处理？"><a href="#Q1-Token过期后如何处理？" class="headerlink" title="Q1: Token过期后如何处理？"></a>Q1: Token过期后如何处理？</h4><p><strong>A</strong>: 实现自动刷新机制：</p>
+<ol>
+<li>前端拦截401响应</li>
+<li>使用refresh token获取新的access token</li>
+<li>重试原请求</li>
+<li>如果refresh token也过期，跳转登录页</li>
+</ol>
+<h4 id="Q2-如何实现单点登录（SSO）？"><a href="#Q2-如何实现单点登录（SSO）？" class="headerlink" title="Q2: 如何实现单点登录（SSO）？"></a>Q2: 如何实现单点登录（SSO）？</h4><p><strong>A</strong>: </p>
+<ol>
+<li>使用统一的JWT签名密钥</li>
+<li>在多个应用间共享用户信息</li>
+<li>实现统一的认证中心</li>
+<li>配置跨域支持</li>
+</ol>
+<h4 id="Q3-如何实现强制下线？"><a href="#Q3-如何实现强制下线？" class="headerlink" title="Q3: 如何实现强制下线？"></a>Q3: 如何实现强制下线？</h4><p><strong>A</strong>:</p>
+<ol>
+<li>维护Token黑名单（Redis）</li>
+<li>在验证Token时检查黑名单</li>
+<li>管理员可以将特定Token加入黑名单</li>
+</ol>
+<h3 id="9-2-安全问题"><a href="#9-2-安全问题" class="headerlink" title="9.2 安全问题"></a>9.2 安全问题</h3><h4 id="Q1-JWT被盗用怎么办？"><a href="#Q1-JWT被盗用怎么办？" class="headerlink" title="Q1: JWT被盗用怎么办？"></a>Q1: JWT被盗用怎么办？</h4><p><strong>A</strong>: 多层防护：</p>
+<ol>
+<li>使用HTTPS传输</li>
+<li>设置合理的过期时间</li>
+<li>实现Token黑名单机制</li>
+<li>监控异常登录行为</li>
+<li>绑定设备指纹</li>
+</ol>
+<h4 id="Q2-如何防止CSRF攻击？"><a href="#Q2-如何防止CSRF攻击？" class="headerlink" title="Q2: 如何防止CSRF攻击？"></a>Q2: 如何防止CSRF攻击？</h4><p><strong>A</strong>:</p>
+<ol>
+<li>JWT存储在localStorage而非Cookie</li>
+<li>使用自定义请求头传递Token</li>
+<li>验证请求来源</li>
+<li>实现双Token验证</li>
+</ol>
+<h4 id="Q3-密钥泄露如何应对？"><a href="#Q3-密钥泄露如何应对？" class="headerlink" title="Q3: 密钥泄露如何应对？"></a>Q3: 密钥泄露如何应对？</h4><p><strong>A</strong>:</p>
+<ol>
+<li>立即更换密钥</li>
+<li>使所有现有Token失效</li>
+<li>强制用户重新登录</li>
+<li>审计相关访问日志</li>
+</ol>
+<h3 id="9-3-性能问题"><a href="#9-3-性能问题" class="headerlink" title="9.3 性能问题"></a>9.3 性能问题</h3><h4 id="Q1-JWT验证性能如何优化？"><a href="#Q1-JWT验证性能如何优化？" class="headerlink" title="Q1: JWT验证性能如何优化？"></a>Q1: JWT验证性能如何优化？</h4><p><strong>A</strong>:</p>
+<ol>
+<li>缓存用户信息减少数据库查询</li>
+<li>使用异步验证</li>
+<li>合理设置Token过期时间</li>
+<li>使用更高效的加密算法</li>
+</ol>
+<h4 id="Q2-大量并发时如何处理？"><a href="#Q2-大量并发时如何处理？" class="headerlink" title="Q2: 大量并发时如何处理？"></a>Q2: 大量并发时如何处理？</h4><p><strong>A</strong>:</p>
+<ol>
+<li>使用连接池</li>
+<li>实现限流机制</li>
+<li>缓存热点数据</li>
+<li>使用负载均衡</li>
+</ol>
+<h3 id="9-4-部署问题"><a href="#9-4-部署问题" class="headerlink" title="9.4 部署问题"></a>9.4 部署问题</h3><h4 id="Q1-多实例部署注意事项？"><a href="#Q1-多实例部署注意事项？" class="headerlink" title="Q1: 多实例部署注意事项？"></a>Q1: 多实例部署注意事项？</h4><p><strong>A</strong>:</p>
+<ol>
+<li>使用相同的JWT密钥</li>
+<li>共享Redis缓存</li>
+<li>同步时钟</li>
+<li>统一配置管理</li>
+</ol>
+<h4 id="Q2-容器化部署配置？"><a href="#Q2-容器化部署配置？" class="headerlink" title="Q2: 容器化部署配置？"></a>Q2: 容器化部署配置？</h4><p><strong>A</strong>:</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Dockerfile</span></span><br><span class="line"><span class="keyword">FROM</span> openjdk:<span class="number">8</span>-jre-alpine</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置JWT环境变量</span></span><br><span class="line"><span class="keyword">ENV</span> JWT_SECRET=$&#123;JWT_SECRET&#125;</span><br><span class="line"><span class="keyword">ENV</span> JWT_ACCESS_EXPIRATION=$&#123;JWT_ACCESS_EXPIRATION&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> target/app.jar app.jar</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">8080</span></span><br><span class="line"><span class="keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="string">&quot;java&quot;</span>, <span class="string">&quot;-jar&quot;</span>, <span class="string">&quot;/app.jar&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">app:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">myapp:latest</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">JWT_SECRET=your-production-secret-key</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">JWT_ACCESS_EXPIRATION=7200000</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">JWT_REFRESH_EXPIRATION=604800000</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8080:8080&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="10-总结"><a href="#10-总结" class="headerlink" title="10. 总结"></a>10. 总结</h2><h3 id="10-1-实现要点回顾"><a href="#10-1-实现要点回顾" class="headerlink" title="10.1 实现要点回顾"></a>10.1 实现要点回顾</h3><p>✅ <strong>双Token机制</strong>：访问令牌+刷新令牌，平衡安全性和用户体验<br>✅ <strong>自动拦截验证</strong>：使用Spring MVC拦截器自动验证所有API请求<br>✅ <strong>灵活配置</strong>：支持多环境配置，密钥和过期时间可配置<br>✅ <strong>异常处理</strong>：完善的异常处理机制，统一错误响应格式<br>✅ <strong>安全最佳实践</strong>：HTTPS传输、合理过期时间、黑名单机制</p>
+<h3 id="10-2-架构优势"><a href="#10-2-架构优势" class="headerlink" title="10.2 架构优势"></a>10.2 架构优势</h3><ul>
+<li><strong>无状态设计</strong>：服务器不需要存储会话，便于水平扩展</li>
+<li><strong>高性能</strong>：减少数据库查询，提升系统响应速度</li>
+<li><strong>安全可控</strong>：多层安全防护，支持细粒度权限控制</li>
+<li><strong>易于维护</strong>：模块化设计，配置集中管理</li>
+<li><strong>扩展性强</strong>：支持微服务架构，便于系统拆分</li>
+</ul>
+<h3 id="10-3-下一步优化方向"><a href="#10-3-下一步优化方向" class="headerlink" title="10.3 下一步优化方向"></a>10.3 下一步优化方向</h3><ol>
+<li><strong>引入OAuth2</strong>：支持第三方登录</li>
+<li><strong>实现RBAC</strong>：基于角色的权限控制</li>
+<li><strong>添加限流</strong>：防止暴力破解</li>
+<li><strong>集成监控</strong>：完善监控和告警</li>
+<li><strong>多租户支持</strong>：支持SaaS架构</li>
+</ol>
+<p>通过本文的详细介绍，相信您已经掌握了在Spring Boot中实现JWT认证的完整方案。这套实现不仅满足了基本的认证需求，还考虑了安全性、性能、可维护性等多个方面。在实际项目中，您可以根据具体需求进行调整和优化。</p>
+<p><strong>关键提醒</strong>：</p>
+<ul>
+<li>生产环境务必使用HTTPS</li>
+<li>定期更换JWT密钥</li>
+<li>监控异常登录行为</li>
+<li>保持依赖库版本更新</li>
+</ul>
+<p>希望这篇指南对您的项目开发有所帮助！</p>
+
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                SpringBootJWT认证完整实现指南
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2025/09/22/web/SpringBootJWT认证完整实现指南/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    Author
+                </div>
+                <div class="content">ClearSky Drizzle</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    Published
+                </div>
+                <div class="content">2025-09-22 20:47</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    License
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="Copy copyright info" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/springboot/">springboot</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="Share to WeChat"
+            data-tooltip-img-tip="Scan by WeChat"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to WeiBo"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2025/09/24/%E8%BF%90%E7%BB%B4/linux/Parallel-Ubuntu-initramfs-%E7%9A%84%E7%B4%A7%E6%80%A5%E4%BF%AE%E5%A4%8D%E6%A8%A1%E5%BC%8F%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86/"
+                                   title="Parallel Ubuntu initramfs 的紧急修复模式如何处理"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Parallel Ubuntu initramfs 的紧急修复模式如何处理</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2025/09/22/web/SpringBoot%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F%E5%AE%8C%E6%95%B4%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/"
+                                   title="SpringBoot数据脱敏完整实现指南"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">SpringBoot数据脱敏完整实现指南</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">Comment plugin failed to load</span>
+    <button class="reload keep-button">Click to reload</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">Loading comment plugin</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="waline-comment-container">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline-meta.css"/>
+        <div id="waline-comment"></div>
+        <script data-pjax>
+          window.KeepCommentPlugin.walineOptions = JSON.parse('{}'.replace(/&#34;/g, '"'))
+          window.KeepCommentPlugin.walineOptions.el = '#waline-comment'
+          window.KeepCommentPlugin.walineOptions.comment = '.post-comments-count'
+          window.KeepCommentPlugin.walineOptions.serverURL = 'https://comment.lllcnm.cn'
+          window.KeepCommentPlugin.walineOptions.lang = 'en' || 'zh-CN'
+          window.KeepCommentPlugin.walineOptions.reaction = 'true' === 'true'
+        </script>
+
+        
+
+        
+            <script data-pjax
+                    async
+                    type="module"
+            >
+              import { init } from '//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.js'
+              window.KeepCommentPlugin.initWaline = () => {
+                if (init) {
+                  init(window.KeepCommentPlugin.walineOptions)
+                  window.KeepCommentPlugin.hideLoading()
+                } else {
+                  setTimeout(() => {
+                    window.KeepCommentPlugin.initWaline()
+                  }, 1000)
+                }
+              }
+
+              if ('true' === 'true') {
+                setTimeout(() => {
+                  window.KeepCommentPlugin.initWaline()
+                }, 1200)
+              } else {
+                window.addEventListener('DOMContentLoaded', window.KeepCommentPlugin.initWaline)
+              }
+            </script>
+        
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%93%8B-%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">📋 目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-JWT%E6%A6%82%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">1. JWT概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E4%BB%80%E4%B9%88%E6%98%AFJWT"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 什么是JWT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-JWT%E7%BB%93%E6%9E%84"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 JWT结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-JWT%E4%BC%98%E5%8A%BF"><span class="nav-number">2.3.</span> <span class="nav-text">1.3 JWT优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E5%8F%8CToken%E6%9C%BA%E5%88%B6"><span class="nav-number">2.4.</span> <span class="nav-text">1.4 双Token机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.</span> <span class="nav-text">2. 技术架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 整体架构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E8%AF%B4%E6%98%8E"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 核心组件说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%BE%9D%E8%B5%96%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">3. 依赖配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Maven%E4%BE%9D%E8%B5%96"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 Maven依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 配置文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.</span> <span class="nav-text">4. 核心组件实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-JWT%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="nav-number">5.1.</span> <span class="nav-text">4.1 JWT工具类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-JWT%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="nav-number">5.2.</span> <span class="nav-text">4.2 JWT配置类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-JWT%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="nav-number">5.3.</span> <span class="nav-text">4.3 JWT拦截器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-Web%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="nav-number">5.4.</span> <span class="nav-text">4.4 Web配置类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">6.</span> <span class="nav-text">5. 安全配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E7%99%BB%E5%BD%95%E5%93%8D%E5%BA%94%E5%AF%B9%E8%B1%A1"><span class="nav-number">6.1.</span> <span class="nav-text">5.1 登录响应对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1%E5%AE%9E%E7%8E%B0"><span class="nav-number">6.2.</span> <span class="nav-text">5.2 用户服务实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-API%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0"><span class="nav-number">7.</span> <span class="nav-text">6. API接口实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E7%94%A8%E6%88%B7%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">7.1.</span> <span class="nav-text">6.1 用户控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E6%B5%8B%E8%AF%95%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">7.2.</span> <span class="nav-text">6.2 测试控制器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BD%BF%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text">7. 客户端使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96Token"><span class="nav-number">8.1.</span> <span class="nav-text">7.1 登录获取Token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-%E4%BD%BF%E7%94%A8Token%E8%AE%BF%E9%97%AE%E5%8F%97%E4%BF%9D%E6%8A%A4API"><span class="nav-number">8.2.</span> <span class="nav-text">7.2 使用Token访问受保护API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-%E5%88%B7%E6%96%B0Token"><span class="nav-number">8.3.</span> <span class="nav-text">7.3 刷新Token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-%E5%89%8D%E7%AB%AF%E9%9B%86%E6%88%90%E7%A4%BA%E4%BE%8B"><span class="nav-number">8.4.</span> <span class="nav-text">7.4 前端集成示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">9.</span> <span class="nav-text">8. 最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%BB%BA%E8%AE%AE"><span class="nav-number">9.1.</span> <span class="nav-text">8.1 安全配置建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%AE%A1%E7%90%86"><span class="nav-number">9.1.1.</span> <span class="nav-text">密钥管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E8%A6%81%E6%B1%82"><span class="nav-number">9.1.2.</span> <span class="nav-text">密钥要求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE"><span class="nav-number">9.1.3.</span> <span class="nav-text">环境变量配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-Token%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E7%AD%96%E7%95%A5"><span class="nav-number">9.2.</span> <span class="nav-text">8.2 Token过期时间策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">9.3.</span> <span class="nav-text">8.3 错误处理最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E9%94%99%E8%AF%AF%E7%A0%81"><span class="nav-number">9.3.1.</span> <span class="nav-text">统一错误码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">9.3.2.</span> <span class="nav-text">异常处理器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="nav-number">9.4.</span> <span class="nav-text">8.4 性能优化建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="nav-number">9.4.1.</span> <span class="nav-text">缓存用户信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Token%E9%BB%91%E5%90%8D%E5%8D%95"><span class="nav-number">9.4.2.</span> <span class="nav-text">Token黑名单</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-5-%E7%9B%91%E6%8E%A7%E5%92%8C%E6%97%A5%E5%BF%97"><span class="nav-number">9.5.</span> <span class="nav-text">8.5 监控和日志</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JWT%E7%9B%91%E6%8E%A7%E6%8C%87%E6%A0%87"><span class="nav-number">9.5.1.</span> <span class="nav-text">JWT监控指标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%97%A5%E5%BF%97"><span class="nav-number">9.5.2.</span> <span class="nav-text">安全日志</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">10.</span> <span class="nav-text">9. 常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-Token%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="nav-number">10.1.</span> <span class="nav-text">9.1 Token相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Q1-Token%E8%BF%87%E6%9C%9F%E5%90%8E%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="nav-number">10.1.1.</span> <span class="nav-text">Q1: Token过期后如何处理？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Q2-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95%EF%BC%88SSO%EF%BC%89%EF%BC%9F"><span class="nav-number">10.1.2.</span> <span class="nav-text">Q2: 如何实现单点登录（SSO）？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Q3-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%BC%BA%E5%88%B6%E4%B8%8B%E7%BA%BF%EF%BC%9F"><span class="nav-number">10.1.3.</span> <span class="nav-text">Q3: 如何实现强制下线？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="nav-number">10.2.</span> <span class="nav-text">9.2 安全问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Q1-JWT%E8%A2%AB%E7%9B%97%E7%94%A8%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-number">10.2.1.</span> <span class="nav-text">Q1: JWT被盗用怎么办？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Q2-%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2CSRF%E6%94%BB%E5%87%BB%EF%BC%9F"><span class="nav-number">10.2.2.</span> <span class="nav-text">Q2: 如何防止CSRF攻击？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Q3-%E5%AF%86%E9%92%A5%E6%B3%84%E9%9C%B2%E5%A6%82%E4%BD%95%E5%BA%94%E5%AF%B9%EF%BC%9F"><span class="nav-number">10.2.3.</span> <span class="nav-text">Q3: 密钥泄露如何应对？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-3-%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98"><span class="nav-number">10.3.</span> <span class="nav-text">9.3 性能问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Q1-JWT%E9%AA%8C%E8%AF%81%E6%80%A7%E8%83%BD%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%EF%BC%9F"><span class="nav-number">10.3.1.</span> <span class="nav-text">Q1: JWT验证性能如何优化？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Q2-%E5%A4%A7%E9%87%8F%E5%B9%B6%E5%8F%91%E6%97%B6%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="nav-number">10.3.2.</span> <span class="nav-text">Q2: 大量并发时如何处理？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-4-%E9%83%A8%E7%BD%B2%E9%97%AE%E9%A2%98"><span class="nav-number">10.4.</span> <span class="nav-text">9.4 部署问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Q1-%E5%A4%9A%E5%AE%9E%E4%BE%8B%E9%83%A8%E7%BD%B2%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%EF%BC%9F"><span class="nav-number">10.4.1.</span> <span class="nav-text">Q1: 多实例部署注意事项？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Q2-%E5%AE%B9%E5%99%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E9%85%8D%E7%BD%AE%EF%BC%9F"><span class="nav-number">10.4.2.</span> <span class="nav-text">Q2: 容器化部署配置？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-%E6%80%BB%E7%BB%93"><span class="nav-number">11.</span> <span class="nav-text">10. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-%E5%AE%9E%E7%8E%B0%E8%A6%81%E7%82%B9%E5%9B%9E%E9%A1%BE"><span class="nav-number">11.1.</span> <span class="nav-text">10.1 实现要点回顾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-%E6%9E%B6%E6%9E%84%E4%BC%98%E5%8A%BF"><span class="nav-number">11.2.</span> <span class="nav-text">10.2 架构优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-3-%E4%B8%8B%E4%B8%80%E6%AD%A5%E4%BC%98%E5%8C%96%E6%96%B9%E5%90%91"><span class="nav-number">11.3.</span> <span class="nav-text">10.3 下一步优化方向</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2022</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">ClearSky Drizzle</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            This site is deployed on <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span>
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%93%8B-%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">📋 目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-JWT%E6%A6%82%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">1. JWT概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E4%BB%80%E4%B9%88%E6%98%AFJWT"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 什么是JWT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-JWT%E7%BB%93%E6%9E%84"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 JWT结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-JWT%E4%BC%98%E5%8A%BF"><span class="nav-number">2.3.</span> <span class="nav-text">1.3 JWT优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E5%8F%8CToken%E6%9C%BA%E5%88%B6"><span class="nav-number">2.4.</span> <span class="nav-text">1.4 双Token机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.</span> <span class="nav-text">2. 技术架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 整体架构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E8%AF%B4%E6%98%8E"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 核心组件说明</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%BE%9D%E8%B5%96%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">3. 依赖配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Maven%E4%BE%9D%E8%B5%96"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 Maven依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 配置文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.</span> <span class="nav-text">4. 核心组件实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-JWT%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="nav-number">5.1.</span> <span class="nav-text">4.1 JWT工具类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-JWT%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="nav-number">5.2.</span> <span class="nav-text">4.2 JWT配置类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-JWT%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="nav-number">5.3.</span> <span class="nav-text">4.3 JWT拦截器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-Web%E9%85%8D%E7%BD%AE%E7%B1%BB"><span class="nav-number">5.4.</span> <span class="nav-text">4.4 Web配置类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">6.</span> <span class="nav-text">5. 安全配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E7%99%BB%E5%BD%95%E5%93%8D%E5%BA%94%E5%AF%B9%E8%B1%A1"><span class="nav-number">6.1.</span> <span class="nav-text">5.1 登录响应对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-%E7%94%A8%E6%88%B7%E6%9C%8D%E5%8A%A1%E5%AE%9E%E7%8E%B0"><span class="nav-number">6.2.</span> <span class="nav-text">5.2 用户服务实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-API%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0"><span class="nav-number">7.</span> <span class="nav-text">6. API接口实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E7%94%A8%E6%88%B7%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">7.1.</span> <span class="nav-text">6.1 用户控制器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E6%B5%8B%E8%AF%95%E6%8E%A7%E5%88%B6%E5%99%A8"><span class="nav-number">7.2.</span> <span class="nav-text">6.2 测试控制器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BD%BF%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text">7. 客户端使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96Token"><span class="nav-number">8.1.</span> <span class="nav-text">7.1 登录获取Token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-%E4%BD%BF%E7%94%A8Token%E8%AE%BF%E9%97%AE%E5%8F%97%E4%BF%9D%E6%8A%A4API"><span class="nav-number">8.2.</span> <span class="nav-text">7.2 使用Token访问受保护API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-%E5%88%B7%E6%96%B0Token"><span class="nav-number">8.3.</span> <span class="nav-text">7.3 刷新Token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-%E5%89%8D%E7%AB%AF%E9%9B%86%E6%88%90%E7%A4%BA%E4%BE%8B"><span class="nav-number">8.4.</span> <span class="nav-text">7.4 前端集成示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">9.</span> <span class="nav-text">8. 最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE%E5%BB%BA%E8%AE%AE"><span class="nav-number">9.1.</span> <span class="nav-text">8.1 安全配置建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%AE%A1%E7%90%86"><span class="nav-number">9.1.1.</span> <span class="nav-text">密钥管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E8%A6%81%E6%B1%82"><span class="nav-number">9.1.2.</span> <span class="nav-text">密钥要求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE"><span class="nav-number">9.1.3.</span> <span class="nav-text">环境变量配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-Token%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E7%AD%96%E7%95%A5"><span class="nav-number">9.2.</span> <span class="nav-text">8.2 Token过期时间策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">9.3.</span> <span class="nav-text">8.3 错误处理最佳实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E9%94%99%E8%AF%AF%E7%A0%81"><span class="nav-number">9.3.1.</span> <span class="nav-text">统一错误码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">9.3.2.</span> <span class="nav-text">异常处理器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="nav-number">9.4.</span> <span class="nav-text">8.4 性能优化建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="nav-number">9.4.1.</span> <span class="nav-text">缓存用户信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Token%E9%BB%91%E5%90%8D%E5%8D%95"><span class="nav-number">9.4.2.</span> <span class="nav-text">Token黑名单</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-5-%E7%9B%91%E6%8E%A7%E5%92%8C%E6%97%A5%E5%BF%97"><span class="nav-number">9.5.</span> <span class="nav-text">8.5 监控和日志</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JWT%E7%9B%91%E6%8E%A7%E6%8C%87%E6%A0%87"><span class="nav-number">9.5.1.</span> <span class="nav-text">JWT监控指标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%97%A5%E5%BF%97"><span class="nav-number">9.5.2.</span> <span class="nav-text">安全日志</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">10.</span> <span class="nav-text">9. 常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-Token%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="nav-number">10.1.</span> <span class="nav-text">9.1 Token相关问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Q1-Token%E8%BF%87%E6%9C%9F%E5%90%8E%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="nav-number">10.1.1.</span> <span class="nav-text">Q1: Token过期后如何处理？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Q2-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95%EF%BC%88SSO%EF%BC%89%EF%BC%9F"><span class="nav-number">10.1.2.</span> <span class="nav-text">Q2: 如何实现单点登录（SSO）？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Q3-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%BC%BA%E5%88%B6%E4%B8%8B%E7%BA%BF%EF%BC%9F"><span class="nav-number">10.1.3.</span> <span class="nav-text">Q3: 如何实现强制下线？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="nav-number">10.2.</span> <span class="nav-text">9.2 安全问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Q1-JWT%E8%A2%AB%E7%9B%97%E7%94%A8%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-number">10.2.1.</span> <span class="nav-text">Q1: JWT被盗用怎么办？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Q2-%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2CSRF%E6%94%BB%E5%87%BB%EF%BC%9F"><span class="nav-number">10.2.2.</span> <span class="nav-text">Q2: 如何防止CSRF攻击？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Q3-%E5%AF%86%E9%92%A5%E6%B3%84%E9%9C%B2%E5%A6%82%E4%BD%95%E5%BA%94%E5%AF%B9%EF%BC%9F"><span class="nav-number">10.2.3.</span> <span class="nav-text">Q3: 密钥泄露如何应对？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-3-%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98"><span class="nav-number">10.3.</span> <span class="nav-text">9.3 性能问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Q1-JWT%E9%AA%8C%E8%AF%81%E6%80%A7%E8%83%BD%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96%EF%BC%9F"><span class="nav-number">10.3.1.</span> <span class="nav-text">Q1: JWT验证性能如何优化？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Q2-%E5%A4%A7%E9%87%8F%E5%B9%B6%E5%8F%91%E6%97%B6%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%EF%BC%9F"><span class="nav-number">10.3.2.</span> <span class="nav-text">Q2: 大量并发时如何处理？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-4-%E9%83%A8%E7%BD%B2%E9%97%AE%E9%A2%98"><span class="nav-number">10.4.</span> <span class="nav-text">9.4 部署问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Q1-%E5%A4%9A%E5%AE%9E%E4%BE%8B%E9%83%A8%E7%BD%B2%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%EF%BC%9F"><span class="nav-number">10.4.1.</span> <span class="nav-text">Q1: 多实例部署注意事项？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Q2-%E5%AE%B9%E5%99%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E9%85%8D%E7%BD%AE%EF%BC%9F"><span class="nav-number">10.4.2.</span> <span class="nav-text">Q2: 容器化部署配置？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-%E6%80%BB%E7%BB%93"><span class="nav-number">11.</span> <span class="nav-text">10. 总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-%E5%AE%9E%E7%8E%B0%E8%A6%81%E7%82%B9%E5%9B%9E%E9%A1%BE"><span class="nav-number">11.1.</span> <span class="nav-text">10.1 实现要点回顾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-%E6%9E%B6%E6%9E%84%E4%BC%98%E5%8A%BF"><span class="nav-number">11.2.</span> <span class="nav-text">10.2 架构优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-3-%E4%B8%8B%E4%B8%80%E6%AD%A5%E4%BC%98%E5%8C%96%E6%96%B9%E5%90%91"><span class="nav-number">11.3.</span> <span class="nav-text">10.3 下一步优化方向</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+            
+<script src="/js/post/share.js"></script>
+
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

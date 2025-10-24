@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="ClearSky Drizzle">
+    
+    <title>
+        
+            SpringBoot统一错误处理实现指南 |
+        
+        ClearSky Drizzle
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/avatar.jpg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"blog.lllcnm.cn","root":"/","language":"en","path":"search.xml"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":null,"author":"ClearSky Drizzle","avatar":"/images/avatar.jpg","logo":"/images/avatar.jpg","favicon":"/images/avatar.jpg"},"menu":{"home":"/","archives":"/archives","tags":"/tags","about":"/about"},"first_screen":{"enable":true,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"social_contact":{"enable":true,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"x":null,"facebook":null,"email":null}},"scroll":{"progress_bar":true,"percent":true,"hide_header":true},"home":{"announcement":null,"category":true,"tag":true,"post_datetime":"updated"},"post":{"author_badge":{"enable":true,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":true,"share":true,"reward":{"enable":true,"img_link":null,"text":null,"icon":null}},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"obsidian"},"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"local_search":{"enable":true,"preload":true},"comment":{"enable":true,"use":"waline","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.39"},"waline":{"server_url":"https://comment.lllcnm.cn","reaction":true,"version":"3.3.2"},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":true},"cdn":{"enable":false,"provider":"cdnjs"},"pjax":{"enable":true},"footer":{"since":2022,"word_count":true,"site_deploy":{"enable":true,"provider":"github","url":null},"record":{"enable":true,"list":[{"code":null,"link":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"root":"","source_data":{},"version":"4.2.5"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original post title","author":"Original post author","link":"Original post link"}
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+
+<main class="page-container border-box">
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left flex-start border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/avatar.jpg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               ClearSky Drizzle
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc border-box">
+                <ul class="menu-list border-box">
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/">
+                                
+                                HOME
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/archives">
+                                
+                                ARCHIVES
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/tags">
+                                
+                                TAGS
+                                
+                            </a>
+                            
+                        </li>
+                    
+                        
+                        <li class="menu-item flex-start border-box">
+                            <a class="menu-text-color border-box" href="/about">
+                                
+                                ABOUT
+                                
+                            </a>
+                            
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="menu-text-color fas search fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile border-box flex-start">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list border-box">
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/">
+                            
+                            HOME
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/archives">
+                            
+                            ARCHIVES
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/tags">
+                            
+                            TAGS
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+                
+                <li class="drawer-menu-item border-box not-sub-menu">
+                    <label class="drawer-menu-label border-box">
+                        <a class="drawer-menu-text-color left-side flex-start border-box" href="/about">
+                            
+                            ABOUT
+                        </a>
+                        
+                    </label>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    
+<div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+        <div class="post-content-container border-box">
+            
+
+            <div class="post-content-bottom border-box">
+                
+                    <div class="post-title">
+                        SpringBoot统一错误处理实现指南
+                    </div>
+                
+
+                
+                    <div class="post-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/avatar.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author border-box">
+                                <span class="name">ClearSky Drizzle</span>
+                                
+                                    <span class="author-badge">Lv4</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="post-meta-info-container border-box post">
+    <div class="post-meta-info border-box">
+        
+
+        
+            <span class="meta-info-item post-create-date">
+                <i class="icon fa-solid fa-calendar-plus"></i>&nbsp;
+                <span class="datetime">2025-09-15 14:57:58</span>
+            </span>
+
+            
+                <span class="meta-info-item post-update-date">
+                    <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                    <span class="datetime" data-updated="Mon Sep 15 2025 14:58:58 GMT+0800">2025-09-15 14:58:58</span>
+                </span>
+            
+        
+
+        
+            <span class="meta-info-item post-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="post-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/web/">web</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="post-tag meta-info-item border-box">
+                <ul class="post-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/springboot/">springboot</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+            <span class="meta-info-item post-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="post-content keep-markdown-body ">
+                    
+
+                    
+                         <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本文档详细记录了如何在Spring Boot项目中实现统一的错误处理系统，包括标准化错误码、统一响应格式、全局异常处理和断言工具类。</p>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">src/main/java/com/yourpackage/</span><br><span class="line">├── constant/</span><br><span class="line">│   └── ErrorCode.java          # 标准化错误码枚举</span><br><span class="line">├── vo/</span><br><span class="line">│   └── ApiResponse.java        # 统一响应结果类</span><br><span class="line">├── exception/</span><br><span class="line">│   ├── BusinessException.java  # 业务异常类</span><br><span class="line">│   └── GlobalExceptionHandler.java # 全局异常处理器</span><br><span class="line">├── util/</span><br><span class="line">│   └── AssertUtil.java         # 断言工具类</span><br><span class="line">└── controller/</span><br><span class="line">    └── TestController.java     # 使用示例</span><br></pre></td></tr></table></figure>
+
+<h2 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h2><h3 id="1-添加依赖"><a href="#1-添加依赖" class="headerlink" title="1. 添加依赖"></a>1. 添加依赖</h3><p>在 <code>pom.xml</code> 中添加验证依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-validation<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-创建标准化错误码枚举"><a href="#2-创建标准化错误码枚举" class="headerlink" title="2. 创建标准化错误码枚举"></a>2. 创建标准化错误码枚举</h3><p><strong>文件路径</strong>: <code>src/main/java/com/yourpackage/constant/ErrorCode.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yourpackage.constant;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 标准化错误码枚举</span></span><br><span class="line"><span class="comment"> * 格式: ABCD-EFGH</span></span><br><span class="line"><span class="comment"> * ABCD: 模块标识</span></span><br><span class="line"><span class="comment"> * EFGH: 错误序号</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">ErrorCode</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 成功状态码</span></span><br><span class="line">    SUCCESS(<span class="string">&quot;0000-0000&quot;</span>, <span class="string">&quot;操作成功&quot;</span>, HttpStatus.OK),</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 通用错误码</span></span><br><span class="line">    SYSTEM_ERROR(<span class="string">&quot;1000-0001&quot;</span>, <span class="string">&quot;系统繁忙，请稍后重试&quot;</span>, HttpStatus.INTERNAL_SERVER_ERROR),</span><br><span class="line">    PARAM_ERROR(<span class="string">&quot;1000-0002&quot;</span>, <span class="string">&quot;参数错误&quot;</span>, HttpStatus.BAD_REQUEST),</span><br><span class="line">    UNAUTHORIZED(<span class="string">&quot;1000-0003&quot;</span>, <span class="string">&quot;未授权访问&quot;</span>, HttpStatus.UNAUTHORIZED),</span><br><span class="line">    FORBIDDEN(<span class="string">&quot;1000-0004&quot;</span>, <span class="string">&quot;权限不足&quot;</span>, HttpStatus.FORBIDDEN),</span><br><span class="line">    NOT_FOUND(<span class="string">&quot;1000-0005&quot;</span>, <span class="string">&quot;资源不存在&quot;</span>, HttpStatus.NOT_FOUND),</span><br><span class="line">    METHOD_NOT_ALLOWED(<span class="string">&quot;1000-0006&quot;</span>, <span class="string">&quot;请求方法不支持&quot;</span>, HttpStatus.METHOD_NOT_ALLOWED),</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 用户模块错误码</span></span><br><span class="line">    USER_NOT_FOUND(<span class="string">&quot;2000-0001&quot;</span>, <span class="string">&quot;用户不存在&quot;</span>, HttpStatus.NOT_FOUND),</span><br><span class="line">    USER_ALREADY_EXISTS(<span class="string">&quot;2000-0002&quot;</span>, <span class="string">&quot;用户已存在&quot;</span>, HttpStatus.CONFLICT),</span><br><span class="line">    USER_DISABLED(<span class="string">&quot;2000-0003&quot;</span>, <span class="string">&quot;用户已被禁用&quot;</span>, HttpStatus.FORBIDDEN),</span><br><span class="line">    PASSWORD_ERROR(<span class="string">&quot;2000-0004&quot;</span>, <span class="string">&quot;密码错误&quot;</span>, HttpStatus.UNAUTHORIZED),</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 认证授权错误码</span></span><br><span class="line">    TOKEN_EXPIRED(<span class="string">&quot;3000-0001&quot;</span>, <span class="string">&quot;令牌已过期&quot;</span>, HttpStatus.UNAUTHORIZED),</span><br><span class="line">    TOKEN_INVALID(<span class="string">&quot;3000-0002&quot;</span>, <span class="string">&quot;令牌无效&quot;</span>, HttpStatus.UNAUTHORIZED),</span><br><span class="line">    LOGIN_REQUIRED(<span class="string">&quot;3000-0003&quot;</span>, <span class="string">&quot;请先登录&quot;</span>, HttpStatus.UNAUTHORIZED),</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 问卷模块错误码</span></span><br><span class="line">    SURVEY_NOT_FOUND(<span class="string">&quot;4000-0001&quot;</span>, <span class="string">&quot;问卷不存在&quot;</span>, HttpStatus.NOT_FOUND),</span><br><span class="line">    SURVEY_EXPIRED(<span class="string">&quot;4000-0002&quot;</span>, <span class="string">&quot;问卷已过期&quot;</span>, HttpStatus.BAD_REQUEST),</span><br><span class="line">    SURVEY_ALREADY_SUBMITTED(<span class="string">&quot;4000-0003&quot;</span>, <span class="string">&quot;问卷已提交&quot;</span>, HttpStatus.CONFLICT),</span><br><span class="line">    QUESTION_NOT_FOUND(<span class="string">&quot;4000-0004&quot;</span>, <span class="string">&quot;问题不存在&quot;</span>, HttpStatus.NOT_FOUND),</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 数据模块错误码</span></span><br><span class="line">    DATA_NOT_FOUND(<span class="string">&quot;5000-0001&quot;</span>, <span class="string">&quot;数据不存在&quot;</span>, HttpStatus.NOT_FOUND),</span><br><span class="line">    DATA_DUPLICATE(<span class="string">&quot;5000-0002&quot;</span>, <span class="string">&quot;数据重复&quot;</span>, HttpStatus.CONFLICT),</span><br><span class="line">    DATA_INVALID(<span class="string">&quot;5000-0003&quot;</span>, <span class="string">&quot;数据无效&quot;</span>, HttpStatus.BAD_REQUEST),</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 文件模块错误码</span></span><br><span class="line">    FILE_UPLOAD_FAILED(<span class="string">&quot;6000-0001&quot;</span>, <span class="string">&quot;文件上传失败&quot;</span>, HttpStatus.INTERNAL_SERVER_ERROR),</span><br><span class="line">    FILE_NOT_FOUND(<span class="string">&quot;6000-0002&quot;</span>, <span class="string">&quot;文件不存在&quot;</span>, HttpStatus.NOT_FOUND),</span><br><span class="line">    FILE_TYPE_NOT_SUPPORTED(<span class="string">&quot;6000-0003&quot;</span>, <span class="string">&quot;文件类型不支持&quot;</span>, HttpStatus.BAD_REQUEST),</span><br><span class="line">    FILE_SIZE_EXCEEDED(<span class="string">&quot;6000-0004&quot;</span>, <span class="string">&quot;文件大小超出限制&quot;</span>, HttpStatus.BAD_REQUEST);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String code;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String message;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> HttpStatus httpStatus;</span><br><span class="line"></span><br><span class="line">    ErrorCode(String code, String message, HttpStatus httpStatus) &#123;</span><br><span class="line">        <span class="built_in">this</span>.code = code;</span><br><span class="line">        <span class="built_in">this</span>.message = message;</span><br><span class="line">        <span class="built_in">this</span>.httpStatus = httpStatus;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getCode</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getMessage</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> message;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> HttpStatus <span class="title function_">getHttpStatus</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> httpStatus;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ErrorCode <span class="title function_">fromCode</span><span class="params">(String code)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (ErrorCode errorCode : ErrorCode.values()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (errorCode.getCode().equals(code)) &#123;</span><br><span class="line">                <span class="keyword">return</span> errorCode;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> SYSTEM_ERROR;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-创建统一响应结果类"><a href="#3-创建统一响应结果类" class="headerlink" title="3. 创建统一响应结果类"></a>3. 创建统一响应结果类</h3><p><strong>文件路径</strong>: <code>src/main/java/com/yourpackage/vo/ApiResponse.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yourpackage.vo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.fasterxml.jackson.annotation.JsonInclude;</span><br><span class="line"><span class="keyword">import</span> com.yourpackage.constant.ErrorCode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 统一API响应结果类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt; 响应数据类型</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@JsonInclude(JsonInclude.Include.NON_NULL)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ApiResponse</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">private</span> String code;</span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line">    <span class="keyword">private</span> LocalDateTime timestamp;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ApiResponse</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.timestamp = LocalDateTime.now();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">ApiResponse</span><span class="params">(String code, String message, T data)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>();</span><br><span class="line">        <span class="built_in">this</span>.code = code;</span><br><span class="line">        <span class="built_in">this</span>.message = message;</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="title function_">success</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponse</span>&lt;&gt;(ErrorCode.SUCCESS.getCode(), ErrorCode.SUCCESS.getMessage(), <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="title function_">success</span><span class="params">(T data)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponse</span>&lt;&gt;(ErrorCode.SUCCESS.getCode(), ErrorCode.SUCCESS.getMessage(), data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="title function_">success</span><span class="params">(String message, T data)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponse</span>&lt;&gt;(ErrorCode.SUCCESS.getCode(), message, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="title function_">error</span><span class="params">(ErrorCode errorCode)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponse</span>&lt;&gt;(errorCode.getCode(), errorCode.getMessage(), <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="title function_">error</span><span class="params">(ErrorCode errorCode, String message)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponse</span>&lt;&gt;(errorCode.getCode(), message, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="title function_">error</span><span class="params">(String code, String message)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponse</span>&lt;&gt;(code, message, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ApiResponse&lt;T&gt; <span class="title function_">error</span><span class="params">(ErrorCode errorCode, T data)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponse</span>&lt;&gt;(errorCode.getCode(), errorCode.getMessage(), data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; ApiResponseBuilder&lt;T&gt; <span class="title function_">builder</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponseBuilder</span>&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">ApiResponseBuilder</span>&lt;T&gt; &#123;</span><br><span class="line">        <span class="keyword">private</span> String code;</span><br><span class="line">        <span class="keyword">private</span> String message;</span><br><span class="line">        <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> ApiResponseBuilder&lt;T&gt; <span class="title function_">code</span><span class="params">(String code)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.code = code;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> ApiResponseBuilder&lt;T&gt; <span class="title function_">message</span><span class="params">(String message)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.message = message;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> ApiResponseBuilder&lt;T&gt; <span class="title function_">data</span><span class="params">(T data)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.data = data;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> ApiResponse&lt;T&gt; <span class="title function_">build</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ApiResponse</span>&lt;&gt;(code, message, data);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Getters and Setters</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getCode</span><span class="params">()</span> &#123; <span class="keyword">return</span> code; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCode</span><span class="params">(String code)</span> &#123; <span class="built_in">this</span>.code = code; &#125;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getMessage</span><span class="params">()</span> &#123; <span class="keyword">return</span> message; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setMessage</span><span class="params">(String message)</span> &#123; <span class="built_in">this</span>.message = message; &#125;</span><br><span class="line">    <span class="keyword">public</span> T <span class="title function_">getData</span><span class="params">()</span> &#123; <span class="keyword">return</span> data; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setData</span><span class="params">(T data)</span> &#123; <span class="built_in">this</span>.data = data; &#125;</span><br><span class="line">    <span class="keyword">public</span> LocalDateTime <span class="title function_">getTimestamp</span><span class="params">()</span> &#123; <span class="keyword">return</span> timestamp; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setTimestamp</span><span class="params">(LocalDateTime timestamp)</span> &#123; <span class="built_in">this</span>.timestamp = timestamp; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-创建业务异常类"><a href="#4-创建业务异常类" class="headerlink" title="4. 创建业务异常类"></a>4. 创建业务异常类</h3><p><strong>文件路径</strong>: <code>src/main/java/com/yourpackage/exception/BusinessException.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yourpackage.exception;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yourpackage.constant.ErrorCode;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 业务异常类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BusinessException</span> <span class="keyword">extends</span> <span class="title class_">RuntimeException</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ErrorCode errorCode;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Object[] args;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BusinessException</span><span class="params">(ErrorCode errorCode)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(errorCode.getMessage());</span><br><span class="line">        <span class="built_in">this</span>.errorCode = errorCode;</span><br><span class="line">        <span class="built_in">this</span>.args = <span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BusinessException</span><span class="params">(ErrorCode errorCode, String message)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(message);</span><br><span class="line">        <span class="built_in">this</span>.errorCode = errorCode;</span><br><span class="line">        <span class="built_in">this</span>.args = <span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BusinessException</span><span class="params">(ErrorCode errorCode, Object... args)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(errorCode.getMessage());</span><br><span class="line">        <span class="built_in">this</span>.errorCode = errorCode;</span><br><span class="line">        <span class="built_in">this</span>.args = args;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BusinessException</span><span class="params">(ErrorCode errorCode, Throwable cause)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(errorCode.getMessage(), cause);</span><br><span class="line">        <span class="built_in">this</span>.errorCode = errorCode;</span><br><span class="line">        <span class="built_in">this</span>.args = <span class="keyword">new</span> <span class="title class_">Object</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> ErrorCode <span class="title function_">getErrorCode</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> errorCode;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object[] getArgs() &#123;</span><br><span class="line">        <span class="keyword">return</span> args;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getFormattedMessage</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (args != <span class="literal">null</span> &amp;&amp; args.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> String.format(errorCode.getMessage(), args);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> errorCode.getMessage();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-创建全局异常处理器"><a href="#5-创建全局异常处理器" class="headerlink" title="5. 创建全局异常处理器"></a>5. 创建全局异常处理器</h3><p><strong>文件路径</strong>: <code>src/main/java/com/yourpackage/exception/GlobalExceptionHandler.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yourpackage.exception;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yourpackage.constant.ErrorCode;</span><br><span class="line"><span class="keyword">import</span> com.yourpackage.vo.ApiResponse;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.converter.HttpMessageNotReadableException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.validation.BindException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.validation.BindingResult;</span><br><span class="line"><span class="keyword">import</span> org.springframework.validation.FieldError;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.HttpRequestMethodNotSupportedException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.MethodArgumentNotValidException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.MissingServletRequestParameterException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ExceptionHandler;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestControllerAdvice;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.NoHandlerFoundException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.validation.ConstraintViolation;</span><br><span class="line"><span class="keyword">import</span> javax.validation.ConstraintViolationException;</span><br><span class="line"><span class="keyword">import</span> java.util.stream.Collectors;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 全局异常处理器</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">GlobalExceptionHandler</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(GlobalExceptionHandler.class);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理业务异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(BusinessException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;Void&gt; <span class="title function_">handleBusinessException</span><span class="params">(BusinessException e)</span> &#123;</span><br><span class="line">        logger.warn(<span class="string">&quot;业务异常: &#123;&#125;&quot;</span>, e.getFormattedMessage(), e);</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.error(e.getErrorCode(), e.getFormattedMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理参数校验异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(MethodArgumentNotValidException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;Void&gt; <span class="title function_">handleMethodArgumentNotValidException</span><span class="params">(MethodArgumentNotValidException e)</span> &#123;</span><br><span class="line">        <span class="type">BindingResult</span> <span class="variable">bindingResult</span> <span class="operator">=</span> e.getBindingResult();</span><br><span class="line">        <span class="type">String</span> <span class="variable">errorMessage</span> <span class="operator">=</span> bindingResult.getFieldErrors().stream()</span><br><span class="line">                .map(FieldError::getDefaultMessage)</span><br><span class="line">                .collect(Collectors.joining(<span class="string">&quot;, &quot;</span>));</span><br><span class="line">        logger.warn(<span class="string">&quot;参数校验异常: &#123;&#125;&quot;</span>, errorMessage);</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.error(ErrorCode.PARAM_ERROR, errorMessage);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理绑定异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(BindException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;Void&gt; <span class="title function_">handleBindException</span><span class="params">(BindException e)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">errorMessage</span> <span class="operator">=</span> e.getFieldErrors().stream()</span><br><span class="line">                .map(FieldError::getDefaultMessage)</span><br><span class="line">                .collect(Collectors.joining(<span class="string">&quot;, &quot;</span>));</span><br><span class="line">        logger.warn(<span class="string">&quot;绑定异常: &#123;&#125;&quot;</span>, errorMessage);</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.error(ErrorCode.PARAM_ERROR, errorMessage);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理约束违反异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(ConstraintViolationException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;Void&gt; <span class="title function_">handleConstraintViolationException</span><span class="params">(ConstraintViolationException e)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">errorMessage</span> <span class="operator">=</span> e.getConstraintViolations().stream()</span><br><span class="line">                .map(ConstraintViolation::getMessage)</span><br><span class="line">                .collect(Collectors.joining(<span class="string">&quot;, &quot;</span>));</span><br><span class="line">        logger.warn(<span class="string">&quot;约束违反异常: &#123;&#125;&quot;</span>, errorMessage);</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.error(ErrorCode.PARAM_ERROR, errorMessage);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理缺少请求参数异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(MissingServletRequestParameterException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;Void&gt; <span class="title function_">handleMissingServletRequestParameterException</span><span class="params">(MissingServletRequestParameterException e)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">errorMessage</span> <span class="operator">=</span> <span class="string">&quot;缺少参数: &quot;</span> + e.getParameterName();</span><br><span class="line">        logger.warn(<span class="string">&quot;缺少请求参数: &#123;&#125;&quot;</span>, errorMessage);</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.error(ErrorCode.PARAM_ERROR, errorMessage);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理请求方法不支持异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(HttpRequestMethodNotSupportedException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;Void&gt; <span class="title function_">handleHttpRequestMethodNotSupportedException</span><span class="params">(HttpRequestMethodNotSupportedException e)</span> &#123;</span><br><span class="line">        logger.warn(<span class="string">&quot;请求方法不支持: &#123;&#125;&quot;</span>, e.getMessage());</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.error(ErrorCode.METHOD_NOT_ALLOWED, e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理404错误</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(NoHandlerFoundException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;Void&gt; <span class="title function_">handleNoHandlerFoundException</span><span class="params">(NoHandlerFoundException e)</span> &#123;</span><br><span class="line">        logger.warn(<span class="string">&quot;404错误: &#123;&#125;&quot;</span>, e.getMessage());</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.error(ErrorCode.NOT_FOUND, <span class="string">&quot;接口不存在&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理参数类型不匹配异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(MethodArgumentTypeMismatchException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;Void&gt; <span class="title function_">handleMethodArgumentTypeMismatchException</span><span class="params">(MethodArgumentTypeMismatchException e)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">errorMessage</span> <span class="operator">=</span> <span class="string">&quot;参数类型错误: &quot;</span> + e.getName();</span><br><span class="line">        logger.warn(<span class="string">&quot;参数类型不匹配: &#123;&#125;&quot;</span>, errorMessage);</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.error(ErrorCode.PARAM_ERROR, errorMessage);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理HTTP消息不可读异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(HttpMessageNotReadableException.class)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;Void&gt; <span class="title function_">handleHttpMessageNotReadableException</span><span class="params">(HttpMessageNotReadableException e)</span> &#123;</span><br><span class="line">        logger.warn(<span class="string">&quot;HTTP消息不可读: &#123;&#125;&quot;</span>, e.getMessage());</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.error(ErrorCode.PARAM_ERROR, <span class="string">&quot;请求参数格式错误&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理未捕获的异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(Exception.class)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;Void&gt; <span class="title function_">handleException</span><span class="params">(Exception e)</span> &#123;</span><br><span class="line">        logger.error(<span class="string">&quot;未捕获的异常&quot;</span>, e);</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.error(ErrorCode.SYSTEM_ERROR);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-创建断言工具类"><a href="#6-创建断言工具类" class="headerlink" title="6. 创建断言工具类"></a>6. 创建断言工具类</h3><p><strong>文件路径</strong>: <code>src/main/java/com/yourpackage/util/AssertUtil.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yourpackage.util;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yourpackage.constant.ErrorCode;</span><br><span class="line"><span class="keyword">import</span> com.yourpackage.exception.BusinessException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.util.CollectionUtils;</span><br><span class="line"><span class="keyword">import</span> org.springframework.util.StringUtils;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Collection;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 断言工具类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AssertUtil</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">isTrue</span><span class="params">(<span class="type">boolean</span> expression, ErrorCode errorCode)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!expression) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(errorCode);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">isTrue</span><span class="params">(<span class="type">boolean</span> expression, ErrorCode errorCode, String message)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!expression) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(errorCode, message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">isFalse</span><span class="params">(<span class="type">boolean</span> expression, ErrorCode errorCode)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (expression) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(errorCode);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">isNull</span><span class="params">(Object object, ErrorCode errorCode)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (object != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(errorCode);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">notNull</span><span class="params">(Object object, ErrorCode errorCode)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (object == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(errorCode);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">notBlank</span><span class="params">(String str, ErrorCode errorCode)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!StringUtils.hasText(str)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(errorCode);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">notEmpty</span><span class="params">(Collection&lt;?&gt; collection, ErrorCode errorCode)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (CollectionUtils.isEmpty(collection)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(errorCode);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">notEmpty</span><span class="params">(Map&lt;?, ?&gt; map, ErrorCode errorCode)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (CollectionUtils.isEmpty(map)) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(errorCode);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">notEmpty</span><span class="params">(Object[] array, ErrorCode errorCode)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (array == <span class="literal">null</span> || array.length == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(errorCode);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-使用示例"><a href="#7-使用示例" class="headerlink" title="7. 使用示例"></a>7. 使用示例</h3><p><strong>文件路径</strong>: <code>src/main/java/com/yourpackage/controller/TestController.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yourpackage.controller;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yourpackage.constant.ErrorCode;</span><br><span class="line"><span class="keyword">import</span> com.yourpackage.exception.BusinessException;</span><br><span class="line"><span class="keyword">import</span> com.yourpackage.util.AssertUtil;</span><br><span class="line"><span class="keyword">import</span> com.yourpackage.vo.ApiResponse;</span><br><span class="line"><span class="keyword">import</span> org.springframework.validation.annotation.Validated;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.validation.Valid;</span><br><span class="line"><span class="keyword">import</span> javax.validation.constraints.NotBlank;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/test&quot;)</span></span><br><span class="line"><span class="meta">@Validated</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用断言工具类</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/assert&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;String&gt; <span class="title function_">testAssert</span><span class="params">(<span class="meta">@RequestParam</span> String param)</span> &#123;</span><br><span class="line">        AssertUtil.notBlank(param, ErrorCode.PARAM_ERROR, <span class="string">&quot;参数不能为空&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.success(<span class="string">&quot;参数有效: &quot;</span> + param);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 抛出业务异常</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/business-exception&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;String&gt; <span class="title function_">testBusinessException</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">BusinessException</span>(ErrorCode.USER_NOT_FOUND, <span class="string">&quot;用户ID: 123&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回统一响应</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/response&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;UserVO&gt; <span class="title function_">testResponse</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">UserVO</span> <span class="variable">user</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UserVO</span>(<span class="number">1L</span>, <span class="string">&quot;张三&quot;</span>, <span class="string">&quot;zhangsan@example.com&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.success(user);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 参数校验异常</span></span><br><span class="line">    <span class="meta">@PostMapping(&quot;/validation&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> ApiResponse&lt;String&gt; <span class="title function_">testValidation</span><span class="params">(<span class="meta">@Valid</span> <span class="meta">@RequestBody</span> UserDTO userDTO)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ApiResponse.success(<span class="string">&quot;参数校验通过&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 内部类示例</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">UserVO</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> Long id;</span><br><span class="line">        <span class="keyword">private</span> String username;</span><br><span class="line">        <span class="keyword">private</span> String email;</span><br><span class="line">        <span class="comment">// 构造函数、getter、setter省略</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">UserDTO</span> &#123;</span><br><span class="line">        <span class="meta">@NotBlank(message = &quot;用户名不能为空&quot;)</span></span><br><span class="line">        <span class="keyword">private</span> String username;</span><br><span class="line">        </span><br><span class="line">        <span class="meta">@NotBlank(message = &quot;邮箱不能为空&quot;)</span></span><br><span class="line">        <span class="keyword">private</span> String email;</span><br><span class="line">        <span class="comment">// getter、setter省略</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用规范"><a href="#使用规范" class="headerlink" title="使用规范"></a>使用规范</h2><h3 id="1-错误码命名规范"><a href="#1-错误码命名规范" class="headerlink" title="1. 错误码命名规范"></a>1. 错误码命名规范</h3><ul>
+<li>模块标识 + 错误序号</li>
+<li>4位模块标识 + 4位错误序号</li>
+<li>示例：USER-0001（用户模块第1个错误）</li>
+</ul>
+<h3 id="2-异常处理规范"><a href="#2-异常处理规范" class="headerlink" title="2. 异常处理规范"></a>2. 异常处理规范</h3><ul>
+<li>业务异常使用 <code>BusinessException</code></li>
+<li>参数校验使用断言工具类</li>
+<li>系统异常由全局异常处理器统一处理</li>
+</ul>
+<h3 id="3-响应格式规范"><a href="#3-响应格式规范" class="headerlink" title="3. 响应格式规范"></a>3. 响应格式规范</h3><ul>
+<li>所有接口返回 <code>ApiResponse&lt;T&gt;</code></li>
+<li>成功使用 <code>ApiResponse.success(data)</code></li>
+<li>失败使用 <code>ApiResponse.error(errorCode)</code></li>
+</ul>
+<h3 id="4-日志记录规范"><a href="#4-日志记录规范" class="headerlink" title="4. 日志记录规范"></a>4. 日志记录规范</h3><ul>
+<li>业务异常记录WARN级别日志</li>
+<li>系统异常记录ERROR级别日志</li>
+<li>参数异常记录WARN级别日志</li>
+</ul>
+<h2 id="测试验证"><a href="#测试验证" class="headerlink" title="测试验证"></a>测试验证</h2><p>启动项目后，可以通过以下接口测试：</p>
+<ul>
+<li><code>GET /test/assert?param=hello</code> - 测试断言工具</li>
+<li><code>GET /test/business-exception</code> - 测试业务异常</li>
+<li><code>GET /test/response</code> - 测试统一响应</li>
+<li><code>POST /test/validation</code> - 测试参数校验</li>
+</ul>
+
+                    
+                </div>
+
+                
+                        
+<div class="post-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="copyright-post-title border-box text-ellipsis">
+                SpringBoot统一错误处理实现指南
+            </div>
+
+            <div class="copyright-post-link border-box text-ellipsis">
+                2025/09/15/web/SpringBoot统一错误处理实现指南/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="copyright-post-author bottom-item">
+                <div class="type">
+                    Author
+                </div>
+                <div class="content">ClearSky Drizzle</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    Published
+                </div>
+                <div class="content">2025-09-15 14:57</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    License
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed" target="_blank">
+                        
+                            <i class="fa-brands fa-creative-commons"></i>
+                            <i class="fa-brands fa-creative-commons-by"></i>
+                            <i class="fa-brands fa-creative-commons-nc"></i>
+                            <i class="fa-brands fa-creative-commons-sa"></i>
+                        
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="Copy copyright info" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/springboot/">springboot</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="Share to WeChat"
+            data-tooltip-img-tip="Scan by WeChat"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to WeiBo"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="post-nav border-box">
+                        
+                            <div class="prev-post">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2025/09/15/web/Spring%E7%BB%9F%E4%B8%80%E6%97%A5%E5%BF%97%E8%BE%93%E5%87%BA%E5%AE%9E%E7%8E%B0%E6%8C%87%E5%8D%97/"
+                                   title="Spring统一日志输出实现指南"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Spring统一日志输出实现指南</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="next-post">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2025/08/13/web/golang%E4%BD%BF%E7%94%A8api%E5%90%AF%E5%8A%A8%E6%88%96%E5%81%9C%E6%AD%A2goroutine/"
+                                   title="golang使用api启动或停止goroutine"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">golang使用api启动或停止goroutine</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                    <span class="right arrow-icon flex-center">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        <div class="comment-plugin-fail border-box">
+    <span class="fail-tip">Comment plugin failed to load</span>
+    <button class="reload keep-button">Click to reload</button>
+</div>
+<div class="comment-plugin-loading flex-center border-box">
+    <i class="loading-icon fa-solid fa-spinner fa-spin"></i>
+    <span class="load-tip">Loading comment plugin</span>
+</div>
+<script data-pjax>
+  window.KeepCommentPlugin = {}
+  window.KeepCommentPlugin.hideLoading = () => {
+    const cplDom = document.querySelector('.comments-container .comment-plugin-loading')
+    cplDom.style.display = 'none'
+  }
+  window.KeepCommentPlugin.loadFailHandle = () => {
+    window.KeepCommentPlugin.hideLoading()
+    const cpfDom = document.querySelector('.comments-container .comment-plugin-fail')
+    cpfDom.style.display = 'flex'
+    cpfDom.querySelector('.reload').addEventListener('click', () => {
+      window.location.reload()
+    })
+  }
+</script>
+
+        
+            
+
+    <div class="waline-comment-container">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline-meta.css"/>
+        <div id="waline-comment"></div>
+        <script data-pjax>
+          window.KeepCommentPlugin.walineOptions = JSON.parse('{}'.replace(/&#34;/g, '"'))
+          window.KeepCommentPlugin.walineOptions.el = '#waline-comment'
+          window.KeepCommentPlugin.walineOptions.comment = '.post-comments-count'
+          window.KeepCommentPlugin.walineOptions.serverURL = 'https://comment.lllcnm.cn'
+          window.KeepCommentPlugin.walineOptions.lang = 'en' || 'zh-CN'
+          window.KeepCommentPlugin.walineOptions.reaction = 'true' === 'true'
+        </script>
+
+        
+
+        
+            <script data-pjax
+                    async
+                    type="module"
+            >
+              import { init } from '//cdn.jsdelivr.net/npm/@waline/client@v3.3.2/dist/waline.js'
+              window.KeepCommentPlugin.initWaline = () => {
+                if (init) {
+                  init(window.KeepCommentPlugin.walineOptions)
+                  window.KeepCommentPlugin.hideLoading()
+                } else {
+                  setTimeout(() => {
+                    window.KeepCommentPlugin.initWaline()
+                  }, 1000)
+                }
+              }
+
+              if ('true' === 'true') {
+                setTimeout(() => {
+                  window.KeepCommentPlugin.initWaline()
+                }, 1200)
+              } else {
+                window.addEventListener('DOMContentLoaded', window.KeepCommentPlugin.initWaline)
+              }
+            </script>
+        
+    </div>
+
+
+        
+    </div>
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.</span> <span class="nav-text">实现步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%B7%BB%E5%8A%A0%E4%BE%9D%E8%B5%96"><span class="nav-number">3.1.</span> <span class="nav-text">1. 添加依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E6%A0%87%E5%87%86%E5%8C%96%E9%94%99%E8%AF%AF%E7%A0%81%E6%9E%9A%E4%B8%BE"><span class="nav-number">3.2.</span> <span class="nav-text">2. 创建标准化错误码枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%88%9B%E5%BB%BA%E7%BB%9F%E4%B8%80%E5%93%8D%E5%BA%94%E7%BB%93%E6%9E%9C%E7%B1%BB"><span class="nav-number">3.3.</span> <span class="nav-text">3. 创建统一响应结果类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%88%9B%E5%BB%BA%E4%B8%9A%E5%8A%A1%E5%BC%82%E5%B8%B8%E7%B1%BB"><span class="nav-number">3.4.</span> <span class="nav-text">4. 创建业务异常类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%88%9B%E5%BB%BA%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">3.5.</span> <span class="nav-text">5. 创建全局异常处理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%88%9B%E5%BB%BA%E6%96%AD%E8%A8%80%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="nav-number">3.6.</span> <span class="nav-text">6. 创建断言工具类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.7.</span> <span class="nav-text">7. 使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83"><span class="nav-number">4.</span> <span class="nav-text">使用规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%94%99%E8%AF%AF%E7%A0%81%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-number">4.1.</span> <span class="nav-text">1. 错误码命名规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E8%A7%84%E8%8C%83"><span class="nav-number">4.2.</span> <span class="nav-text">2. 异常处理规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%93%8D%E5%BA%94%E6%A0%BC%E5%BC%8F%E8%A7%84%E8%8C%83"><span class="nav-number">4.3.</span> <span class="nav-text">3. 响应格式规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E8%A7%84%E8%8C%83"><span class="nav-number">4.4.</span> <span class="nav-text">4. 日志记录规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%81"><span class="nav-number">5.</span> <span class="nav-text">测试验证</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="copyright-info info-item">
+    &copy;&nbsp;<span>2022</span>&nbsp;-&nbsp;2025
+    
+            &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">ClearSky Drizzle</a>
+        
+    </div>
+
+    <div class="theme-info info-item">
+        Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+    </div>
+
+    
+        
+        <div class="deploy-info info-item">
+            
+            This site is deployed on <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/brands/github.png"></span>
+            
+        </div>
+    
+
+    
+        <div class="count-info info-item">
+            
+
+            
+                <span class="count-item border-box uv">
+                    <span class="item-type border-box">Unique Visitor</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-item border-box pv">
+                    <span class="item-type border-box">Page View</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
+        </div>
+    
+
+    
+        <div class="record-info info-item">
+            
+                
+            
+        </div>
+    
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="post-tools-list border-box">
+        <!-- PC encrypt again -->
+        
+
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
+        
+
+        <!-- PC full screen -->
+        <li class="tools-item flex-center full-screen">
+            <i class="fa-solid fa-expand"></i>
+        </li>
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <!-- toggle mode -->
+        
+            <li class="tools-item tool-toggle-theme-mode flex-center">
+                <i class="fas fa-moon"></i>
+            </li>
+        
+
+        <!-- rss -->
+        
+
+        <!-- to bottom -->
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.</span> <span class="nav-text">实现步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%B7%BB%E5%8A%A0%E4%BE%9D%E8%B5%96"><span class="nav-number">3.1.</span> <span class="nav-text">1. 添加依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E6%A0%87%E5%87%86%E5%8C%96%E9%94%99%E8%AF%AF%E7%A0%81%E6%9E%9A%E4%B8%BE"><span class="nav-number">3.2.</span> <span class="nav-text">2. 创建标准化错误码枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%88%9B%E5%BB%BA%E7%BB%9F%E4%B8%80%E5%93%8D%E5%BA%94%E7%BB%93%E6%9E%9C%E7%B1%BB"><span class="nav-number">3.3.</span> <span class="nav-text">3. 创建统一响应结果类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%88%9B%E5%BB%BA%E4%B8%9A%E5%8A%A1%E5%BC%82%E5%B8%B8%E7%B1%BB"><span class="nav-number">3.4.</span> <span class="nav-text">4. 创建业务异常类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%88%9B%E5%BB%BA%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-number">3.5.</span> <span class="nav-text">5. 创建全局异常处理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%88%9B%E5%BB%BA%E6%96%AD%E8%A8%80%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="nav-number">3.6.</span> <span class="nav-text">6. 创建断言工具类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.7.</span> <span class="nav-text">7. 使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83"><span class="nav-number">4.</span> <span class="nav-text">使用规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%94%99%E8%AF%AF%E7%A0%81%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-number">4.1.</span> <span class="nav-text">1. 错误码命名规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E8%A7%84%E8%8C%83"><span class="nav-number">4.2.</span> <span class="nav-text">2. 异常处理规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%93%8D%E5%BA%94%E6%A0%BC%E5%BC%8F%E8%A7%84%E8%8C%83"><span class="nav-number">4.3.</span> <span class="nav-text">3. 响应格式规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E8%A7%84%E8%8C%83"><span class="nav-number">4.4.</span> <span class="nav-text">4. 日志记录规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E9%AA%8C%E8%AF%81"><span class="nav-number">5.</span> <span class="nav-text">测试验证</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+
+
+<!-- common js -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local search -->
+
+    
+<script src="/js/local-search.js"></script>
+
+
+
+<!-- lazyload -->
+
+    
+<script src="/js/lazyload.js"></script>
+
+
+
+<div class="pjax">
+    <!-- home page -->
+    
+
+    <!-- post page -->
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+            
+<script src="/js/post/copyright-info.js"></script>
+
+        
+
+        <!-- share -->
+        
+            
+<script src="/js/post/share.js"></script>
+
+        
+    
+
+    <!-- categories page -->
+    
+
+    <!-- links page -->
+    
+
+    <!-- photos page -->
+    
+
+    <!-- tools page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>
